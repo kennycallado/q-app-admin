@@ -1,0 +1,14 @@
+{
+  "name": "q-app-php",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@siemens/ix": "^2.2.1",
+    "@siemens/ix-icons": "^2.1.0",
+    "htmx.org": "^1.9.12"
+  }
+}
