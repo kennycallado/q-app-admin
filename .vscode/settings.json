@@ -1,4 +1,6 @@
 {
   "nixEnvSelector.nixFile": "${workspaceFolder}/shell.nix",
-  "nix.enableLanguageServer": true
+  "nix.enableLanguageServer": true,
+  "IDX.aI.enableInlineCompletion": true,
+  "IDX.aI.enableCodebaseIndexing": true
 }
