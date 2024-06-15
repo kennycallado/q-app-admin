@@ -35,6 +35,8 @@ services:
     pull_policy: always
     environment:
       DB_HOST: surrealdb:8000
+    links:
+      - db
 
   auth:
     container_name: auth
@@ -46,3 +48,5 @@ services:
       ROCKET_PORT: 9000
       ROCKET_DATABASES: '{store={host="surrealdb", port=8000, username="root", password="root"}}'
       ROCKET_SECRET_KEY: 'xdOXN1pEDSi3TYupqi7jOtXwaa3rOfClDPuW3HzMdkU='
+    links:
+      - db
