@@ -1,0 +1,69 @@
+@import '/public/assets/@siemens/ix/dist/siemens-ix/siemens-ix.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins:wght@200&display=swap');
+
+* {
+  font-family: 'Montserrat',sans-serif;
+  font-style: normal;
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background: linear-gradient(69.66deg, #00C1FE 19.39%, #FAFFC1 96.69%);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(69.66deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 18%, rgba(0,212,255,1) 96.69%);
+  }
+}
+
+.bg-light {
+  background: linear-gradient(69.66deg, #00C1FE 19.39%, #FAFFC1 96.69%);
+}
+
+.bg-dark {
+  background: linear-gradient(69.66deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 18%, rgba(0,212,255,1) 96.69%);
+}
+
+body {
+  height: 100svh;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.timedMessage {
+    animation: fadeInOut 10s forwards;
+}
+
+.select {
+    cursor: pointer;
+
+    min-height: 2rem;
+    border-radius: var(--theme-input--border-radius);
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: var(--theme-input--background);
+    border: var(--theme-input--border-thickness) solid var(--theme-input--border-color);
+    border-radius: var(--theme-input--border-radius);
+    padding: 0px 0px 0px 0.5rem;
+    box-shadow: var(--theme-inset-shadow-1) !important;
+    color: var(--theme-color-contrast);
+}
+
+.select option[disabled] { display: none; }
