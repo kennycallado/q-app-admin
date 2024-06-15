@@ -1,0 +1,21 @@
+{% extends 'shared/layouts/main.html' %}
+
+{% block content %}
+<ix-content-header
+    slot="header"
+    has-back-button="false"
+    header-title="Media">
+
+    <ix-button
+        style="box-shadow: var(--theme-shadow-3);"
+        hx-push-url="true"
+        hx-get="{{ url_for('media') }}/create"
+        hx-target="#content"
+        hx-swap="transition:true">
+        Create
+    </ix-button>
+</ix-content-header>
+
+<section>
+</section>
+{% endblock %}

@@ -1,0 +1,88 @@
+<style>
+div[data-tab-content] {
+    display: none;
+}
+
+div[data-tab-content].show {
+    display: block;
+}
+</style>
+
+<div class="example">
+
+    <ix-tabs
+        style="background-color: var(--theme-color-neutral-40);"
+        class="rounded-top rounded-top-3 mt-2">
+
+        <ix-tab-item class="text-capitalize" data-tab-id="es">es</ix-tab-item>
+        <ix-tab-item class="text-capitalize" data-tab-id="en">en</ix-tab-item>
+        <ix-tab-item class="text-capitalize" data-tab-id="vl">vl</ix-tab-item>
+        {#
+        {% for q in question.question %}
+        <ix-tab-item
+            class="text-capitalize"
+            data-tab-id="{{ q.locale }}">{{ q.locale }}</ix-tab-item>
+        {% endfor %}
+        #}
+    </ix-tabs>
+
+
+    {% for q in question.question %}
+    <div
+        class="p-2 rounded-bottom {{ loop.first ? 'show' : '' }}"
+        style="background-color: var(--theme-color-component-1);"
+        data-tab-content="{{ q.locale }}">
+
+        <ix-key-value
+            class="border-bottom-0"
+            label="content">
+            <textarea
+                slot="custom-value"
+                readonly
+                placeholder="Enter text">{{ q.content }}</textarea>
+        </ix-key-value>
+
+        <ix-typography
+            class="text-center mb-0"
+            style="border-color: var(--theme-color-primary)! important;"
+            class="text-center border-bottom"
+            format="body-lg" bold>
+            Spelled answers
+        </ix-typography>
+
+        {% for i in question.range.min..question.range.max %}
+        <ix-key-value label="{{ i }}" value="{{ q.spelled[i-1] }}"></ix-key-value>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+(async function () {
+    await window.customElements.whenDefined('ix-tabs');
+    const tabs = document.querySelectorAll('ix-tab-item[data-tab-id]');
+
+    function registerClickListener(tab) {
+        tab.addEventListener('click', (tabContent) => {
+            const contentList = document.querySelectorAll('[data-tab-content]');
+            contentList.forEach((content) => {
+                if (content.dataset.tabContent === tab.dataset.tabId) {
+                    content.classList.add('show');
+                    tab.classList.add('active');
+                } else {
+                    content.classList.remove('show');
+                }
+
+                if (content.dataset.tabContent !== tab.dataset.tabId) {
+                    const tabId = content.dataset.tabContent;
+                    const tab = document.querySelector(`ix-tab-item[data-tab-id="${tabId}"]`);
+                    tab.classList.remove('active');
+                }
+
+            });
+        });
+    }
+
+    tabs.forEach(registerClickListener);
+})();
+</script>

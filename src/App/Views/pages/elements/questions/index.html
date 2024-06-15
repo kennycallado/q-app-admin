@@ -1,0 +1,111 @@
+{% extends 'shared/layouts/main.html' %}
+
+{% block content %}
+<ix-content-header
+    slot="header"
+    has-back-button="false"
+    header-title="Questions">
+
+    {#
+    <ix-button
+        hx-push-url="true"
+        hx-get="{{ url_for('questions') }}/create"
+        hx-target="#content"
+        hx-swap="transition:true"
+
+        class="btn-primary">Create</ix-button>
+    #}
+
+    <ix-button
+        style="box-shadow: var(--theme-shadow-3);"
+        id="questions-index-create">Create</ix-button>
+    <ix-dropdown trigger="questions-index-create">
+        <ix-dropdown-item
+            hx-push-url="true"
+            hx-get="{{ url_for('questions') }}/create?type=text"
+            hx-target="#content"
+            hx-swap="transition:true"
+
+            icon="star"
+            label="Text"></ix-dropdown-item>
+
+        <ix-dropdown-item
+            hx-push-url="true"
+            hx-get="{{ url_for('questions') }}/create?type=range"
+            hx-target="#content"
+            hx-swap="transition:true"
+
+            icon="document"
+            label="Range"></ix-dropdown-item>
+    </ix-dropdown>
+</ix-content-header>
+
+<section
+    style="background-color: var(--theme-color-lightbox);"
+    class="card"
+    id="examples-questions-index">
+
+    <div class="card-body container">
+        {% for question in questions %}
+        <ix-content-header
+            hx-push-url="true"
+
+            style="border-color: var(--theme-color-primary)! important;"
+            class="mb-2 border-bottom align-items-end"
+
+            header-title="ref-{{ question.id }}"
+            header-subtitle="{{ question.question[0].content }}"
+            variant="secondary">
+
+            <ix-icon-button
+                hx-get="{{ url_for('questions') }}/{{ question.id }}"
+                hx-target="#content"
+                hx-swap="transition:true"
+
+                icon="eye"
+                variant=""
+                ghost>
+                Show
+            </ix-icon-button>
+
+            <ix-icon-button
+                hx-get="{{ url_for('questions') }}/edit/{{ question.id }}"
+                hx-target="#content"
+                hx-swap="transition:true"
+
+                icon="pen"
+                variant=""
+                ghost>
+                Edit
+            </ix-icon-button>
+
+            <ix-icon-button
+                icon="trashcan"
+                variant=""
+                ghost>
+                Delete
+            </ix-icon-button>
+
+            <ix-icon-button
+                icon="context-menu"
+                variant=""
+                ghost>
+                Button3
+            </ix-icon-button>
+
+            <script>
+                me().run(el => {
+                    const questions = {{ question.question|json_encode|raw }};
+                    const lang = navigator.language.split('-')[0];
+
+                    for (let question of questions) {
+                        if (question.locale === lang) el.headerSubtitle = question.content
+                    }
+                })
+            </script>
+        </ix-content-header>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}

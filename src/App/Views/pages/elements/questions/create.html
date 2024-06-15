@@ -1,0 +1,65 @@
+{% extends 'shared/layouts/main.html' %}
+
+{% block content %}
+<ix-content-header
+    slot="header"
+    has-back-button="true"
+    header-title="Show {{ question.id }}">
+
+    <script>
+        me().on('backButtonClick', _ => {
+            let url = "{{ url_for('questions') }}";
+
+            htmx
+                .ajax('GET', url, {target: '#content', swap: 'transition:true'})
+                .then(_ => history.pushState({}, '', url))
+        })
+    </script>
+</ix-content-header>
+
+<section
+    style="background-color: var(--theme-color-lightbox);"
+    class="card"
+    id="examples-questions-create">
+
+    <div class="card-body">
+        <ix-layout-grid>
+            <ix-row>
+                <ix-col size="12" size-md="3" size-lg="4">
+                    <ix-typography
+                        style="border-color: var(--theme-color-primary)! important;"
+                        class="text-center border-bottom"
+                        format="display">
+                        Info
+                    </ix-typography>
+
+                    <div class="mt-2">
+                        <ix-key-value
+                            orientation="vertical"
+                            label="ref">
+                            <input slot="custom-value" placeholder="Enter slug" />
+                        </ix-key-value>
+
+                        <ix-key-value
+                            orientation="vertical"
+                            label="type">
+                            <div slot="custom-value" class="d-flex justify-content-between">
+                                <input id="input-radio-text" name="type" type="radio" />
+                                <label for="input-radio-text">Text</label>
+
+                                <input id="input-radio-range" name="type" type="radio" />
+                                <label for="input-radio-range">Range</label>
+
+                                <input disabled id="input-radio-disabled" name="type" type="radio" />
+                                <label for="input-radio-disabled">Disabled</label>
+                            </div>
+                        </ix-key-value>
+                    </div>
+
+                </ix-col>
+            </ix-row>
+        </ix-layout-grid>
+    </div>
+
+</section>
+{% endblock %}

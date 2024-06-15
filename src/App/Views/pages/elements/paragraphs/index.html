@@ -1,0 +1,92 @@
+{% extends 'shared/layouts/main.html' %}
+
+{% block content %}
+<ix-content-header
+    slot="header"
+    has-back-button="false"
+    header-title="Paragraphs">
+
+    <ix-button
+        style="box-shadow: var(--theme-shadow-3);"
+        hx-push-url="true"
+        hx-get="{{ url_for('paragraphs') }}/create"
+        hx-target="#content"
+        hx-swap="transition:true">
+        Create
+    </ix-button>
+</ix-content-header>
+
+<section
+    style="background-color: var(--theme-color-lightbox);"
+    class="card"
+    id="elements-paragraphs-index">
+
+    <div class="card-body">
+        {% for paragraph in paragraphs %}
+        <ix-content-header
+            hx-push-url="true"
+
+            style="border-color: var(--theme-color-primary)! important;"
+            class="mb-2 border-bottom align-items-end"
+
+            header-title="{{ paragraph.ref }}"
+            header-subtitle="{{ paragraph.content[0].text }}"
+            variant="secondary">
+
+            <ix-icon-button
+                hx-get="{{ url_for('paragraphs') }}/{{ paragraph.id }}"
+                hx-target="#content"
+                hx-swap="transition:true"
+
+                icon="eye"
+                variant=""
+                ghost>
+                Show
+            </ix-icon-button>
+
+            <ix-icon-button
+                hx-get="{{ url_for('paragraphs') }}/edit/{{ paragraph.id }}"
+                hx-target="#content"
+                hx-swap="transition:true"
+
+                icon="pen"
+                variant=""
+                ghost>
+                Edit
+            </ix-icon-button>
+
+            <ix-icon-button
+                icon="trashcan"
+                variant=""
+                ghost>
+                Delete
+            </ix-icon-button>
+
+            <ix-icon-button
+                icon="context-menu"
+                variant=""
+                ghost>
+                Button3
+            </ix-icon-button>
+
+            <script>
+                me().run(el => {
+                    const paragraphs = {{ paragraph.content|json_encode|raw }};
+                    const lang = navigator.language.split('-')[0];
+
+
+                    for (let paragraph of paragraphs) {
+                        if (paragraph.locale === lang) {
+                            if (paragraph.text.length > 60)
+                                 el.headerSubtitle = paragraph.text.substring(0, 60) + '...'
+                            else el.headerSubtitle = paragraph.text
+                        }
+                    }
+                })
+            </script>
+        </ix-content-header>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'shared/layouts/main.html' %}
+
+{% block content %}
+<ix-content-header
+  slot="header"
+  has-back-button="true"
+  header-title="Dashboard"></ix-content-header>
+
+<section
+    style="background-color: var(--theme-color-lightbox);"
+    class="card"
+    id="examples-dashboard">
+
+    <ix-typography format="h2" class="card-title text-center text-capitalize">Demo</ix-typography>
+
+    <div class="card-body">
+        <ix-layout-grid>
+            <ix-typography format="display">Project stats:</ix-typography>
+            <hr class="mt-1 border-2 border-primary">
+
+            <ix-row class="justify-content-evenly">
+                <ix-card class="mb-2" variant="notification">
+                    <ix-card-content>
+                        <div class="d-flex w-100 justify-content-between align-items-end">
+                            <ix-icon size="24" id="phone-icon" name="user-management-filled"></ix-icon>
+                            <ix-typography bold>Participants</ix-typography>
+                        </div>
+
+                        <hr class="mt-1 w-100 border border-primary" />
+
+                        <ix-typography style="color: var(--theme-color-primary)" class="w-100 text-center" format="display-sm" bold>10</ix-typography>
+                    </ix-card-content>
+                </ix-card>
+            </ix-row>
+
+            <ix-typography format="display">Center stats:</ix-typography>
+            <hr class="mt-1 border-2 border-primary">
+
+            <ix-row class="justify-content-evenly">
+                <ix-card class="mb-2" variant="notification">
+                    <ix-card-content>
+                        <div class="d-flex w-100 justify-content-between align-items-end">
+                            <ix-icon size="24" id="phone-icon" name="user-management-filled"></ix-icon>
+                            <ix-typography bold>Participants</ix-typography>
+                        </div>
+
+                        <hr class="mt-1 w-100 border border-primary" />
+
+                        <ix-typography style="color: var(--theme-color-primary)" class="w-100 text-center" format="display-sm" bold>34</ix-typography>
+                    </ix-card-content>
+                </ix-card>
+
+                <ix-card class="mb-2" variant="notification">
+                    <ix-card-content>
+                        <div class="d-flex w-100 justify-content-between align-items-end">
+                            <ix-icon size="24" id="phone-icon" name="user-management-filled"></ix-icon>
+                            <ix-typography bold>Projects</ix-typography>
+                        </div>
+
+                        <hr class="mt-1 w-100 border border-primary" />
+
+                        <ix-typography style="color: var(--theme-color-primary)" class="w-100 text-center" format="display-sm" bold>2</ix-typography>
+                    </ix-card-content>
+                </ix-card>
+            </ix-row>
+        </ix-layout-grid>
+    </div>
+
+</section>
+{% endblock %}

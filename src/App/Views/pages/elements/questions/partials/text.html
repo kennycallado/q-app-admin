@@ -1,0 +1,13 @@
+<div>
+    {% for q in question.question %}
+    <ix-key-value
+        class="border-bottom-0"
+        label="{{ q.locale }}">
+        <textarea
+            slot="custom-value"
+            readonly
+            placeholder="Enter text">{{ q.content }}</textarea>
+    </ix-key-value>
+    {% endfor %}
+</div>
+

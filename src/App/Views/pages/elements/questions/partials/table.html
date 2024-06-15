@@ -1,0 +1,64 @@
+        <!-- TODO: could be a ix-content-header:secondary -->
+        <table class="w-75 mx-auto table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Ref</th>
+                    <th scope="col">Content</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for question in questions %}
+                <tr>
+
+                    <td
+                        class="ps-2 overflow-hidden text-truncate">
+                        ref sadklfjlasdkj
+                    </td>
+
+                    <td
+                        style="max-width: 20rem;"
+                        class="ps-2 text-truncate">
+                        {{ question.question[0].content }}
+                        <script>
+                            me().run(el => {
+                                const questions = {{ question.question|json_encode|raw }};
+                                const lang = navigator.language.split('-')[0];
+
+                                for (let question of questions) {
+                                    if (question.locale === lang) el.textContent = question.content
+                                }
+                            })
+                        </script>
+                    </td>
+
+                    <td class="ps-2">
+                        <ix-icon-button
+                            hx-push-url="true"
+                            hx-get="{{ url_for('questions') }}/{{ question.id }}"
+                            hx-target="#content"
+                            hx-swap="transition:true"
+
+                            variant="primary"
+                            icon="eye"
+                            size="16"
+                            ghost></ix-icon-button>
+
+                        <ix-icon-button
+                            variant="primary"
+                            icon="pen"
+                            size="16"
+                            ghost></ix-icon-button>
+
+                        <ix-icon-button
+                            variant="primary"
+                            icon="trashcan"
+                            size="16"
+                            ghost></ix-icon-button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>

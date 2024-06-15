@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="/public/assets/css/style.css">
+        <link rel="stylesheet" href="/public/assets/css/transition.css">
+
+        <script defer type="module" src="/public/assets/@siemens/ix/dist/index.js"></script>
+        <script defer type="module" src="/public/assets/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script defer type="module" src="/public/assets/js/main.js"></script>
+
+        <script src="/public/assets/js/surreal.js"></script>
+    </head>
+
+    {% block body %}
+    <body>
+        <ix-application>
+            {% include 'shared/partials/layouts/header.html' %}
+            {% include 'shared/partials/layouts/menu.html' %}
+            {% include 'shared/partials/layouts/pane.html' %}
+
+            <!-- style="background-color: var(--theme-color-1);" -->
+            <ix-content
+                hx-ext="response-targets"
+                class="sample-transition"
+                id="content">
+                {% block content %} {% endblock %}
+            </ix-content>
+        </ix-application>
+    </body>
+    {% endblock %}
+</html>
