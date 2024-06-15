@@ -11,6 +11,6 @@ LV_BRANCH='release-1.4/neovim-0.9' bash <(curl -s https://raw.githubusercontent.
 
 # place configurations
 ln -s $PWD/.devcontainer/config/nvim $HOME/.config/nvim
-# ln -s $PWD/.devcontainer/config/lvim $HOME/.config/lvim
+ln -s $PWD/.devcontainer/config/lvim $HOME/.config/lvim
 
 exit 0
