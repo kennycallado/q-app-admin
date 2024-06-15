@@ -1,0 +1,36 @@
+{
+  "name": "q-app-admin",
+  "service": "devcontainer",
+  "dockerComposeFile": "compose.yml",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  "userEnvProbe": "loginShell",
+  "updateRemoteUserUID": false,
+
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+
+  "onCreateCommand": "nix-shell --command 'echo done building nix dev environment'",
+  "waitFor": "onCreateCommand",
+  "postCreateCommand": ".devcontainer/config/post-create.sh",
+
+  "forwardPorts": [18080, 19000, 18000],
+  "portsAttributes": {
+    "18080": { "label": "app" },
+    "19000": { "label": "auth" },
+    "18000": { "label": "database" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "arrterian.nix-env-selector",
+        "jnoortheen.nix-ide",
+        "GitHub.copilot"
+      ]
+    }
+  }
+}
