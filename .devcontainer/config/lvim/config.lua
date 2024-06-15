@@ -78,6 +78,26 @@ lvim.plugins = {
       })
     end
   },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = {
+          auto_trigger = true,
+          keymap = {
+            accept = "<C-e>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          }
+        }
+      })
+    end,
+  }
 }
 
 -- after plugins
