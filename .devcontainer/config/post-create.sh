@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p bash
+#! nix-shell -i bash -p bash gnumake
 
 mkdir -p ${HOME}/.config
 mkdir -p ${HOME}/.local/bin
