@@ -3,7 +3,7 @@
 
   inputs = {
     flake-compat.url = "github:nix-community/flake-compat";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     systems.url = "github:nix-systems/default";
   };
 
@@ -25,7 +25,7 @@
         # php82Extensions.pcov
         # php82Extensions.mbstring
 
-        nodejs_18
+        nodejs_20
         ];
 
         shellHook = ''
@@ -35,7 +35,7 @@
         echo `${pkgs.php82Packages.composer}/bin/composer --version`
         echo "=================="
         echo -e "node:"
-        echo `${pkgs.nodejs_18}/bin/node --version`
+        echo `${pkgs.nodejs_20}/bin/node --version`
         echo "=================="
         '';
         };
