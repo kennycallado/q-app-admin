@@ -37,6 +37,7 @@ lvim.autocommands = {
 
 -- plugins
 lvim.plugins = {
+
   {
     "rest-nvim/rest.nvim",
     version = "v1.2.1",
@@ -78,6 +79,7 @@ lvim.plugins = {
       })
     end
   },
+
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
@@ -98,6 +100,7 @@ lvim.plugins = {
       })
     end,
   }
+
 }
 
 -- after plugins
