@@ -29,8 +29,7 @@
         "ms-azuretools.vscode-docker",
         "arrterian.nix-env-selector",
         "jnoortheen.nix-ide",
-        "GitHub.copilot",
-        "mkhl.direnv"
+        "GitHub.copilot"
       ]
     }
   }
