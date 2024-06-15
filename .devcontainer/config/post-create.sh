@@ -1,4 +1,5 @@
-#! /usr/bin/env bash
+#! /usr/bin/env nix-shell
+#! nix-shell -i bash -p bash
 
 mkdir -p ${HOME}/.config
 mkdir -p ${HOME}/.local/bin
