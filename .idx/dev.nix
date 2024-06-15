@@ -20,6 +20,8 @@
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
+      "ms-azuretools.vscode-docker"
+      "arrterian.nix-env-selector"
       "vscodevim.vim"
     ];
 
@@ -49,12 +51,14 @@
           echo 'eval "$(direnv hook bash)"' >> $HOME/.bashrc
         '';
 
+        nix-shell-setup = ''nix-shell --command "echo done building nix dev enviroment"'';
+
         # Example: install JS dependencies from NPM
         # npm-install = "npm install";
       };
       # Runs when the workspace is (re)started
       onStart = {
-        # start-services = "docker compose up -d"; # TODO
+        start-services = "docker compose up -d"; # TODO
 
         # Example: start a background task to watch and re-build backend code
         # watch-backend = "npm run watch-backend";
