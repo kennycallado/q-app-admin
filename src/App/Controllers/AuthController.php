@@ -175,6 +175,7 @@ class AuthController
         setcookie('g_auth', '', time() - 3600, '/');
         setcookie('p_auth', '', time() - 3600, '/');
         setcookie('role', '', time() - 3600, '/');
+        setcookie('username', '', time() - 3600, '/');
 
         $_SESSION['auth'] = null;
 
