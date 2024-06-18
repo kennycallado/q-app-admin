@@ -6,7 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="/public/assets/css/style.css">
-        <link rel="stylesheet" href="/public/assets/css/transition.css">
+        <link rel="preload" as="style" href="/public/assets/css/transition.css" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" as="style" href="/public/assets/css/transition.css"></noscript>
 
         <script defer type="module" src="/public/assets/@siemens/ix/dist/index.js"></script>
         <script defer type="module" src="/public/assets/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
