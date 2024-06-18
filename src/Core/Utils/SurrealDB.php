@@ -58,7 +58,7 @@ class SurrealDB
     /**
      * exec
      * Fluent query terminitor
-     * @return array
+     * @return array|object (if error occurs)
      */
     public function exec()
     {
