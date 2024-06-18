@@ -51,7 +51,7 @@
         
           # bash-dev-setup
           echo 'eval "$(direnv hook bash)"' >> $HOME/.bashrc
-          bash <(curl -L zellij.dev/launch)
+          source <(curl -sL zellij.dev/launch)
         '';
 
         nix-shell-setup = ''nix-shell --command "echo done building nix dev enviroment"'';
