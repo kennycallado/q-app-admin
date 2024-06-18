@@ -47,8 +47,11 @@
       # Runs when a workspace is first created
       onCreate = {
         # direnv into $HOME/.bashrc
-        direnv-setup = ''
+        bash-dev-setup = ''
+        
+          # bash-dev-setup
           echo 'eval "$(direnv hook bash)"' >> $HOME/.bashrc
+          bash <(curl -L zellij.dev/launch)
         '';
 
         nix-shell-setup = ''nix-shell --command "echo done building nix dev enviroment"'';
