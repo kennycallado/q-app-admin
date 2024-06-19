@@ -14,28 +14,26 @@ class ParagraphsController
 {
     public static function routes(Group $group): void
     {
-        // views
         $group->get('', [self::class, 'index'])->setName('paragraphs');
-        $group->get('/create', [self::class, 'create']);
-        // $group->get('/edit/{id}',   [self::class, 'edit']);
-        $group->get('/{id}', [self::class, 'show']);
-
-        // actions
         $group->post('', [self::class, 'store']);
-        // $group->patch('/{id}', [self::class, 'update']);
+
+        $group->get('/create', [self::class, 'create']);
+        $group->post('/delete/{id}', [self::class, 'delete']);
+
+        $group->get('/{id}', [self::class, 'show']);
+        $group->patch('/{id}', [self::class, 'update']);
     }
 
     public function index(Request $request, Response $response)
     {
         $view = Twig::fromRequest($request);
         $auth = $request->getAttribute('auth');
+
         $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
         $paragraphsRepository = new ParagraphsRepository($i_db);
 
-        $paragraphs = $paragraphsRepository->all();
-
         $prepare = [
-            'paragraphs' => $paragraphs
+            'paragraphs' => $paragraphsRepository->all()
         ];
 
         return $view->render($response, 'pages/elements/paragraphs/index.html', $prepare);
@@ -52,16 +50,16 @@ class ParagraphsController
     {
         $view = Twig::fromRequest($request);
         $auth = $request->getAttribute('auth');
+
         $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
         $paragraphsRepository = new ParagraphsRepository($i_db);
 
-        $paragraph = $paragraphsRepository->find($args['id']);
-
         $prepare = [
-            'paragraph' => $paragraph
+            'paragraph' => $paragraphsRepository->find($args['id']),
+            'edit' => $request->getQueryParams()['edit'] ?? null
         ];
 
-        return $view->render($response, 'pages/elements/paragraphs/show.html', $prepare);
+        return $view->render($response, 'pages/elements/paragraphs/details.html', $prepare);
     }
 
     public function store(Request $request, Response $response)
@@ -74,10 +72,48 @@ class ParagraphsController
         $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
         $paragraphsRepository = new ParagraphsRepository($i_db);
 
-        $paragraph = new Paragraph(null, $body['ref'], $body['type'], $body['content']);
-        $db_res = $paragraphsRepository->create($paragraph);
+        $paragraph = new Paragraph(...$body);
+        $paragraphsRepository->create($paragraph);
 
-        // TODO: redirec to show
+        // TODO: render show to avoid querying the database again
+
+        $routeParser = $app->getRouteCollector()->getRouteParser();
+        $paragraphs_url = $routeParser->urlFor('paragraphs');
+
+        return $response->withHeader('Location', $paragraphs_url);
+    }
+
+    public function update(Request $request, Response $response, $args)
+    {
+        global $app;
+
+        $auth = $request->getAttribute('auth');
+        $body = $request->getParsedBody();
+
+        $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
+        $paragraphsRepository = new ParagraphsRepository($i_db);
+
+        $paragraph = new Paragraph(...array_slice($body, 1));
+        $paragraphsRepository->update($paragraph);
+
+        // TODO: render show to avoid querying the database again
+
+        $routeParser = $app->getRouteCollector()->getRouteParser();
+        $paragraphs_url = $routeParser->urlFor('paragraphs') . '/' . $args['id'];
+
+        return $response->withHeader('Location', $paragraphs_url);
+    }
+
+    public function delete(Request $request, Response $response, $args)
+    {
+        global $app;
+
+        $auth = $request->getAttribute('auth');
+
+        $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
+        $paragraphsRepository = new ParagraphsRepository($i_db);
+
+        $paragraphsRepository->delete($args['id']);
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
         $paragraphs_url = $routeParser->urlFor('paragraphs');

@@ -2,13 +2,13 @@
 
 {% block content %}
 <style>
-    div[data-tab-content] {
-        display: none;
-    }
+div[data-tab-content] {
+    display: none;
+}
 
-    div[data-tab-content].show {
-        display: block;
-    }
+div[data-tab-content].show {
+    display: block;
+}
 </style>
 
 <ix-content-header
@@ -65,17 +65,29 @@
                         orientation="vertical"
                         label-position="left"
                         label="type">
-                            <div slot="custom-value" class="d-flex">
-                              <input checked id="checkbox_1_3" name="type" value="text" type="radio" />
-                              <label for="checkbox_1_3">text</label>
+                        <div slot="custom-value" class="d-flex">
+                            <input
+                                checked
+                                id="form-type-text"
+                                name="type"
+                                value="text"
+                                type="radio" />
+                            <label for="form-type-text">text</label>
 
-                              <input id="checkbox_1_1" name="type" value="h2" type="radio" />
-                              <label for="checkbox_1_1">h2</label>
+                            <input
+                                id="form-type-h2"
+                                name="type"
+                                value="h2"
+                                type="radio" />
+                            <label for="form-type-h2">h2</label>
 
-                              <input id="checkbox_1_2" name="type" value="h3" type="radio" />
-                              <label for="checkbox_1_2">h3</label>
-                            </div>
-                        <!-- <input name="type" slot="custom-value" placeholder="Enter slug" /> -->
+                            <input
+                                id="form-type-h3"
+                                name="type"
+                                value="h3"
+                                type="radio" />
+                            <label for="form-type-h3">h3</label>
+                        </div>
                     </ix-key-value>
                 </ix-key-value-list>
             </div>
@@ -87,7 +99,6 @@
                 Content
             </ix-typography>
 
-                <!-- style="background-color: var(--theme-color-neutral-40);" -->
             <div style="box-shadow: var(--theme-shadow-1);" class="mt-2 rounded-3">
                 <ix-tabs
                     style="background-color: var(--theme-color-component-1); "
@@ -138,13 +149,12 @@
                         orientation="vertical"
                         label="Content">
                         <textarea
-                            name="content[vl]"
+                            name="content[ca]"
                             placeholder="Enter text"
                             slot="custom-value"></textarea>
                     </ix-key-value>
                 </div>
             </div>
-
 
             <ix-button
                 style="box-shadow: var(--theme-shadow-1);"
@@ -152,12 +162,12 @@
                 type="submit">
                 Submit
             </ix-button>
-
         </form>
 
     </div>
 </section>
 
+{# TODO: use surreal #}
 <script>
 (async function () {
     await window.customElements.whenDefined('ix-tabs');

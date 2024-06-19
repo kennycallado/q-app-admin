@@ -7,7 +7,6 @@
     header-title="Paragraphs">
 
     <ix-button
-        style="box-shadow: var(--theme-shadow-3);"
         hx-push-url="true"
         hx-get="{{ url_for('paragraphs') }}/create"
         hx-target="#content"
@@ -17,7 +16,6 @@
 </ix-content-header>
 
 <section
-    style="background-color: var(--theme-color-lightbox);"
     class="card"
     id="elements-paragraphs-index">
 
@@ -32,12 +30,12 @@
             header-title="{{ paragraph.ref }}"
             header-subtitle="{{ paragraph.content[0].text }}"
             variant="secondary">
-
             <ix-icon-button
                 hx-get="{{ url_for('paragraphs') }}/{{ paragraph.id }}"
                 hx-target="#content"
                 hx-swap="transition:true"
 
+                class="d-none d-md-inline-block"
                 icon="eye"
                 variant=""
                 ghost>
@@ -45,10 +43,11 @@
             </ix-icon-button>
 
             <ix-icon-button
-                hx-get="{{ url_for('paragraphs') }}/edit/{{ paragraph.id }}"
+                hx-get="{{ url_for('paragraphs') }}/{{ paragraph.id }}?edit=true"
                 hx-target="#content"
                 hx-swap="transition:true"
 
+                class="d-none d-md-inline-block"
                 icon="pen"
                 variant=""
                 ghost>
@@ -56,24 +55,61 @@
             </ix-icon-button>
 
             <ix-icon-button
+                hx-push-url="false"
+                hx-confirm="Are you sure? This action cannot be undone."
+                hx-post="{{ url_for('paragraphs') }}/delete/{{ paragraph.id }}"
+                hx-target="#content"
+                hx-swap="transition:true"
+
+                class="d-none d-md-inline-block"
                 icon="trashcan"
-                variant=""
                 ghost>
                 Delete
             </ix-icon-button>
 
             <ix-icon-button
+                id="elements-paragraphs-index-options-{{ loop.index }}"
+                class="d-inline-block d-md-none"
                 icon="context-menu"
-                variant=""
                 ghost>
-                Button3
+                Options
             </ix-icon-button>
+
+            <ix-dropdown trigger="elements-paragraphs-index-options-{{ loop.index }}">
+                <ix-dropdown-item
+                    hx-get="{{ url_for('paragraphs') }}/{{ paragraph.id }}"
+                    hx-target="#content"
+                    hx-swap="transition:true"
+
+                    icon="eye"
+                    label="Show">
+                </ix-dropdown-item>
+
+                <ix-dropdown-item
+                    hx-get="{{ url_for('paragraphs') }}/{{ paragraph.id }}?edit=true"
+                    hx-target="#content"
+                    hx-swap="transition:true"
+
+                    icon="pen"
+                    label="Edit">
+                </ix-dropdown-item>
+
+                <ix-dropdown-item
+                    hx-push-url="false"
+                    hx-confirm="Are you sure? This action cannot be undone."
+                    hx-post="{{ url_for('paragraphs') }}/delete/{{ paragraph.id }}"
+                    hx-target="#content"
+                    hx-swap="transition:true"
+
+                    icon="trashcan"
+                    label="Delete">
+                </ix-dropdown-item>
+            </ix-dropdown>
 
             <script>
                 me().run(el => {
                     const paragraphs = {{ paragraph.content|json_encode|raw }};
                     const lang = navigator.language.split('-')[0];
-
 
                     for (let paragraph of paragraphs) {
                         if (paragraph.locale === lang) {

@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+/**
+ * Class Paragraph
+ * @package App\Models
+ */
 class Paragraph
 {
     public ?string $id;
@@ -10,7 +14,15 @@ class Paragraph
     /** @var Content[] */
     public array $content;
 
-    public function __construct(?string $id, string $ref, string $type, array $content)
+    /**
+     * Paragraph constructor.
+     *
+     * @param string $ref The reference for the paragraph.
+     * @param string $type The type of the paragraph.
+     * @param array $content The content of the paragraph.
+     * @param string|null $id The unique identifier for the paragraph. Default is null.
+     */
+    public function __construct(string $ref, string $type, array $content, ?string $id = null)
     {
         if ($id !== null) {
             $this->id = $id;
@@ -21,6 +33,13 @@ class Paragraph
         $this->content = $this->arrayToContent($content);
     }
 
+    /**
+     * Convert the array to content.
+     *
+     * @param array $content The content of the paragraph.
+     *
+     * @return Content[] The content of the paragraph.
+     */
     private function arrayToContent(array $content): array
     {
         $result = [];
@@ -39,6 +58,10 @@ class Paragraph
     }
 }
 
+/**
+ * Class Content
+ * @package App\Models
+ */
 class Content
 {
     public string $locale;
