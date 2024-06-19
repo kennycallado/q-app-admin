@@ -1,0 +1,107 @@
+{% extends 'shared/layouts/main.html' %}
+
+{% block content %}
+<ix-content-header
+    slot="header"
+    has-back-button="true"
+    header-title="Create media">
+
+    <script>
+        me().on('backButtonClick', _ => {
+            let url = "{{ url_for('media') }}";
+
+            htmx
+                .ajax('GET', url, {target: '#content', swap: 'transition:true'})
+                .then(_ => history.pushState({}, '', url))
+        })
+    </script>
+</ix-content-header>
+
+<section
+    style="background-color: var(--theme-color-lightbox);"
+    class="card"
+    id="elements-media-create">
+
+    <div class="card-body">
+        <form
+            hx-push-url="true"
+            hx-trigger="submit"
+            hx-post="{{ url_for('media') }}"
+            hx-target="#content"
+            hx-swap="transition:true"
+
+            method="POST"
+            action="{{ url_for('media') }}">
+
+            <ix-typography
+                style="border-color: var(--theme-color-primary)! important;"
+                class="text-center border-bottom"
+                format="display">
+                Meta
+            </ix-typography>
+
+            <div class="my-2">
+                <ix-key-value-list>
+                    <ix-key-value
+                        class=""
+                        orientation="vertical"
+                        label-position="left"
+                        label="reference">
+                        <input name="ref" slot="custom-value" placeholder="Enter slug" />
+                    </ix-key-value>
+
+                    <ix-key-value
+                        class=""
+                        orientation="vertical"
+                        label-position="left"
+                        label="type">
+                        <div slot="custom-value" class="d-flex">
+                            <input checked id="form-type-image" name="type" value="image" type="radio" />
+                            <label for="form-type-image">Image</label>
+
+                            <input id="form-type-video" name="type" value="video" type="radio" />
+                            <label for="form-type-video">Video</label>
+                        </div>
+                    </ix-key-value>
+
+                </ix-key-value-list>
+            </div>
+
+            <ix-typography
+                style="border-color: var(--theme-color-primary)! important;"
+                class="text-center border-bottom"
+                format="display">
+                Content
+            </ix-typography>
+
+            <div class="my-2">
+                <ix-key-value-list>
+                    <ix-key-value
+                        class=""
+                        orientation="vertical"
+                        label-position="left"
+                        label="alt text">
+                        <input name="alt" slot="custom-value" placeholder="Enter an alternative text" />
+                    </ix-key-value>
+
+                    <ix-key-value
+                        class=""
+                        orientation="vertical"
+                        label-position="left"
+                        label="url">
+                        <input name="url" slot="custom-value" placeholder="Enter the media url" />
+                    </ix-key-value>
+                </ix-key-value-list>
+            </div>
+
+            <ix-button
+                style="box-shadow: var(--theme-shadow-1);"
+                class="mt-2 float-end"
+                type="submit">
+                Submit
+            </ix-button>
+        </form>
+
+    </div>
+</section>
+{% endblock %}

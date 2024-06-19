@@ -2,9 +2,9 @@
 
 namespace App\Controllers\Elements;
 
+use App\Controllers\Elements\MediaController;
 use App\Controllers\Elements\ParagraphsController;
 use App\Controllers\Elements\QuestionsController;
-use App\Controllers\Elements\MediaController;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 class ElementsRouter
