@@ -30,6 +30,17 @@ body {
   height: 100svh;
 }
 
+ix-content section {
+    /* background-color: var(--theme-color-1)!important; */
+    background-color: var(--theme-color-lightbox)!important;
+    box-shadow: var(--theme-shadow-4);
+    margin: 0.5rem;
+}
+
+ix-content-header ix-button {
+    box-shadow: var(--theme-shadow-1);
+}
+
 @keyframes fadeInOut {
     0% {
         opacity: 0;
