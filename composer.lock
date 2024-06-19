@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3046f080304de8594381b51f77cd1a2b",
+    "content-hash": "5245c6dcaace029ef5c45af55f89fc07",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -1321,16 +1321,16 @@
         },
         {
             "name": "lkrms/pretty-php",
-            "version": "v0.4.62",
+            "version": "v0.4.65",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lkrms/pretty-php.git",
-                "reference": "b3ec76be2f68dff22caf224e9705cb3c5118525d"
+                "reference": "e4ff3d3f899485cefe50a46b304e9ee5a2c58a23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lkrms/pretty-php/zipball/b3ec76be2f68dff22caf224e9705cb3c5118525d",
-                "reference": "b3ec76be2f68dff22caf224e9705cb3c5118525d",
+                "url": "https://api.github.com/repos/lkrms/pretty-php/zipball/e4ff3d3f899485cefe50a46b304e9ee5a2c58a23",
+                "reference": "e4ff3d3f899485cefe50a46b304e9ee5a2c58a23",
                 "shasum": ""
             },
             "require": {
@@ -1339,10 +1339,12 @@
                 "ext-mbstring": "*",
                 "ext-tokenizer": "*",
                 "php": ">=7.4",
-                "salient/toolkit": "^0.99.16",
+                "salient/toolkit": "^0.99.27",
                 "sebastian/diff": "^4 || ^5"
             },
             "require-dev": {
+                "ergebnis/composer-normalize": "^2",
+                "nikic/php-parser": "^5",
                 "phpstan/extension-installer": "^1",
                 "phpstan/phpstan": "^1",
                 "phpstan/phpstan-deprecation-rules": "^1",
@@ -1375,7 +1377,7 @@
                 "issues": "https://github.com/lkrms/pretty-php/issues",
                 "source": "https://github.com/lkrms/pretty-php"
             },
-            "time": "2024-04-30T14:50:26+00:00"
+            "time": "2024-06-13T08:31:31+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2190,16 +2192,16 @@
         },
         {
             "name": "salient/toolkit",
-            "version": "v0.99.27",
+            "version": "v0.99.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/salient-labs/toolkit.git",
-                "reference": "2c062ec349da04c69e2d73ee7038ddca76892120"
+                "reference": "9859f04916d3afbc6606085c9944015d386a87c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/salient-labs/toolkit/zipball/2c062ec349da04c69e2d73ee7038ddca76892120",
-                "reference": "2c062ec349da04c69e2d73ee7038ddca76892120",
+                "url": "https://api.github.com/repos/salient-labs/toolkit/zipball/9859f04916d3afbc6606085c9944015d386a87c0",
+                "reference": "9859f04916d3afbc6606085c9944015d386a87c0",
                 "shasum": ""
             },
             "require": {
@@ -2289,7 +2291,7 @@
                 "issues": "https://github.com/salient-labs/toolkit/issues",
                 "source": "https://github.com/salient-labs/toolkit"
             },
-            "time": "2024-06-13T04:17:41+00:00"
+            "time": "2024-06-18T03:24:37+00:00"
         },
         {
             "name": "sebastian/cli-parser",
