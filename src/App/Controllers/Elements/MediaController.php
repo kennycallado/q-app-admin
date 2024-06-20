@@ -75,6 +75,8 @@ class MediaController
         $media = new Media(...$body);
         $mediaRepository->create($media);
 
+        // TODO: render show to avoid querying the database again
+
         $routeParser = $app->getRouteCollector()->getRouteParser();
         $media_url = $routeParser->urlFor('media');
 
