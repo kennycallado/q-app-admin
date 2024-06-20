@@ -19,7 +19,7 @@
 
 <section
     class="card"
-    id="elements-media-show">
+    id="elements-media-details">
 
     <div class="card-body">
         <form
@@ -59,10 +59,10 @@
                         label-position="left"
                         label="reference">
                         <input
+                            slot="custom-value"
                             {% if not edit %} readonly {% endif %}
                             name="ref"
                             value="{{ media.ref }}"
-                            slot="custom-value"
                             placeholder="Enter slug" />
                     </ix-key-value>
 
@@ -139,7 +139,6 @@
                         hx-get="{{ url_for('media') }}/{{ media.id }}?edit=true"
                     {% endif %}
                     hx-target="#content"
-
                     outline>
                     {{ edit ? 'Cancel' : 'Edit' }}
                 </ix-button>

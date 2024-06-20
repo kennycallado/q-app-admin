@@ -32,10 +32,8 @@ class MediaController
         $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
         $mediaRepository = new MediaRepository($i_db);
 
-        $media = $mediaRepository->all();
-
         $prepare = [
-            'media' => $media
+            'media' => $mediaRepository->all()
         ];
 
         return $view->render($response, 'pages/elements/media/index.html', $prepare);

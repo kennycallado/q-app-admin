@@ -16,7 +16,7 @@ class Media
 
     /**
      * Media constructor.
-     * 
+     *
      * @param string $ref The reference for the media.
      * @param string $url The URL of the media.
      * @param string $type The type of the media.
