@@ -14,7 +14,7 @@ div[data-tab-content].show {
 <ix-content-header
     slot="header"
     has-back-button="true"
-    header-title="Create question">
+    header-title="{{ edit ? 'Edit' : 'Show' }}: {{ question.ref }}">
 
     <script>
         me().on('backButtonClick', _ => {
@@ -29,18 +29,23 @@ div[data-tab-content].show {
 
 <section
     class="card"
-    id="elements-questions-create">
+    id="elements-questions-details">
 
     <div class="card-body">
         <form
             hx-push-url="true"
             hx-trigger="submit"
-            hx-post="{{ url_for('questions') }}"
+            hx-post="{{ url_for('questions') }}/{{ question.id }}"
             hx-target="#content"
             hx-swap="transition:true"
 
+            {% if edit %}
+            action="{{ url_for('questions') }}/{{ question.id }}"
             method="POST"
-            action="{{ url_for('questions') }}">
+            {% endif %}
+        >
+            <input type="hidden" name="_METHOD" value="PATCH" />
+            <input type="hidden" name="id" value="{{ question.id }}" />
 
             <fieldset class="py-2">
                 <legend
@@ -63,6 +68,7 @@ div[data-tab-content].show {
                         label="reference">
                         <input
                             slot="custom-value"
+                            {% if not edit %} readonly {% endif %}
                             name="ref"
                             value="{{ question.ref }}"
                             placeholder="Enter slug" />
@@ -76,7 +82,7 @@ div[data-tab-content].show {
                             slot="custom-value"
                             readonly
                             name="type"
-                            value="{{ type }}"
+                            value="{{ question.type }}"
                             placeholder="Select a type" />
                     </ix-key-value>
 
@@ -91,20 +97,32 @@ div[data-tab-content].show {
                     Content
                 </legend>
 
-                {% set edit = true %}
-                {% if type == 'text' %}
+                {# content #}
+                {% if question.type == 'text' %}
                     {% include 'pages/elements/questions/partials/text.html' %}
-                {% elseif type == 'range' %}
+                {% elseif question.type == 'range' %}
                     {% include 'pages/elements/questions/partials/range.html' %}
                 {% else %}
                     <strong>Warning!</strong> This type of question is not supported yet.
                 {% endif %}
-                {% set edit = null %}
             </fieldset>
 
             <fieldset class="mt-3 d-flex justify-content-end">
-                {# TODO: disabled until form is completed #}
                 <ix-button
+                    hx-push-url="true"
+                    hx-trigger="click"
+                    {% if edit %}
+                    hx-get="{{ url_for('questions') }}/{{ question.id }}"
+                    {% else %}
+                    hx-get="{{ url_for('questions') }}/{{ question.id }}?edit=true"
+                    {% endif %}
+                    hx-target="#content"
+                    outline>
+                    {{ edit ? 'Cancel' : 'Edit' }}
+                </ix-button>
+
+                <ix-button
+                    {% if not edit %} disabled {% endif %}
                     class="ms-2"
                     type="submit">
                     Submit
@@ -112,6 +130,7 @@ div[data-tab-content].show {
             </fieldset>
         </form>
     </div>
+
 </section>
 
 <script>
