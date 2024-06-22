@@ -14,7 +14,6 @@ class Question
     public QuestionContent $content;
 
     /**
-     * Question constructor.
      * @param string $ref
      * @param string $type
      * @param QuestionContent $content
@@ -34,7 +33,7 @@ class Question
     /**
      * @param array $content
      * @throws Exception
-     * @return array
+     * @return QuestionContent
      */
     private function arrayToContent(string $type, array $content): QuestionContent
     {
@@ -65,7 +64,6 @@ class QuestionContent
     public array $questions;
 
     /**
-     * QuestionContent constructor.
      * @param QuestionRange|QuestionText $params
      * @param array $questions
      * @throws Exception

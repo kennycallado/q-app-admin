@@ -15,7 +15,6 @@ class QuestionsRepository
     public static array $queries = [];
 
     /**
-     * QuestionsRepository constructor.
      * @param SurrealDB $db
      */
     public function __construct(SurrealDB $db)
@@ -24,8 +23,8 @@ class QuestionsRepository
     }
 
     /**
-     * @return Question[]
      * @throws \Exception
+     * @return Question[]
      */
     public function all(): array
     {
@@ -40,8 +39,8 @@ class QuestionsRepository
 
     /**
      * @param string $id
-     * @return Question
      * @throws \Exception
+     * @return Question
      */
     public function find(string $id): object
     {
@@ -56,8 +55,8 @@ class QuestionsRepository
 
     /**
      * @param Question $content
-     * @return Question
      * @throws \Exception
+     * @return Question
      */
     public function create(Question $content): object
     {
@@ -72,8 +71,8 @@ class QuestionsRepository
 
     /**
      * @param Question $content
-     * @return Question
      * @throws \Exception
+     * @return Question
      */
     public function update(Question $content): object
     {
@@ -88,8 +87,8 @@ class QuestionsRepository
 
     /**
      * @param string $id
-     * @return bool
      * @throws \Exception
+     * @return bool
      */
     public function delete(string $id): bool
     {

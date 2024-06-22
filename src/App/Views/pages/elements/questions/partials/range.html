@@ -53,7 +53,10 @@
         class="p-2 rounded-bottom {{ number == 0 ? 'show' : '' }}"
         data-tab-content="{{ locale }}">
 
-        <input type="hidden" name="content[questions][{{ number }}][locale]" value="{{ locale }}" />
+        <input
+            type="hidden"
+            name="content[questions][{{ number }}][locale]"
+            value="{{ locale }}" />
 
         <ix-key-value
             class="border-0"

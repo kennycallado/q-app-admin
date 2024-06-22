@@ -13,8 +13,6 @@ use Slim\Views\Twig;
 class QuestionsController
 {
     /**
-     * Register QuestionsController routes
-     *
      * @param Group $group
      */
     public static function routes(Group $group): void
@@ -31,8 +29,6 @@ class QuestionsController
     }
 
     /**
-     * Display a listing of the resource.
-     *
      * @param Request $request
      * @param Response $response
      * @return Response
@@ -54,8 +50,6 @@ class QuestionsController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param Request $request
      * @param Response $response
      * @param array $args
@@ -78,6 +72,11 @@ class QuestionsController
         return $view->render($response, 'pages/elements/questions/details.html', $prepare);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
     public function store(Request $request, Response $response): Response
     {
         global $app;
@@ -100,8 +99,6 @@ class QuestionsController
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param Request $request
      * @param Response $response
      * @throws Exception
@@ -161,8 +158,6 @@ class QuestionsController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param Request $request
      * @param Response $response
      * @param array $args
