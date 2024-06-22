@@ -1,5 +1,6 @@
 <?php
 namespace Core\Utils;
+
 // https://www.eddymens.com/blog/using-surreal-db-with-laravelphp
 
 /**
@@ -431,6 +432,6 @@ class SurrealDB
 
         $this->query = '';
 
-        return JSON_decode($response);
+        return json_decode($response);
     }
 }

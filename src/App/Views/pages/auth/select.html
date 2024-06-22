@@ -70,29 +70,6 @@
                         {% endfor %}
                     </select>
                 </label>
-
-
-                {# alternative to select
-
-                <input type="hidden" name="project" value="">
-                <ix-select class="w-100">
-                    {% for center in centers %}
-                    <optgroup label="{{ center.name }}"></optgroup>
-                    {% for project in center.projects %}
-                    <ix-select-item
-                        value="{{ project.id }}"
-                        label="{{ project.name }}"
-                        {% if current.project == project.name %} selected {% endif %} ></ix-select-item>
-                    {% endfor %}
-                    {% endfor %}
-                </ix-select>
-
-                <script>
-                me('#project-select').on('valueChange', evt => {
-                    me('input[name="project"]').value = evt.detail
-                </script>
-                #}
-
             </div>
 
             <div class="text-end">
