@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\User;
 use Core\Middleware\AuthMiddleware;
 use Core\Utils\Auth;
 use Core\Utils\SurrealDB;
@@ -9,10 +10,12 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\Views\Twig;
-use Exception;
 
 class AuthController
 {
+    /**
+     * @param Group $group
+     */
     public static function routes(Group $group): void
     {
         $group->get('/login', [self::class, 'get_index'])->setName('login');
@@ -24,14 +27,14 @@ class AuthController
         $group->get('/logout', [self::class, 'logout'])->setName('logout')->add(AuthMiddleware::class);
     }
 
-    public function get_index(Request $request, Response $response, $args)
+    public function get_index(Request $request, Response $response): Response
     {
         $view = Twig::fromRequest($request);
 
         return $view->render($response, 'pages/auth/index.html');
     }
 
-    public function post_index(Request $request, Response $response, $args)
+    public function post_index(Request $request, Response $response): Response
     {
         global $app;
 
@@ -43,11 +46,12 @@ class AuthController
 
         if (empty($body->username) || empty($body->password)) {
             return $view->render($response->withStatus(400), 'pages/auth/index.html', ['error' => 'Username and password are required']);
-        }
+        } else
+            $new_user = User::new_user($body->username, $body->password);
 
         try {
-            $auth = $auth->signin($body->username, $body->password);
-        } catch (Exception $e) {
+            $auth = $auth->signin($new_user);
+        } catch (\Exception $e) {
             // probably username or password is wrong
             // return response with status 401
             return $view->render($response->withStatus(401), 'pages/auth/index.html', ['error' => $e->getMessage()]);
@@ -58,17 +62,17 @@ class AuthController
 
             $sql = 'SELECT *, (SELECT id, name FROM projects WHERE center = $parent.id) AS projects FROM centers;';
 
-            $res_db = $surreal->rawQuery($sql);
-            if (isset($res_db->code)) {  // error in query
+            $db_res = $surreal->rawQuery($sql);
+            if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
                 // it's an internal error
-                return $view->render($response->withStatus(500), 'pages/auth/select.html', ['error' => $res_db->details]);
+                return $view->render($response->withStatus(500), 'pages/auth/select.html', ['error' => $db_res->details]);
                 // return $view->render($response->withStatus($res_db->code), 'pages/auth/select.html', ['error' => $res_db->information]);
             }
 
-            $centers = $res_db[0]->result;
+            $centers = $db_res[0]->result;
 
             $prepare = [
-                'centers' => $centers
+                'centers' => $centers,
             ];
 
             $_SESSION['pre_auth'] = $auth;
@@ -76,8 +80,7 @@ class AuthController
             return $view->render($response, 'pages/auth/select.html', $prepare);  // TODO: ?? should redirect
         }
 
-        $this->set_cookies($auth, $body->username);
-
+        $auth->set_cookies();
         $_SESSION['auth'] = $auth;
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
@@ -88,7 +91,7 @@ class AuthController
         return $response->withHeader('Location', $home_url)->withStatus(302);
     }
 
-    public function patch_select(Request $request, Response $response, $args)
+    public function patch_select(Request $request, Response $response): Response
     {
         global $app;
 
@@ -100,28 +103,27 @@ class AuthController
         $view = Twig::fromRequest($request);
         $body = (object) $request->getParsedBody();
 
-        $sql = "UPDATE $pre_auth->user_id SET project = $body->project;";
-        $res_db = $surreal->rawQuery($sql);
-
-        // error query
-        if (isset($res_db->code)) {
-            // update failed
-            return $view->render($response->withStatus(500), 'pages/auth/select.html', ['centers' => $centers, 'error' => $res_db->details]);
+        if (empty($body->project)) {
+            return $view->render($response->withStatus(400), 'pages/auth/select.html', ['centers' => $centers, 'error' => 'Project is required']);
         }
 
-        // probably no authorization
-        if (isset($res_db[0]->status) && $res_db[0]->status === 'ERR') {
+        // $sql = "UPDATE $pre_auth->user_id SET project = $body->project;";
+        $sql = "UPDATE $pre_auth->user_id MERGE { project: $body->project };";
+        $db_res = $surreal->rawQuery($sql);
+        if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
+            // update failed
+            // return $view->render($response->withStatus(500), 'pages/auth/select.html', ['centers' => $centers, 'error' => $db_res->details]);
             return $view->render($response->withStatus(401), 'pages/auth/select.html', ['centers' => $centers, 'error' => 'You are not authorized to access this project']);
         }
 
-        $pre_auth;
+        // $pre_auth; // ??
         try {
             $auth = $pre_auth->refresh();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $view->render($response->withStatus(500), 'pages/auth/select.html', ['centers' => $centers, 'error' => $e->getMessage()]);
         }
 
-        $this->set_cookies($auth, $res_db[0]->result[0]->username);
+        $auth->set_cookies();
 
         $_SESSION['pre_auth'] = null;
         $_SESSION['centers'] = null;
@@ -134,7 +136,7 @@ class AuthController
         return $response->withHeader('Location', $home_url)->withStatus(302);
     }
 
-    public function post_signup(Request $request, Response $response, $args)
+    public function post_signup(Request $request, Response $response): Response
     {
         global $app;
 
@@ -150,11 +152,12 @@ class AuthController
 
         if ($body->password !== $body->conPassword) {
             return $view->render($response->withStatus(400), 'pages/auth/index.html', ['error' => 'Password confirm does not match']);
-        }
+        } else
+            $new_user = User::new_user($body->username, $body->password);
 
         try {
-            $auth = $auth->signup($body->username, $body->password);
-        } catch (Exception $e) {
+            $auth = $auth->signup($new_user);
+        } catch (\Exception $e) {
             // probably username or password is wrong
             // return response with status 401
             return $view->render($response->withStatus(401), 'pages/auth/index.html', ['error' => $e->getMessage()]);
@@ -166,17 +169,12 @@ class AuthController
         return $response->withHeader('Location', $login_url)->withStatus(302);
     }
 
-    public function logout(Request $request, Response $response, $args)
+    public function logout(Request $request, Response $response): Response
     {
         global $app;
 
-        setcookie('user_id', '', time() - 3600, '/');
-        setcookie('project', '', time() - 3600, '/');
-        setcookie('g_auth', '', time() - 3600, '/');
-        setcookie('p_auth', '', time() - 3600, '/');
-        setcookie('role', '', time() - 3600, '/');
-        setcookie('username', '', time() - 3600, '/');
-
+        /** @var Auth $auth */
+        $auth = $request->getAttribute('auth')->unset_cookies();
         $_SESSION['auth'] = null;
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
@@ -185,15 +183,5 @@ class AuthController
         $response = $app->getResponseFactory()->createResponse();
 
         return $response->withHeader('Location', $home_url)->withStatus(302);
-    }
-
-    private function set_cookies($auth, $username)
-    {
-        setcookie('user_id', $auth->user_id, time() + 3600, '/');
-        setcookie('project', json_encode($auth->project), time() + 3600, '/');
-        setcookie('g_auth', $auth->g_auth, time() + 3600, '/');
-        setcookie('p_auth', $auth->p_auth, time() + 3600, '/');
-        setcookie('role', $auth->role, time() + 3600, '/');
-        setcookie('username', $username, time() + 3600, '/');
     }
 }

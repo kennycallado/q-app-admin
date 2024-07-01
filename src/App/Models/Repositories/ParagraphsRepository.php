@@ -15,7 +15,6 @@ class ParagraphsRepository
     public static array $queries = [];
 
     /**
-     * ParagraphsRepository constructor.
      * @param SurrealDB $db
      */
     public function __construct(SurrealDB $db)
@@ -24,10 +23,10 @@ class ParagraphsRepository
     }
 
     /**
-     * @return Paragraph[]
      * @throws \Exception
+     * @return Paragraph[]
      */
-    public function all()
+    public function all(): array
     {
         $db_res = $this->db->select('*')->tables('paragraphs')->exec();
 
@@ -40,10 +39,10 @@ class ParagraphsRepository
 
     /**
      * @param string $id
-     * @return Paragraph
      * @throws \Exception
+     * @return Paragraph
      */
-    public function find(string $id)
+    public function find(string $id): object
     {
         $db_res = $this->db->select('*')->tables('paragraphs')->where("id = $id")->exec();
 
@@ -56,43 +55,43 @@ class ParagraphsRepository
 
     /**
      * @param Paragraph $content
-     * @return Paragraph
      * @throws \Exception
+     * @return Paragraph
      */
-    public function create(Paragraph $content)
+    public function create(Paragraph $content): object
     {
+        unset($content->id);
         $db_res = $this->db->create('paragraphs')->data($content)->exec();
 
         if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
             throw new \Exception('Error creating paragraph');
         }
 
-        $content->id = $db_res[0]->result[0]->id;
-        return $content;
+        return $db_res[0]->result[0];
     }
 
     /**
      * @param Paragraph $content
-     * @return Paragraph
      * @throws \Exception
+     * @return Paragraph
      */
-    public function update(Paragraph $content)
+    public function update(Paragraph $content): object
     {
-        $db_res = $this->db->update($content->id)->merge($content)->exec();
+        $db_res = $this->db->update($content->id)->data($content)->exec();
 
         if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
             throw new \Exception('Error updating paragraph');
         }
 
-        return $content;
+        return $db_res[0]->result[0];
     }
 
     /**
      * @param string $id
-     * @return bool
      * @throws \Exception
+     * @return bool
      */
-    public function delete(string $id)
+    public function delete(string $id): bool
     {
         $db_res = $this->db->delete('paragraphs')->where("id = $id")->exec();
 

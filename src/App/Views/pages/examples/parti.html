@@ -1,56 +1,47 @@
 {% extends 'shared/layouts/main.html' %}
 
-{% block content %}
-<style>
-.example {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 100%;
-}
+{% block main %}
+  <style>
+    .example {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: 100%;
+    }
 
-div[data-tab-content] {
-  display: none;
-}
+    div[data-tab-content] {
+      display: none;
+    }
 
-div[data-tab-content].show {
-  display: block;
-}
+    div[data-tab-content].show {
+      display: block;
+    }
 
-.active {
-  border-left: 2px solid var(--theme-color-primary);
-  border-right: 2px solid var(--theme-color-primary);
-  border-top: 2px solid var(--theme-color-primary);
-  border-top-left-radius: 9px;
-  border-top-right-radius: 9px;
-}
+    #examples-parti {
+      background-color: var(--theme-color-lightbox);
+    }
+  </style>
 
-#examples-parti {
-    background-color: var(--theme-color-lightbox);
-}
-</style>
+  <ix-content-header
+    slot="header"
+    has-back-button="true"
+    header-title="Parti details"
+  >
+    <script>me().on('backButtonClick', _ => back_arrow("/examples/parti"))</script>
+  </ix-content-header>
 
-<ix-content-header
-  slot="header"
-  has-back-button="true"
-  header-title="Parti details"></ix-content-header>
-
-<div
-    id="examples-parti"
-    class="rounded rounded-3"
->
-
+  <div id="examples-parti" class="rounded rounded-3">
     <ix-tabs
-        style="background-color: var(--theme-color-neutral-40);"
-        class="rounded-top rounded-top-3"
+      style="background-color: var(--theme-color-neutral-40);"
+      class="rounded-top rounded-top-3"
     >
-        <ix-tab-item data-tab-id="0" class="active">Info</ix-tab-item>
-        <ix-tab-item data-tab-id="1">Papers</ix-tab-item>
-        <ix-tab-item data-tab-id="2">Scores</ix-tab-item>
+      <ix-tab-item data-tab-id="0" class="tab-active">Info</ix-tab-item>
+      <ix-tab-item data-tab-id="1">Papers</ix-tab-item>
+      <ix-tab-item data-tab-id="2">Scores</ix-tab-item>
     </ix-tabs>
 
     <div
-        style="
+      style="
         padding: 10px;
         margin-top: -3px;
         border: var(--theme-neutral-bdr-2);
@@ -58,75 +49,89 @@ div[data-tab-content].show {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         "
-        data-tab-content="0"
-        class="show">
-
-        <div class="row">
-            <div class="col-md">
-                <ix-kpi label="Motor speed" value="Nominal"></ix-kpi>
-                <ix-kpi label="Motor speed" value="122.6" unit="rpm"></ix-kpi>
-                <ix-kpi label="Motor speed" value="122.6" state="alarm"></ix-kpi>
-                <ix-kpi label="Motor speed" value="122.6" state="warning"></ix-kpi>
-                <ix-kpi label="Motor foo" value="122.6" unit="km"></ix-kpi>
-            </div>
-
-            <hr class="d-md-none mt-3 border border-primary" />
-
-            <div class="col-md">
-                <form
-                    id="parti-update-state"
-                    class="needs-validation m-2" >
-
-                    <ix-input-group style="margin-bottom: 1rem">
-                        <ix-typography format="label-lg">
-                            <label for="parti-username">Username:</label>
-                        </ix-typography>
-
-                        <input id="parti-username" name="username" type="text" value="thera" readonly>
-                    </ix-input-group>
-
-                    <ix-input-group style="margin-bottom: 1rem">
-                        <ix-typography format="label-lg">
-                            <label for="parti-project">Project:</label>
-                        </ix-typography>
-
-                        <input id="parti-project" name="project" type="text" value="projects:g1" readonly>
-                    </ix-input-group>
-
-                    <div style="display: flex; flex-direction: column;">
-                        <ix-typography format="label-lg">
-                            <label for="parti-status">Status:</label>
-                        </ix-typography>
-
-                        <ix-select
-                            id="parti-status"
-                            name="status"
-                            style="margin-bottom: 1rem;"
-                            value="active">
-
-                            <ix-select-item label="Standby" value="standby"></ix-select-item>
-                            <ix-select-item label="Active" value="active"></ix-select-item>
-                            <ix-select-item label="Exited" value="exited"></ix-select-item>
-                            <ix-select-item label="Completed" value="completed"></ix-select-item>
-                        </ix-select>
-
-                        <ix-button style="align-self: flex-end;" variant="primary">Submit</ix-button>
-                        <!-- <ix-button style="align-self: flex-end;" type="submit" variant="primary" disabled="true">Submit</ix-button> -->
-                    </div>
-                </form>
-            </div>
+      data-tab-content="0"
+      class="show"
+    >
+      <div class="row">
+        <div class="col-md">
+          <ix-kpi label="Motor speed" value="Nominal"></ix-kpi>
+          <ix-kpi label="Motor speed" value="122.6" unit="rpm"></ix-kpi>
+          <ix-kpi label="Motor speed" value="122.6" state="alarm"></ix-kpi>
+          <ix-kpi label="Motor speed" value="122.6" state="warning"></ix-kpi>
+          <ix-kpi label="Motor foo" value="122.6" unit="km"></ix-kpi>
         </div>
 
+        <hr class="d-md-none mt-3 border border-primary" />
 
+        <div class="col-md">
+          <form id="parti-update-state" class="needs-validation m-2">
+            <ix-input-group style="margin-bottom: 1rem">
+              <ix-typography format="label-lg">
+                <label for="parti-username">Username:</label>
+              </ix-typography>
+
+              <input
+                id="parti-username"
+                name="username"
+                type="text"
+                value="thera"
+                readonly
+              />
+            </ix-input-group>
+
+            <ix-input-group style="margin-bottom: 1rem">
+              <ix-typography format="label-lg">
+                <label for="parti-project">Project:</label>
+              </ix-typography>
+
+              <input
+                id="parti-project"
+                name="project"
+                type="text"
+                value="projects:g1"
+                readonly
+              />
+            </ix-input-group>
+
+            <div style="display: flex; flex-direction: column;">
+              <ix-typography format="label-lg">
+                <label for="parti-status">Status:</label>
+              </ix-typography>
+
+              <ix-select
+                id="parti-status"
+                name="status"
+                style="margin-bottom: 1rem;"
+                value="active"
+              >
+                <ix-select-item
+                  label="Standby"
+                  value="standby"
+                ></ix-select-item>
+                <ix-select-item label="Active" value="active"></ix-select-item>
+                <ix-select-item label="Exited" value="exited"></ix-select-item>
+                <ix-select-item
+                  label="Completed"
+                  value="completed"
+                ></ix-select-item>
+              </ix-select>
+
+              <ix-button style="align-self: flex-end;" variant="primary"
+                >Submit</ix-button
+              >
+              <!-- <ix-button style="align-self: flex-end;" type="submit" variant="primary" disabled="true">Submit</ix-button> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div data-tab-content="1">
+      {% include 'pages/examples/partials/parti-papers.html' %}
     </div>
 
     <div
-        data-tab-content="1">
-        {% include 'pages/examples/partials/parti-papers.html' %}
-    </div>
-
-    <div
-        style="
+      style="
         padding: 10px;
         margin-top: -3px;
         border: var(--theme-neutral-bdr-2);
@@ -134,38 +139,40 @@ div[data-tab-content].show {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         "
-        data-tab-content="2">
-        Content Tab 3
+      data-tab-content="2"
+    >
+      Content Tab 3
     </div>
-</div>
+  </div>
 
-<script>
-(async function () {
-    await window.customElements.whenDefined('ix-tabs');
-    const tabs = document.querySelectorAll('ix-tab-item[data-tab-id]');
+  <script>
+    (async function () {
+      await window.customElements.whenDefined("ix-tabs");
+      const tabs = document.querySelectorAll("ix-tab-item[data-tab-id]");
 
-    function registerClickListener(tab) {
-        tab.addEventListener('click', (tabContent) => {
-            const contentList = document.querySelectorAll('[data-tab-content]');
-            contentList.forEach((content) => {
-                if (content.dataset.tabContent === tab.dataset.tabId) {
-                    content.classList.add('show');
-                    tab.classList.add('active');
-                } else {
-                    content.classList.remove('show');
-                }
+      function registerClickListener(tab) {
+        tab.addEventListener("click", (tabContent) => {
+          const contentList = document.querySelectorAll("[data-tab-content]");
+          contentList.forEach((content) => {
+            if (content.dataset.tabContent === tab.dataset.tabId) {
+              content.classList.add("show");
+              tab.classList.add("tab-active");
+            } else {
+              content.classList.remove("show");
+            }
 
-                if (content.dataset.tabContent !== tab.dataset.tabId) {
-                    const tabId = content.dataset.tabContent;
-                    const tab = document.querySelector(`ix-tab-item[data-tab-id="${tabId}"]`);
-                    tab.classList.remove('active');
-                }
-
-            });
+            if (content.dataset.tabContent !== tab.dataset.tabId) {
+              const tabId = content.dataset.tabContent;
+              const tab = document.querySelector(
+                `ix-tab-item[data-tab-id="${tabId}"]`,
+              );
+              tab.classList.remove("tab-active");
+            }
+          });
         });
-    }
+      }
 
-    tabs.forEach(registerClickListener);
-})();
-</script>
+      tabs.forEach(registerClickListener);
+    })();
+  </script>
 {% endblock %}

@@ -50,6 +50,7 @@ class QuestionsRepository
             throw new \Exception('Error fetching question');
         }
 
+        /** @var User $user */
         return $db_res[0]->result[0];
     }
 
@@ -60,6 +61,7 @@ class QuestionsRepository
      */
     public function create(Question $content): object
     {
+        unset($content->id);
         $db_res = $this->db->create('questions')->data($content)->exec();
 
         if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
@@ -76,7 +78,24 @@ class QuestionsRepository
      */
     public function update(Question $content): object
     {
-        $db_res = $this->db->update($content->id)->merge($content)->exec();
+        $db_res = $this->db->update($content->id)->data($content)->exec();
+
+        if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
+            throw new \Exception('Error updating question');
+        }
+
+        return $db_res[0]->result[0];
+    }
+
+    /**
+     * @param string $id
+     * @param object $content
+     * @throws \Exception
+     * @return Question
+     */
+    public function patch(string $id, object $content): object
+    {
+        $db_res = $this->db->update($id)->merge($content)->exec();
 
         if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
             throw new \Exception('Error updating question');

@@ -17,7 +17,6 @@ class QuestionsController
      */
     public static function routes(Group $group): void
     {
-        // actions
         $group->get('', [self::class, 'index'])->setName('questions');
         $group->post('', [self::class, 'store']);
 
@@ -47,6 +46,25 @@ class QuestionsController
         ];
 
         return $view->render($response, 'pages/elements/questions/index.html', $prepare);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function create(Request $request, Response $response): Response
+    {
+        $view = Twig::fromRequest($request);
+
+        $prepare = [
+            'title' => 'Question',
+            'type' => $request->getQueryParams()['type'] ?? null,
+            'create' => true,
+            'edit' => true
+        ];
+
+        return $view->render($response, 'pages/elements/questions/details.html', $prepare);
     }
 
     /**
@@ -101,39 +119,10 @@ class QuestionsController
     /**
      * @param Request $request
      * @param Response $response
-     * @throws Exception
-     * @return Response
-     */
-    public function create(Request $request, Response $response): Response
-    {
-        $view = Twig::fromRequest($request);
-        $type = $request->getQueryParams()['type'] ?? null;
-
-        $prepare = [
-            'title' => 'Create Question',
-            'type' => $type
-        ];
-
-        switch ($type) {
-            case 'text':
-                return $view->render($response, 'pages/elements/questions/create.html', $prepare);
-                break;
-            case 'range':
-                return $view->render($response, 'pages/elements/questions/create.html', $prepare);
-                break;
-            default:
-                throw new \Exception('Unknown question type');
-                break;
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
      * @param array $args
      * @return Response
      */
-    public function update(Request $request, Response $response, $args): Response
+    public function update(Request $request, Response $response): Response
     {
         global $app;
 
@@ -147,12 +136,12 @@ class QuestionsController
         $question = new Question(...$question);
 
         $questionsRepository = new QuestionsRepository($i_db);
-        $questionsRepository->update($question);
+        $question = $questionsRepository->update($question);
 
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $questions_url = $routeParser->urlFor('questions') . '/' . $args['id'];
+        $questions_url = $routeParser->urlFor('questions') . '/' . $question->id;
 
         return $response->withHeader('Location', $questions_url);
     }

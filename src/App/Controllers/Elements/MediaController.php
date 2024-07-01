@@ -12,6 +12,9 @@ use Slim\Views\Twig;
 
 class MediaController
 {
+    /**
+     * @param Group $group
+     */
     public static function routes(Group $group): void
     {
         $group->get('', [self::class, 'index'])->setName('media');
@@ -24,7 +27,12 @@ class MediaController
         $group->patch('/{id}', [self::class, 'update']);
     }
 
-    public function index(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function index(Request $request, Response $response): Response
     {
         $view = Twig::fromRequest($request);
         $auth = $request->getAttribute('auth');
@@ -33,20 +41,38 @@ class MediaController
         $mediaRepository = new MediaRepository($i_db);
 
         $prepare = [
+            'title' => 'media',
             'media' => $mediaRepository->all()
         ];
 
         return $view->render($response, 'pages/elements/media/index.html', $prepare);
     }
 
-    public function create(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function create(Request $request, Response $response): Response
     {
         $view = Twig::fromRequest($request);
 
-        return $view->render($response, 'pages/elements/media/create.html');
+        $prepare = [
+            'title' => 'media',
+            'create' => true,
+            'edit' => true
+        ];
+
+        return $view->render($response, 'pages/elements/media/details.html', $prepare);
     }
 
-    public function show(Request $request, Response $response, $args)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function show(Request $request, Response $response, array $args): Response
     {
         $view = Twig::fromRequest($request);
         $auth = $request->getAttribute('auth');
@@ -55,6 +81,7 @@ class MediaController
         $mediaRepository = new MediaRepository($i_db);
 
         $prepare = [
+            'title' => 'media',
             'media' => $mediaRepository->find($args['id']),
             'edit' => $request->getQueryParams()['edit'] ?? null
         ];
@@ -62,7 +89,12 @@ class MediaController
         return $view->render($response, 'pages/elements/media/details.html', $prepare);
     }
 
-    public function store(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function store(Request $request, Response $response): Response
     {
         global $app;
 
@@ -73,17 +105,23 @@ class MediaController
         $mediaRepository = new MediaRepository($i_db);
 
         $media = new Media(...$body);
-        $mediaRepository->create($media);
+        $media = $mediaRepository->create($media);
 
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $media_url = $routeParser->urlFor('media');
+        $media_url = $routeParser->urlFor('media') . '/' . $media->id;
 
         return $response->withHeader('Location', $media_url);
     }
 
-    public function update(Request $request, Response $response, $args)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function update(Request $request, Response $response): Response
     {
         global $app;
 
@@ -91,20 +129,28 @@ class MediaController
         $body = $request->getParsedBody();
 
         $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
-        $mediaRepository = new MediaRepository($i_db);
 
-        $media = new Media(...array_slice($body, 1));
-        $mediaRepository->update($media);
+        $media = array_slice($body, 1);
+        $media = new Media(...$media);
+
+        $mediaRepository = new MediaRepository($i_db);
+        $media = $mediaRepository->update($media);
 
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $media_url = $routeParser->urlFor('media') . '/' . $args['id'];
+        $media_url = $routeParser->urlFor('media') . '/' . $media->id;
 
         return $response->withHeader('Location', $media_url);
     }
 
-    public function delete(Request $request, Response $response, $args)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function delete(Request $request, Response $response, array $args): Response
     {
         global $app;
 

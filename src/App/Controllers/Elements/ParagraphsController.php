@@ -12,6 +12,9 @@ use Slim\Views\Twig;
 
 class ParagraphsController
 {
+    /**
+     * @param Group $group
+     */
     public static function routes(Group $group): void
     {
         $group->get('', [self::class, 'index'])->setName('paragraphs');
@@ -24,7 +27,12 @@ class ParagraphsController
         $group->patch('/{id}', [self::class, 'update']);
     }
 
-    public function index(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function index(Request $request, Response $response): Response
     {
         $view = Twig::fromRequest($request);
         $auth = $request->getAttribute('auth');
@@ -33,20 +41,38 @@ class ParagraphsController
         $paragraphsRepository = new ParagraphsRepository($i_db);
 
         $prepare = [
+            'title' => 'paragraphs',
             'paragraphs' => $paragraphsRepository->all()
         ];
 
         return $view->render($response, 'pages/elements/paragraphs/index.html', $prepare);
     }
 
-    public function create(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function create(Request $request, Response $response): Response
     {
         $view = Twig::fromRequest($request);
 
-        return $view->render($response, 'pages/elements/paragraphs/create.html');
+        $prepare = [
+            'title' => 'paragraph',
+            'create' => true,
+            'edit' => true
+        ];
+
+        return $view->render($response, 'pages/elements/paragraphs/details.html', $prepare);
     }
 
-    public function show(Request $request, Response $response, $args)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function show(Request $request, Response $response, array $args): Response
     {
         $view = Twig::fromRequest($request);
         $auth = $request->getAttribute('auth');
@@ -55,6 +81,7 @@ class ParagraphsController
         $paragraphsRepository = new ParagraphsRepository($i_db);
 
         $prepare = [
+            'title' => 'paragraph',
             'paragraph' => $paragraphsRepository->find($args['id']),
             'edit' => $request->getQueryParams()['edit'] ?? null
         ];
@@ -62,7 +89,12 @@ class ParagraphsController
         return $view->render($response, 'pages/elements/paragraphs/details.html', $prepare);
     }
 
-    public function store(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function store(Request $request, Response $response): Response
     {
         global $app;
 
@@ -73,17 +105,23 @@ class ParagraphsController
         $paragraphsRepository = new ParagraphsRepository($i_db);
 
         $paragraph = new Paragraph(...$body);
-        $paragraphsRepository->create($paragraph);
+        $paragraph = $paragraphsRepository->create($paragraph);
 
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $paragraphs_url = $routeParser->urlFor('paragraphs');
+        $paragraphs_url = $routeParser->urlFor('paragraphs') . '/' . $paragraph->id;
 
         return $response->withHeader('Location', $paragraphs_url);
     }
 
-    public function update(Request $request, Response $response, $args)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function update(Request $request, Response $response): Response
     {
         global $app;
 
@@ -91,20 +129,29 @@ class ParagraphsController
         $body = $request->getParsedBody();
 
         $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
-        $paragraphsRepository = new ParagraphsRepository($i_db);
 
-        $paragraph = new Paragraph(...array_slice($body, 1));
-        $paragraphsRepository->update($paragraph);
+        // validation...
+        $paragraph = array_slice($body, 1);
+        $paragraph = new Paragraph(...$paragraph);
+
+        $paragraphsRepository = new ParagraphsRepository($i_db);
+        $paragraph = $paragraphsRepository->update($paragraph);
 
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $paragraphs_url = $routeParser->urlFor('paragraphs') . '/' . $args['id'];
+        $paragraphs_url = $routeParser->urlFor('paragraphs') . '/' . $paragraph->id;
 
         return $response->withHeader('Location', $paragraphs_url);
     }
 
-    public function delete(Request $request, Response $response, $args)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
+    public function delete(Request $request, Response $response, array $args): Response
     {
         global $app;
 

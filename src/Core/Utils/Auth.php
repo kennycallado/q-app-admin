@@ -2,32 +2,28 @@
 
 namespace Core\Utils;
 
-use Exception;
+use App\Models\UserNew;
 
 class Auth
 {
-    private $url;
+    private string $url;
+    public ?string $username;
     public ?string $user_id;
     public ?string $role;
     public ?string $g_auth;
     public ?string $p_auth;
     public ?object $project;
 
-    public function __construct($url)
+    public function __construct(string $url)
     {
         $this->url = $url;
     }
 
-    public function signin($username, $password)
+    public function signin(UserNew $new_user): Auth
     {
-        $body = (object) [
-            'username' => $username,
-            'password' => $password
-        ];
-
-        $response = $this->requestProcessor('POST', '/login', '', json_encode($body));
+        $response = $this->requestProcessor('POST', '/login', '', json_encode($new_user));
         if (isset($response->error)) {
-            throw new Exception($response->error->description, $response->error->code);
+            throw new \Exception($response->error->description, $response->error->code);
         }
 
         if (isset($response->project)) {
@@ -40,39 +36,35 @@ class Auth
             $this->role = $response->role;
         }
 
-        $this->g_auth = $response->g_token;
         $this->user_id = $response->id;
+        $this->g_auth = $response->g_token;
+        $this->username = $new_user->username;
 
         return $this;
     }
 
-    public function signup($username, $password, $project = null)
+    public function signup(UserNew $new_user): Auth
     {
-        $body = (object) [
-            'username' => $username,
-            'password' => $password,
-            'project' => $project
-        ];
-
-        $response = $this->requestProcessor('POST', '/signup', '', json_encode($body));
+        $response = $this->requestProcessor('POST', '/signup', '', json_encode($new_user));
         if (isset($response->error)) {
-            throw new Exception($response->error->description, $response->error->code);
+            throw new \Exception($response->error->description, $response->error->code);
         }
 
         return $this;
     }
 
-    public function refresh()
+    public function refresh(): Auth
     {
         $response = $this->requestProcessor('GET', '/refresh', $this->g_auth, null);
 
         if (isset($response->error)) {
-            return throw new Exception($response->error->description, $response->error->code);
+            return throw new \Exception($response->error->description, $response->error->code);
         }
 
         // reset all values
         $this->project = null;
         $this->p_auth = null;
+        $this->username = '';
         $this->user_id = '';
         $this->g_auth = '';
         $this->role = '';
@@ -87,20 +79,15 @@ class Auth
             $this->role = $response->role;
         }
 
-        $this->g_auth = $response->g_token;
         $this->user_id = $response->id;
+        $this->g_auth = $response->g_token;
+        $this->username = $response->username;
 
         return $this;
     }
 
-    private function requestProcessor(
-        string $method,
-        string $path,
-        ?string $auth,
-        ?string $body,
-        string $ns = 'global',
-        string $db = 'main'
-    ) {
+    private function requestProcessor(string $method, string $path, ?string $auth, ?string $body, string $ns = 'global', string $db = 'main'): mixed
+    {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -126,5 +113,29 @@ class Auth
         curl_close($curl);
 
         return json_decode($response);
+    }
+
+    public function set_cookies(): bool
+    {
+        setcookie('username', $this->username, time() + 3600, '/');
+        setcookie('project', json_encode($this->project), time() + 3600, '/');
+        setcookie('user_id', $this->user_id, time() + 3600, '/');
+        setcookie('g_auth', $this->g_auth, time() + 3600, '/');
+        setcookie('p_auth', $this->p_auth, time() + 3600, '/');
+        setcookie('role', $this->role, time() + 3600, '/');
+
+        return true;
+    }
+
+    public function unset_cookies(): bool
+    {
+        setcookie('username', '', time() - 3600, '/');
+        setcookie('project', '', time() - 3600, '/');
+        setcookie('user_id', '', time() - 3600, '/');
+        setcookie('g_auth', '', time() - 3600, '/');
+        setcookie('p_auth', '', time() - 3600, '/');
+        setcookie('role', '', time() - 3600, '/');
+
+        return true;
     }
 }

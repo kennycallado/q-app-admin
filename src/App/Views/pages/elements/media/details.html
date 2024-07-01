@@ -1,157 +1,79 @@
-{% extends 'shared/layouts/main.html' %}
+{% extends 'shared/layouts/details.html' %}
+
+{% from '/shared/macros.html' import locale_filter %}
+
+{% set entity_id = media.id %}
+{% set entity_name = media.ref %}
+{% set url_base = url_for('media') %}
+
+{% block meta %}
+  <ix-key-value-list class="d-block rounded-3 p-2">
+    {% if media.id %}
+      <ix-key-value class="fw-bold" label-position="left" value="{{ media.id }}" label="id">
+      </ix-key-value>
+    {% endif %}
+
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="reference"
+    >
+      <input
+        slot="custom-value"
+        {% if not edit %}readonly{% endif %}
+        name="ref"
+        value="{{ media.ref }}"
+        placeholder="Enter slug"
+      />
+    </ix-key-value>
+
+    <ix-key-value orientation="vertical" label-position="left" label="type">
+      <div slot="custom-value" class="d-flex">
+        <input
+          {% if media.type == 'image' %}checked{% endif %}
+          {% if not edit %}disabled{% endif %}
+          id="form-type-image"
+          name="type"
+          value="image"
+          type="radio"
+        />
+        <label for="form-type-image">Image</label>
+
+        <input
+          {% if media.type == 'video' %}checked{% endif %}
+          {% if not edit %}disabled{% endif %}
+          id="form-type-video"
+          name="type"
+          value="video"
+          type="radio"
+        />
+        <label for="form-type-video">Video</label>
+      </div>
+    </ix-key-value>
+  </ix-key-value-list>
+{% endblock %}
 
 {% block content %}
-<ix-content-header
-    slot="header"
-    has-back-button="true"
-    header-title="{{ edit ? 'Edit' : 'Show' }}: {{ media.ref }}">
+  <ix-key-value-list class="d-block rounded-3 p-2">
+    <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="alt text">
+      <input
+        {% if not edit %}readonly{% endif %}
+        name="alt"
+        value="{{ media.alt }}"
+        slot="custom-value"
+        placeholder="Enter an alternative text"
+      />
+    </ix-key-value>
 
-    <script>
-        me().on('backButtonClick', _ => {
-            let url = "{{ url_for('media') }}";
-
-            htmx
-                .ajax('GET', url, {target: '#content', swap: 'transition:true'})
-                .then(_ => history.pushState({}, '', url))
-        })
-    </script>
-</ix-content-header>
-
-<section
-    class="card"
-    id="elements-media-details">
-
-    <div class="card-body">
-        <form
-            hx-push-url="true"
-            hx-trigger="submit"
-            hx-post="{{ url_for('media') }}/{{ media.id }}"
-            hx-target="#content"
-            {#
-            hx-swap="transition:true"
-            #}
-
-            {% if edit %}
-            action="{{ url_for('media') }}/{{ media.id }}"
-            method="POST"
-            {% endif %}
-        >
-            <input type="hidden" name="_METHOD" value="PATCH" />
-            <input type="hidden" name="id" value="{{ media.id }}" />
-
-            <fieldset class="py-2">
-                <legend
-                    style="border-color: var(--theme-color-primary)! important;"
-                    class="text-center border-bottom">
-                    Meta
-                </legend>
-
-                <ix-key-value-list class="d-block">
-                    <ix-key-value
-                        class="fw-bold"
-                        label-position="left"
-                        value="{{ media.id}}"
-                        label="id">
-                    </ix-key-value>
-
-                    <ix-key-value
-                        orientation="vertical"
-                        label-position="left"
-                        label="reference">
-                        <input
-                            slot="custom-value"
-                            {% if not edit %} readonly {% endif %}
-                            name="ref"
-                            value="{{ media.ref }}"
-                            placeholder="Enter slug" />
-                    </ix-key-value>
-
-                    <ix-key-value
-                        orientation="vertical"
-                        label-position="left"
-                        label="type">
-                        <div slot="custom-value" class="d-flex">
-                            <input
-                                {% if media.type == 'image' %} checked {% endif %}
-                                {% if not edit %} disabled {% endif %}
-                                id="form-type-image"
-                                name="type"
-                                value="image"
-                                type="radio" />
-                            <label for="form-type-image">Image</label>
-
-                            <input
-                                {% if media.type == 'video' %} checked {% endif %}
-                                {% if not edit %} disabled {% endif %}
-                                id="form-type-video"
-                                name="type"
-                                value="video"
-                                type="radio" />
-                            <label for="form-type-video">Video</label>
-                        </div>
-                    </ix-key-value>
-                </ix-key-value-list>
-            </fieldset>
-
-            <fieldset class="py-2">
-                <legend
-                    style="border-color: var(--theme-color-primary)! important;"
-                    class="text-center border-bottom">
-                    Content
-                </legend>
-
-                <ix-key-value-list class="d-block">
-                    <ix-key-value
-                        class=""
-                        orientation="vertical"
-                        label-position="left"
-                        label="alt text">
-                        <input
-                            {% if not edit %} readonly {% endif %}
-                            name="alt"
-                            value="{{ media.alt }}"
-                            slot="custom-value"
-                            placeholder="Enter an alternative text" />
-                    </ix-key-value>
-
-                    <ix-key-value
-                        class=""
-                        orientation="vertical"
-                        label-position="left"
-                        label="url">
-                        <input
-                            {% if not edit %} readonly {% endif %}
-                            name="url"
-                            value="{{ media.url }}"
-                            slot="custom-value"
-                            placeholder="Enter the media url" />
-                    </ix-key-value>
-                </ix-key-value-list>
-            </fieldset>
-
-            <fieldset class="mt-3 d-flex justify-content-end">
-                <ix-button
-                    hx-push-url="true"
-                    hx-trigger="click"
-                    {% if edit %}
-                        hx-get="{{ url_for('media') }}/{{ media.id }}"
-                    {% else %}
-                        hx-get="{{ url_for('media') }}/{{ media.id }}?edit=true"
-                    {% endif %}
-                    hx-target="#content"
-                    outline>
-                    {{ edit ? 'Cancel' : 'Edit' }}
-                </ix-button>
-
-                <ix-button
-                    {% if not edit %} disabled {% endif %}
-                    class="ms-2"
-                    type="submit">
-                    Submit
-                </ix-button>
-            </fieldset>
-        </form>
-
-    </div>
-</section>
+    <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="url">
+      <input
+        {% if not edit %}readonly{% endif %}
+        name="url"
+        value="{{ media.url }}"
+        slot="custom-value"
+        placeholder="Enter the media url"
+      />
+    </ix-key-value>
+  </ix-key-value-list>
 {% endblock %}

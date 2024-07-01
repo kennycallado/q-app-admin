@@ -3,6 +3,7 @@
 namespace Core;
 
 use App\Controllers\Elements\ElementsRouter;
+use App\Controllers\Settings\SettingsRouter;
 use App\Controllers\AuthController;
 use App\Controllers\ExamplesController;
 use App\Controllers\IndexController;
@@ -13,6 +14,10 @@ use Slim\App;
 
 class Router
 {
+    /**
+     * @param App $app
+     * @return App
+     */
     public static function routes(App $app): App
     {
         $app->get('/health', function ($request, Response $response) {
@@ -28,6 +33,10 @@ class Router
 
         $app->group('/elements', function (Group $group) {
             ElementsRouter::routes($group);
+        })->add(AuthMiddleware::class);
+
+        $app->group('/settings', function (Group $group) {
+            SettingsRouter::routes($group);
         })->add(AuthMiddleware::class);
 
         $app->group('/examples', function (Group $group) {

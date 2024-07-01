@@ -11,6 +11,15 @@ class Paper
     public string $resource;
     public string $created;
 
+    /**
+     * Paper constructor.
+     * @param string|null $id
+     * @param string $user
+     * @param array $answers
+     * @param bool $completed
+     * @param string $resource
+     * @param string $created
+     */
     public function __construct(
         ?string $id,
         string $user,

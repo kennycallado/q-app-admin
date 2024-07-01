@@ -1,207 +1,105 @@
-{% extends 'shared/layouts/main.html' %}
+{% extends 'shared/layouts/details.html' %}
+
+{% from '/shared/macros.html' import locale_filter %}
+
+{% set entity_id = paragraph.id %}
+{% set entity_name = paragraph.ref %}
+{% set url_base = url_for('paragraphs') %}
+
+{% block meta %}
+  <ix-key-value-list class="d-block rounded-3 p-2">
+    {% if paragraph.id %}
+      <ix-key-value class="fw-bold" label-position="left" value="{{ paragraph.id }}" label="id">
+      </ix-key-value>
+    {% endif %}
+
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="reference"
+    >
+      <input
+        slot="custom-value"
+        {% if not edit %}readonly{% endif %}
+        name="ref"
+        value="{{ paragraph.ref }}"
+        placeholder="Enter slug"
+      />
+    </ix-key-value>
+
+    <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="type">
+      <div slot="custom-value" class="d-flex">
+        <input
+          {% if paragraph.type == 'text' %}checked{% endif %}
+          {% if not edit %}disabled{% endif %}
+          id="form-type-text"
+          name="type"
+          value="text"
+          type="radio"
+        />
+        <label for="form-type-text">text</label>
+
+        <input
+          {% if paragraph.type == 'h2' %}checked{% endif %}
+          {% if not edit %}disabled{% endif %}
+          id="form-type-h2"
+          name="type"
+          value="h2"
+          type="radio"
+        />
+        <label for="form-type-h2">h2</label>
+
+        <input
+          {% if paragraph.type == 'h3' %}checked{% endif %}
+          {% if not edit %}disabled{% endif %}
+          id="form-type-h3"
+          name="type"
+          value="h3"
+          type="radio"
+        />
+        <label for="form-type-h3">h3</label>
+      </div>
+    </ix-key-value>
+  </ix-key-value-list>
+{% endblock %}
 
 {% block content %}
-<style>
-div[data-tab-content] {
-    display: none;
-}
+  <div class="mt-2 rounded-3">
+    <ix-tabs class="rounded-top rounded-top-3">
+      <ix-tab-item class="tab-active" data-tab-id="en">En</ix-tab-item>
+      <ix-tab-item data-tab-id="es">Es</ix-tab-item>
+      <ix-tab-item data-tab-id="ca">Vl</ix-tab-item>
+    </ix-tabs>
 
-div[data-tab-content].show {
-    display: block;
-}
-</style>
+    {% for locale in [ "en", "es", "ca"] %}
+      {% set number = loop.index0 %}
+      <div
+        class="p-2 rounded-bottom {{ loop.first ? 'show' : '' }}"
+        data-tab-content="{{ locale }}"
+      >
+        <input type="hidden" name="content[{{ number }}][locale]" value="{{ locale }}" />
 
-<ix-content-header
-    slot="header"
-    has-back-button="true"
-    header-title="{{ edit ? 'Edit' : 'Show' }}: {{ paragraph.ref }}">
+        <ix-key-value class="fw-bold border-0" orientation="vertical" label="Content">
+          <textarea
+            {% if not edit %}readonly{% endif %}
+            name="content[{{ number }}][text]"
+            placeholder="Enter text"
+            slot="custom-value"
+          >
+{{ create ? null : locale_filter(paragraph.content, locale, 'text')|trim }}</textarea
+          >
+        </ix-key-value>
+      </div>
+      {% set number = null %}
+    {% endfor %}
 
     <script>
-        me().on('backButtonClick', _ => {
-            let url = "{{ url_for('paragraphs') }}";
-
-            htmx
-                .ajax('GET', url, {target: '#content', swap: 'transition:true'})
-                .then(_ => history.pushState({}, '', url))
-        })
+      me().run((el) =>
+        typeof tabs_content === "function"
+          ? tabs_content(el)
+          : onloadAdd((_) => tabs_content(el)),
+      );
     </script>
-</ix-content-header>
-
-<section
-    class="card"
-    id="elements-paragraphs-details">
-
-    <div class="card-body">
-        <form
-            hx-push-url="true"
-            hx-trigger="submit"
-            hx-post="{{ url_for('paragraphs') }}/{{ paragraph.id }}"
-            hx-target="#content"
-            hx-swap="transition:true"
-
-            {% if edit %}
-            action="{{ url_for('paragraphs') }}/{{ paragraph.id }}"
-            method="POST"
-            {% endif %}
-        >
-            <input type="hidden" name="_METHOD" value="PATCH" />
-            <input type="hidden" name="id" value="{{ paragraph.id }}" />
-
-            <fieldset class="py-2">
-                <legend
-                    style="border-color: var(--theme-color-primary)! important;"
-                    class="text-center border-bottom">
-                    Meta
-                </legend>
-
-                <ix-key-value-list class="d-block">
-                    <ix-key-value
-                        class="fw-bold"
-                        label-position="left"
-                        value="{{ paragraph.id}}"
-                        label="id">
-                    </ix-key-value>
-
-                    <ix-key-value
-                        orientation="vertical"
-                        label-position="left"
-                        label="reference">
-                        <input
-                            slot="custom-value"
-                            {% if not edit %} readonly {% endif %}
-                            name="ref"
-                            value="{{ paragraph.ref }}"
-                            placeholder="Enter slug" />
-                    </ix-key-value>
-
-                    <ix-key-value
-                        orientation="vertical"
-                        label-position="left"
-                        label="type">
-                        <div slot="custom-value" class="d-flex">
-                            <input
-                                {% if paragraph.type == 'text' %} checked {% endif %}
-                                {% if not edit %} disabled {% endif %}
-                                id="form-type-text"
-                                name="type"
-                                value="text"
-                                type="radio" />
-                            <label for="form-type-text">text</label>
-
-                            <input
-                                {% if paragraph.type == 'h2' %} checked {% endif %}
-                                {% if not edit %} disabled {% endif %}
-                                id="form-type-h2"
-                                name="type"
-                                value="h2"
-                                type="radio" />
-                            <label for="form-type-h2">h2</label>
-
-                            <input
-                                {% if paragraph.type == 'h3' %} checked {% endif %}
-                                {% if not edit %} disabled {% endif %}
-                                id="form-type-h3"
-                                name="type"
-                                value="h3"
-                                type="radio" />
-                            <label for="form-type-h3">h3</label>
-                        </div>
-                    </ix-key-value>
-                </ix-key-value-list>
-            </fieldset>
-
-            <fieldset class="py-2">
-                <legend
-                    style="border-color: var(--theme-color-primary)! important;"
-                    class="text-center border-bottom">
-                    Content
-                </legend>
-
-                <div style="box-shadow: var(--theme-shadow-1);" class="mt-2 rounded-3">
-                    <ix-tabs
-                        style="background-color: var(--theme-color-component-1); "
-                        class="rounded-top rounded-top-3">
-
-                        <ix-tab-item class="text-capitalize" data-tab-id="es">es</ix-tab-item>
-                        <ix-tab-item class="text-capitalize" data-tab-id="en">en</ix-tab-item>
-                        <ix-tab-item class="text-capitalize" data-tab-id="ca">vl</ix-tab-item>
-                    </ix-tabs>
-
-                    {% for locale in [ "es", "en", "ca"] %}
-                    {% set number = loop.index0 %}
-                    <div
-                        style="background-color: var(--theme-color-component-2);"
-                        class="p-2 rounded-bottom {{ loop.first ? 'show' : '' }}"
-                        data-tab-content="{{ locale }}">
-
-                        <ix-key-value
-                            class="border-0"
-                            orientation="vertical"
-                            label="Content">
-                            <textarea
-                                {% if not edit %} readonly {% endif %}
-                                name="content[{{ locale }}]"
-                                placeholder="Enter text"
-                                slot="custom-value">{{ paragraph.content[number].text }}</textarea>
-                        </ix-key-value>
-                    </div>
-                    {% set number = null %}
-                    {% endfor %}
-                </div>
-            </fieldset>
-
-            <fieldset class="mt-3 d-flex justify-content-end">
-                <ix-button
-                    hx-push-url="true"
-                    hx-trigger="click"
-                    {% if edit %}
-                    hx-get="{{ url_for('paragraphs') }}/{{ paragraph.id }}"
-                    {% else %}
-                    hx-get="{{ url_for('paragraphs') }}/{{ paragraph.id }}?edit=true"
-                    {% endif %}
-                    hx-target="#content"
-                    outline>
-                    {{ edit ? 'Cancel' : 'Edit' }}
-                </ix-button>
-
-                <ix-button
-                    {% if not edit %} disabled {% endif %}
-                    class="ms-2"
-                    type="submit">
-                    Submit
-                </ix-button>
-            </fieldset>
-
-        </form>
-    </div>
-</section>
-
-{# TODO: use surreal #}
-<script>
-(async function () {
-    await window.customElements.whenDefined('ix-tabs');
-    const tabs = document.querySelectorAll('ix-tab-item[data-tab-id]');
-
-    function registerClickListener(tab) {
-        tab.addEventListener('click', (tabContent) => {
-            const contentList = document.querySelectorAll('[data-tab-content]');
-            contentList.forEach((content) => {
-                if (content.dataset.tabContent === tab.dataset.tabId) {
-                    content.classList.add('show');
-                    tab.classList.add('active');
-                } else content.classList.remove('show');
-
-                if (content.dataset.tabContent !== tab.dataset.tabId) {
-                    const tabId = content.dataset.tabContent;
-                    const tab = document.querySelector(`ix-tab-item[data-tab-id="${tabId}"]`);
-                    tab.classList.remove('active');
-                }
-
-            });
-        });
-    }
-
-    tabs.forEach(registerClickListener);
-})();
-</script>
+  </div>
 {% endblock %}

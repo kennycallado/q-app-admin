@@ -21,10 +21,7 @@ class Question
      */
     public function __construct(string $ref, string $type, array $content, ?string $id = null)
     {
-        if ($id !== null) {
-            $this->id = $id;
-        }
-
+        $this->id = $id;
         $this->ref = $ref;
         $this->type = $type;
         $this->content = $this->arrayToContent($type, $content);
@@ -78,7 +75,8 @@ class QuestionContent
                 $this->text = $params;
                 break;
             default:
-                throw new \Exception('Unknown question type');
+                // unreachable
+                // throw new \Exception('Unknown question type');
                 break;
         }
 

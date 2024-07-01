@@ -2,13 +2,13 @@
 
 namespace App\Controllers\Elements;
 
-use App\Controllers\Elements\MediaController;
-use App\Controllers\Elements\ParagraphsController;
-use App\Controllers\Elements\QuestionsController;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 class ElementsRouter
 {
+    /**
+     * @param Group $group
+     */
     public static function routes(Group $group): void
     {
         $group->group('/questions', function (Group $group) {

@@ -1,37 +1,39 @@
 {% extends first == false ? 'shared/layouts/main.html' : 'shared/layouts/base.html' %}
 
-{% block content %}
-<ix-content-header
+{% block main %}
+  <ix-content-header
     style=""
     slot="header"
     has-back-button="false"
     header-title="Home"
-></ix-content-header>
+  ></ix-content-header>
 
-<ix-layout-grid>
+  <ix-layout-grid>
     <ix-row class="justify-content-center">
-        <ix-action-card
-            icon="refresh"
-            heading="Primary text"
-            subheading="Secondary text"
-            variant="neutral"
-            >
-        </ix-action-card>
+      <ix-action-card
+        icon="refresh"
+        heading="Primary text"
+        subheading="Secondary text"
+        variant="neutral"
+      >
+      </ix-action-card>
 
-        <ix-action-card
-            class="mx-2"
-            icon="alarm"
-            heading="Primary text"
-            subheading="Secondary text"
-            variant="warning">
-        </ix-action-card>
+      <ix-action-card
+        class="mx-2"
+        icon="alarm"
+        heading="Primary text"
+        subheading="Secondary text"
+        variant="warning"
+      >
+      </ix-action-card>
 
-        <ix-action-card
-            icon="star"
-            heading="Primary text"
-            subheading="Secondary text"
-            variant="success">
-        </ix-action-card>
+      <ix-action-card
+        icon="star"
+        heading="Primary text"
+        subheading="Secondary text"
+        variant="success"
+      >
+      </ix-action-card>
     </ix-row>
-</ix-layout-grid>
+  </ix-layout-grid>
 {% endblock %}

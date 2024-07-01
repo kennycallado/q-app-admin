@@ -9,12 +9,15 @@ use Slim\Views\Twig;
 
 class IndexController
 {
+    /**
+     * @param Group $group
+     */
     public static function routes(Group $group): void
     {
         $group->get('', [self::class, 'index'])->setName('home');
     }
 
-    public function index(Request $request, Response $response)
+    public function index(Request $request, Response $response): Response
     {
         $view = Twig::fromRequest($request);
 

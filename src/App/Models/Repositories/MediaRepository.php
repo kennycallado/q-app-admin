@@ -15,7 +15,6 @@ class MediaRepository
     public static array $queries = [];
 
     /**
-     * MediaRepository constructor.
      * @param SurrealDB $db
      */
     public function __construct(SurrealDB $db)
@@ -24,10 +23,10 @@ class MediaRepository
     }
 
     /**
-     * @return Media[]
      * @throws \Exception
+     * @return Media[]
      */
-    public function all()
+    public function all(): array
     {
         $db_res = $this->db->select('*')->tables('media')->exec();
 
@@ -40,10 +39,10 @@ class MediaRepository
 
     /**
      * @param string $id
-     * @return Media
      * @throws \Exception
+     * @return Media
      */
-    public function find(string $id)
+    public function find(string $id): object
     {
         $db_res = $this->db->select('*')->tables('media')->where("id = $id")->exec();
 
@@ -56,35 +55,31 @@ class MediaRepository
 
     /**
      * @param string $ref
-     * @return Media
      * @throws \Exception
+     * @return Media
      */
-    public function create(Media $content)
+    public function create(Media $content): object
     {
+        unset($content->id);
         $db_res = $this->db->create('media')->data($content)->exec();
 
         if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
             throw new \Exception('Error creating media');
         }
 
-        $content->id = $db_res[0]->result[0]->id;
-        return $content;
+        return $db_res[0]->result[0];
     }
 
     /**
      * @param Media $content
-     * @return Media
      * @throws \Exception
+     * @return Media
      */
-    public function update(Media $content)
+    public function update(Media $content): object
     {
-        $db_res = $this->db->update($content->id)->merge($content)->exec();
+        $db_res = $this->db->update($content->id)->data($content)->exec();
 
         if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
-            echo '<pre>';
-            print_r($db_res);
-            echo '</pre>';
-
             throw new \Exception('Error updating media');
         }
 
@@ -93,19 +88,15 @@ class MediaRepository
 
     /**
      * @param string $id
-     * @return bool
      * @throws \Exception
+     * @return bool
      */
-    public function delete(string $id)
+    public function delete(string $id): bool
     {
-        $db_res = $this->db->delete($id)->toSQL() . ';';
-        $db_res = $this->db->rawQuery($db_res);
+        $sql = $this->db->delete($id)->toSQL() . ';';
+        $db_res = $this->db->rawQuery($sql);
 
         if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
-            echo '<pre>';
-            print_r($db_res);
-            echo '</pre>';
-
             throw new \Exception('Error deleting media');
         }
 

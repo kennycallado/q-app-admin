@@ -3,6 +3,9 @@
 namespace Core;
 
 use Slim\Views\Twig;
+use Twig\TwigFilter;
+
+// use Twig\TwigFunction;
 
 class Render
 {
@@ -12,6 +15,16 @@ class Render
 
         $twig->getEnvironment()->addGlobal('_hx_request', $_SERVER['HTTP_HX_REQUEST'] ?? false);
         $twig->getEnvironment()->addGlobal('cookie', $_COOKIE ?? false);
+
+        $twig->getEnvironment()->addFilter(new TwigFilter('json_decode', function ($content) {
+            return json_decode($content);
+        }));
+
+        /*
+         * $twig->getEnvironment()->addFunction(new TwigFunction('get_cookie', function () {
+         *     return $_COOKIE;
+         * }));
+         */
 
         return $twig;
     }

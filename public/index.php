@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 require __DIR__ . '/../vendor/autoload.php';
 
 use Core\Middleware\SessionMiddleware;
@@ -26,7 +25,7 @@ $app->addRoutingMiddleware();
 $methodOverrideMiddleware = new MethodOverrideMiddleware();
 $app->add($methodOverrideMiddleware);
 
-
+// should be modified in production
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 // Run

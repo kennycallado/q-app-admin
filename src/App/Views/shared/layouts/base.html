@@ -1,36 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <title></title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <title>{{ title }}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link rel="stylesheet" href="/public/assets/css/style.css">
-        <link rel="preload" as="style" href="/public/assets/css/transition.css" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" as="style" href="/public/assets/css/transition.css"></noscript>
+    <link rel="icon" href="/public/assets/img/favicon.ico" />
+    <link rel="stylesheet" href="/public/assets/css/style.css" />
+    <link
+      rel="preload"
+      as="style"
+      href="/public/assets/css/transition.css"
+      onload="this.onload=null;this.rel='stylesheet'" />
 
-        <script defer type="module" src="/public/assets/@siemens/ix/dist/index.js"></script>
-        <script defer type="module" src="/public/assets/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script defer type="module" src="/public/assets/js/main.js"></script>
+    <noscript>
+      <link rel="stylesheet" as="style" href="/public/assets/css/transition.css" />
+    </noscript>
 
-        <script defer src="/public/assets/js/utils.js"></script>
-        <script src="/public/assets/js/surreal.js"></script>
-    </head>
+    <script defer type="module" src="/public/assets/@siemens/ix/dist/index.js"></script>
+    <script
+      defer
+      type="module"
+      src="/public/assets/bootstrap/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <script defer src="https://unpkg.com/htmx.org@2.0.0"></script>
+    <script defer type="module" src="/public/assets/js/main.js"></script>
 
-    {% block body %}
+    <script defer src="/public/assets/js/utils.js"></script>
+    <script src="/public/assets/js/surreal.js"></script>
+  </head>
+
+  {% block body %}
     <body>
-        <ix-application>
-            {% include 'shared/partials/layouts/header.html' %}
-            {% include 'shared/partials/layouts/menu.html' %}
-            {% include 'shared/partials/layouts/pane.html' %}
+      <ix-application>
+        {% include 'shared/layouts/partials/header.html' %}
+        {% include 'shared/layouts/partials/menu.html' %}
+        {% include 'shared/layouts/partials/pane.html' %}
 
-            <ix-content
-                hx-ext="response-targets"
-                class="sample-transition"
-                id="content">
-                {% block content %} {% endblock %}
-            </ix-content>
-        </ix-application>
+        <ix-content hx-ext="response-targets" class="sample-transition" id="content">
+          {% block main %}{% endblock %}
+        </ix-content>
+      </ix-application>
     </body>
-    {% endblock %}
+  {% endblock %}
 </html>

@@ -1,0 +1,71 @@
+{% extends 'shared/layouts/main.html' %}
+
+{% block main %}
+{#
+  <section class="card" id="elements-{{ entity_name }}-details">
+    <div class="card-body">
+      <form>
+        <fieldset class="py-2">
+          <legend
+            style="border-color: var(--theme-color-primary)! important;"
+            class="text-center border-bottom"
+          >
+            Meta
+          </legend>
+
+          <ix-key-value-list class="d-block rounded-3 p-2">
+            <ix-key-value
+              class="fw-bold"
+              label-position="left"
+              value="{{ cookie.user_id }}"
+              label="id"
+            ></ix-key-value>
+
+            <ix-key-value
+              class="fw-bold"
+              label-position="left"
+              value="{{ cookie.username }}"
+              label="username"
+            ></ix-key-value>
+          </ix-key-value-list>
+        </fieldset>
+
+        <fieldset class="py-2">
+          <legend
+            style="border-color: var(--theme-color-primary)! important;"
+            class="text-center border-bottom"
+          >
+            Current project
+          </legend>
+
+          <ix-key-value-list class="d-block rounded-3 p-2">
+            {% set project = cookie.project|json_decode %}
+            <ix-key-value
+              class="fw-bold"
+              label-position="left"
+              value="{{ project.id }}"
+              label="id"
+            ></ix-key-value>
+
+            <ix-key-value
+              class="fw-bold"
+              label-position="left"
+              value="{{ project.name }}"
+              label="name"
+            ></ix-key-value>
+
+            <ix-key-value
+              class="fw-bold"
+              label-position="left"
+              value="{{ project.center }}"
+              label="center"
+            ></ix-key-value>
+            {% set project = null %}
+          </ix-key-value-list>
+
+        </fieldset>
+      </form>
+    </div>
+  </section>
+  #}
+{% endblock %}

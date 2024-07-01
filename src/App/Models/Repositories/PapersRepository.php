@@ -20,9 +20,10 @@ class PapersRepository
     }
 
     /**
+     * @throws \Exception
      * @return Paper[]
      */
-    public function all()
+    public function all(): array
     {
         $papers = [];
 
@@ -38,7 +39,7 @@ class PapersRepository
     /**
      * @return Paper[]
      */
-    public function finByUserId(string $criteria, string $id)
+    public function finByUserId(string $criteria, string $id): array
     {
         $papers = [];
         $sql = str_replace('{criteria}', $criteria, self::$queries['findByUserId']);
