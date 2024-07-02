@@ -1,24 +1,14 @@
-<ix-menu hx-push-url="true">
-  <a hx-trigger="click" hx-get="/" hx-target="#content" hx-swap="transition:true" href="/">
-    <ix-menu-item home icon="home">Home</ix-menu-item>
+<ix-menu hx-boost="true" hx-push-url="true">
+  <a hx-trigger="click" hx-target="#content" hx-swap="transition:true" href="/">
+    <ix-menu-item icon="home">Home</ix-menu-item>
   </a>
 
   <ix-menu-category label="examples" icon="rocket">
-    <a
-      hx-trigger="click"
-      hx-get="/examples/dashboard"
-      hx-target="#content"
-      hx-swap="transition:true"
-      href="/examples/dashboard">
+    <a hx-target="#content" hx-swap="transition:true" href="/examples/dashboard">
       <ix-menu-item icon="table">Dashboard</ix-menu-item>
     </a>
 
-    <a
-      hx-trigger="click"
-      hx-get="/examples/parti"
-      hx-target="#content"
-      hx-swap="transition:true"
-      href="/examples/parti">
+    <a hx-target="#content" hx-swap="transition:true" href="/examples/parti">
       <ix-menu-item icon="user">Parti</ix-menu-item>
     </a>
 
@@ -26,30 +16,15 @@
   </ix-menu-category>
 
   <ix-menu-category label="Elements" icon="attach">
-    <a
-      hx-trigger="click"
-      hx-get="/elements/questions"
-      hx-target="#content"
-      hx-swap="transition:true"
-      href="/elements/questions">
+    <a hx-target="#content" hx-swap="transition:true" href="/elements/questions">
       <ix-menu-item icon="question">Questions</ix-menu-item>
     </a>
 
-    <a
-      hx-trigger="click"
-      hx-get="/elements/paragraphs"
-      hx-target="#content"
-      hx-swap="transition:true"
-      href="/elements/paragraphs">
+    <a hx-target="#content" hx-swap="transition:true" href="/elements/paragraphs">
       <ix-menu-item icon="text">Paragraphs</ix-menu-item>
     </a>
 
-    <a
-      hx-trigger="click"
-      hx-get="/elements/media"
-      hx-target="#content"
-      hx-swap="transition:true"
-      href="/elements/media">
+    <a hx-target="#content" hx-swap="transition:true" href="/elements/media">
       <ix-menu-item icon="image">Media</ix-menu-item>
     </a>
   </ix-menu-category>
@@ -71,11 +46,9 @@
     onclick="me('#preview-pane-phone').classToggle('d-none')"
     id="btn-info"
     tab-icon="info"
-    slot="bottom"
-  >
+    slot="bottom">
     Bottom tab
   </ix-menu-item>
-  <!-- <script> me('-').on('click', () => { me('#pane-layout').classToggle('d-none') }); </script> -->
 
   <!-- news only on about -->
   <ix-menu-about>
@@ -94,7 +67,7 @@
 
       navigation.addEventListener('navigate', (evt) => {
         if (evt.navigationType === 'push') {
-          // using toggleAttributebibin
+          // using toggleAttribute
           // it doesn't work for the already active
           // el.children[0].toggleAttribute('active', evt.destination.url.includes(el.pathname))
 
