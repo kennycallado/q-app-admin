@@ -17,15 +17,13 @@
       class="fw-bold"
       orientation="vertical"
       label-position="left"
-      label="reference"
-    >
+      label="reference">
       <input
         slot="custom-value"
         {% if not edit %}readonly{% endif %}
         name="ref"
         value="{{ paragraph.ref }}"
-        placeholder="Enter slug"
-      />
+        placeholder="Enter slug" />
     </ix-key-value>
 
     <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="type">
@@ -36,8 +34,7 @@
           id="form-type-text"
           name="type"
           value="text"
-          type="radio"
-        />
+          type="radio" />
         <label for="form-type-text">text</label>
 
         <input
@@ -46,8 +43,7 @@
           id="form-type-h2"
           name="type"
           value="h2"
-          type="radio"
-        />
+          type="radio" />
         <label for="form-type-h2">h2</label>
 
         <input
@@ -56,8 +52,7 @@
           id="form-type-h3"
           name="type"
           value="h3"
-          type="radio"
-        />
+          type="radio" />
         <label for="form-type-h3">h3</label>
       </div>
     </ix-key-value>
@@ -76,8 +71,7 @@
       {% set number = loop.index0 %}
       <div
         class="p-2 rounded-bottom {{ loop.first ? 'show' : '' }}"
-        data-tab-content="{{ locale }}"
-      >
+        data-tab-content="{{ locale }}">
         <input type="hidden" name="content[{{ number }}][locale]" value="{{ locale }}" />
 
         <ix-key-value class="fw-bold border-0" orientation="vertical" label="Content">
@@ -85,8 +79,7 @@
             {% if not edit %}readonly{% endif %}
             name="content[{{ number }}][text]"
             placeholder="Enter text"
-            slot="custom-value"
-          >
+            slot="custom-value">
 {{ create ? null : locale_filter(paragraph.content, locale, 'text')|trim }}</textarea
           >
         </ix-key-value>
@@ -96,10 +89,10 @@
 
     <script>
       me().run((el) =>
-        typeof tabs_content === "function"
+        typeof tabs_content === 'function'
           ? tabs_content(el)
           : onloadAdd((_) => tabs_content(el)),
-      );
+      )
     </script>
   </div>
 {% endblock %}

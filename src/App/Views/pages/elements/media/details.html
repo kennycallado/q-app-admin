@@ -17,15 +17,13 @@
       class="fw-bold"
       orientation="vertical"
       label-position="left"
-      label="reference"
-    >
+      label="reference">
       <input
         slot="custom-value"
         {% if not edit %}readonly{% endif %}
         name="ref"
         value="{{ media.ref }}"
-        placeholder="Enter slug"
-      />
+        placeholder="Enter slug" />
     </ix-key-value>
 
     <ix-key-value orientation="vertical" label-position="left" label="type">
@@ -36,8 +34,7 @@
           id="form-type-image"
           name="type"
           value="image"
-          type="radio"
-        />
+          type="radio" />
         <label for="form-type-image">Image</label>
 
         <input
@@ -46,8 +43,7 @@
           id="form-type-video"
           name="type"
           value="video"
-          type="radio"
-        />
+          type="radio" />
         <label for="form-type-video">Video</label>
       </div>
     </ix-key-value>
@@ -62,8 +58,7 @@
         name="alt"
         value="{{ media.alt }}"
         slot="custom-value"
-        placeholder="Enter an alternative text"
-      />
+        placeholder="Enter an alternative text" />
     </ix-key-value>
 
     <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="url">
@@ -72,8 +67,7 @@
         name="url"
         value="{{ media.url }}"
         slot="custom-value"
-        placeholder="Enter the media url"
-      />
+        placeholder="Enter the media url" />
     </ix-key-value>
   </ix-key-value-list>
 {% endblock %}

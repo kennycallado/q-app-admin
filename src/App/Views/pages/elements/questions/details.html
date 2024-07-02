@@ -8,12 +8,7 @@
 {% block meta %}
   <ix-key-value-list class="d-block rounded-3 p-2">
     {% if question.id %}
-      <ix-key-value
-        class="fw-bold"
-        value="{{ question.id }}"
-        label-position="left"
-        label="id"
-      >
+      <ix-key-value class="fw-bold" value="{{ question.id }}" label-position="left" label="id">
       </ix-key-value>
     {% endif %}
 
@@ -21,30 +16,22 @@
       class="fw-bold"
       orientation="vertical"
       label-position="left"
-      label="reference"
-    >
+      label="reference">
       <input
         slot="custom-value"
         {% if not edit %}readonly{% endif %}
         name="ref"
         value="{{ question.ref }}"
-        placeholder="Enter slug"
-      />
+        placeholder="Enter slug" />
     </ix-key-value>
 
-    <ix-key-value
-      class="fw-bold"
-      orientation="vertical"
-      label-position="left"
-      label="type"
-    >
+    <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="type">
       <input
         slot="custom-value"
         readonly
         name="type"
         value="{{ type }}"
-        placeholder="Select a type"
-      />
+        placeholder="Select a type" />
     </ix-key-value>
 
     <ix-tooltip for="[label=type]:has(~ ix-tooltip)"> Not possible to change </ix-tooltip>
