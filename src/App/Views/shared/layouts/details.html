@@ -20,97 +20,98 @@
 
 {% set url_action   = create ? url_base : url_base ~ '/' ~ entity_id %}
 {% set entity_name  = entity_name ? entity_name : title %}
-{% set header_title = header_title
+{%
+  set header_title = header_title
     ? header_title
-    : create 
-        ? 'Create: ' ~ entity_name
-        : edit 
-            ? 'Edit: ' ~ entity_name
-            : 'Show: ' ~ entity_name
+    : create
+      ? 'Create: ' ~ entity_name
+      : edit
+        ? 'Edit: ' ~ entity_name
+        : 'Show: ' ~ entity_name
 %}
 
 {% block header %}
-<ix-content-header
-    slot="header"
-    header-title="{{ header_title }}"
-    has-back-button="true">
-
-    <script>me().on('backButtonClick', _ => back_arrow("{{ url_base }}"))</script>
-</ix-content-header>
+  {% if not no_header %}
+    <ix-content-header slot="header" header-title="{{ header_title }}" has-back-button="true">
+      <script>
+        me().on('backButtonClick', (_) => back_arrow('{{ url_base }}'))
+      </script>
+    </ix-content-header>
+  {% endif %}
 {% endblock %}
 
 {% block section %}
-<section
-    class="card"
-    id="elements-{{ entity_name }}-details">
+  <section class="card" id="elements-{{ entity_name }}-details">
     <div class="card-body">
+      {% if edit %}
+      <form
+        hx-trigger="submit"
+        {% if no_header %}
+          hx-push-url="false" hx-post="{{ url_action }}?no_header=1"
+          hx-target="#elements-{{ entity_name }}-details" hx-swap="outerHTML"
+        {% else %}
+          hx-push-url="true" hx-post="{{ url_action }}" hx-target="#content"
+          hx-swap="transition:true"
+        {% endif %}
+        action="{{ url_action }}"
+        method="POST">
+      {% endif %}
 
-        {% if edit %}
-        <form
-            hx-push-url="true"
-            hx-trigger="submit"
-            hx-post="{{ url_action }}"
-            hx-target="{{ target ?? '#content' }}"
-            hx-swap="transition:true"
-
-            action="{{ url_action }}"
-            method="POST">
-
-            {% if not create %}
-            <input type="hidden" name="_METHOD" value="PATCH" />
-            <input type="hidden" name="id" value="{{ entity_id }}" />
-            {% endif %}
+        {% if not create %}
+          <input type="hidden" name="_METHOD" value="PATCH" />
+          <input type="hidden" name="id" value="{{ entity_id }}" />
         {% endif %}
 
-            <fieldset class="py-2">
-                <legend
-                    style="border-color: var(--theme-color-primary)! important;"
-                    class="text-center border-bottom">
-                    Meta
-                </legend>
+        <fieldset class="py-2">
+          <legend
+            style="border-color: var(--theme-color-primary)! important;"
+            class="text-center border-bottom">
+            Meta
+          </legend>
 
-                {% block meta %} {% endblock %}
-            </fieldset>
+          {% block meta %}{% endblock %}
+        </fieldset>
 
-            <fieldset class="py-2">
-                <legend
-                    style="border-color: var(--theme-color-primary)! important;"
-                    class="text-center border-bottom">
-                    Content
-                </legend>
+        <fieldset class="py-2">
+          <legend
+            style="border-color: var(--theme-color-primary)! important;"
+            class="text-center border-bottom">
+            Content
+          </legend>
 
-                {% block content %} {% endblock %}
-            </fieldset>
+          {% block content %}{% endblock %}
+        </fieldset>
 
-            <fieldset class="mt-2 me-2 d-flex justify-content-end">
+        <fieldset class="mt-2 me-2 d-flex justify-content-end">
+          {% if not create %}
+            <ix-button
+              style="box-shadow: var(--theme-shadow-1);"
+              hx-trigger="click"
+              {% if no_header %}
+                hx-push-url="false"
+                hx-get="{{ url_action }}?{{ edit ? 'no_header=1' : 'no_header=1&edit=1' }}"
+                hx-target="#elements-{{ entity_name }}-details" hx-swap="outerHTML"
+              {% else %}
+                hx-push-url="true" hx-get="{{ url_action }}?{{ edit ? '' : 'edit=1' }}"
+                hx-target="#content" hx-swap="transition:true"
+              {% endif %}
+              outline>
+              {{ edit ? 'Cancel' : 'Edit' }}
+            </ix-button>
+          {% endif %}
 
-                {% if not create %}
-                <ix-button
-                    style="box-shadow: var(--theme-shadow-1);"
+          <ix-button
+            style="box-shadow: var(--theme-shadow-1);"
+            class="ms-2"
+            {% if not edit %}disabled{% endif %}
+            type="submit">
+            Submit
+          </ix-button>
+        </fieldset>
 
-                    hx-push-url="true"
-                    hx-trigger="click"
-                    hx-get="{{ url_action }}?{{ edit ? '' : 'edit=1' }}"
-                    hx-target="{{ target ?? '#content' }}"
-                    hx-swap="transition:true"
-                    outline>
-                    {{ edit ? 'Cancel' : 'Edit' }}
-                </ix-button>
-                {% endif %}
-
-                <ix-button
-                    style="box-shadow: var(--theme-shadow-1);"
-                    class="ms-2"
-                    {% if not edit %} disabled {% endif %}
-                    type="submit">
-                    Submit
-                </ix-button>
-            </fieldset>
-
-        {% if edit %}
-        </form>
-        {% endif %}
-
+      {% if edit %}
+      </form>
+      {% endif %}
     </div>
-</section>
+  </section>
 {% endblock %}

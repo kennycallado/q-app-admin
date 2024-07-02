@@ -60,7 +60,8 @@ class MediaController
         $prepare = [
             'title' => 'media',
             'create' => true,
-            'edit' => true
+            'edit' => true,
+            'no_header' => $this->no_header($request)
         ];
 
         return $view->render($response, 'pages/elements/media/details.html', $prepare);
@@ -83,7 +84,8 @@ class MediaController
         $prepare = [
             'title' => 'media',
             'media' => $mediaRepository->find($args['id']),
-            'edit' => $request->getQueryParams()['edit'] ?? null
+            'edit' => $request->getQueryParams()['edit'] ?? null,
+            'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
         return $view->render($response, 'pages/elements/media/details.html', $prepare);
@@ -139,7 +141,9 @@ class MediaController
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $media_url = $routeParser->urlFor('media') . '/' . $media->id;
+
+        $header = $this->no_header($request) ? '?no_header=1' : '';
+        $media_url = $routeParser->urlFor('media') . '/' . $media->id . $header;
 
         return $response->withHeader('Location', $media_url);
     }
@@ -165,5 +169,12 @@ class MediaController
         $media_url = $routeParser->urlFor('media');
 
         return $response->withHeader('Location', $media_url);
+    }
+
+    private function no_header(Request $request): bool
+    {
+        return isset($request->getQueryParams()['no_header']) ||
+            !isset($request->getHeader('HX-Target')[0]) &&
+            isset($request->getHeader('HX-Request')[0]);
     }
 }

@@ -84,7 +84,8 @@ class QuestionsController
         $prepare = [
             'title' => 'Question',
             'question' => $questionsRepository->find($args['id']),
-            'edit' => $request->getQueryParams()['edit'] ?? null
+            'edit' => $request->getQueryParams()['edit'] ?? null,
+            'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
         return $view->render($response, 'pages/elements/questions/details.html', $prepare);
@@ -141,7 +142,9 @@ class QuestionsController
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $questions_url = $routeParser->urlFor('questions') . '/' . $question->id;
+
+        $header = $this->no_header($request) ? '?no_header=1' : '';
+        $questions_url = $routeParser->urlFor('questions') . '/' . $question->id . $header;
 
         return $response->withHeader('Location', $questions_url);
     }
@@ -167,5 +170,12 @@ class QuestionsController
         $questions_url = $routeParser->urlFor('questions');
 
         return $response->withHeader('Location', $questions_url);
+    }
+
+    private function no_header(Request $request): bool
+    {
+        return isset($request->getQueryParams()['no_header']) ||
+            !isset($request->getHeader('HX-Target')[0]) &&
+            isset($request->getHeader('HX-Request')[0]);
     }
 }
