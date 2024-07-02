@@ -12,10 +12,9 @@
 ``` html
 <style>ix-button { visibility: inherit; }</style>
 ```
-- [~] elements: unfy locales order
+- [X] elements: unfy locales order
 - [ ] questions: some methods throw exceptions, should be handled
 - [X] paragraphs: create separe locale and text
 - [ ] media: media with locale
-- [ ] media: alt in multiple lenguages
 - [~] htmx: bump version 2
 - [X] commit: media an use it as a reference

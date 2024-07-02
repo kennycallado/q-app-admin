@@ -1,5 +1,8 @@
 {
   "printWidth": 96,
+  "bracketSameLine": true,
+  "semi": false,
+  "singleQuote": true,
   "plugins": ["prettier-plugin-jinja-template"],
   "overrides": [
     {
