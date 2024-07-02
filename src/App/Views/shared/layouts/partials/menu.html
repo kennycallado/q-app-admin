@@ -86,4 +86,22 @@
   <!--     Test -->
   <!-- </ix-menu-about-news> -->
   <!-- news only on about -->
+
+  <script>
+    any('a', me()).run((el) => {
+      if (el.pathname === '/') return
+      if (location.pathname.includes(el.pathname)) me(el).children[0].active = true
+
+      navigation.addEventListener('navigate', (evt) => {
+        if (evt.navigationType === 'push') {
+          // using toggleAttributebibin
+          // it doesn't work for the already active
+          // el.children[0].toggleAttribute('active', evt.destination.url.includes(el.pathname))
+
+          if (evt.destination.url.includes(el.pathname)) el.children[0].active = true
+          else el.children[0].active = false
+        }
+      })
+    })
+  </script>
 </ix-menu>
