@@ -58,10 +58,10 @@
     <ix-menu-settings-item
       hx-push-url="false"
       hx-trigger="load"
-      hx-get="/settings/user/{{ cookie.user_id }}"
+      hx-get="{{ url_for('settings.user', {id: cookie.user_id}) }}"
       hx-swap="this"
-      label="User settings"
-    ></ix-menu-settings-item>
+      label="User settings">
+    </ix-menu-settings-item>
 
     <ix-menu-settings-item label="Center settings"></ix-menu-settings-item>
     <ix-menu-settings-item label="Project settings"></ix-menu-settings-item>

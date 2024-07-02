@@ -6,8 +6,7 @@
       <fieldset class="py-2">
         <legend
           style="border-color: var(--theme-color-primary)! important;"
-          class="text-center border-bottom"
-        >
+          class="text-center border-bottom">
           Meta
         </legend>
 
@@ -16,23 +15,20 @@
             class="fw-bold"
             label-position="left"
             value="{{ cookie.user_id }}"
-            label="id"
-          ></ix-key-value>
+            label="id"></ix-key-value>
 
           <ix-key-value
             class="fw-bold"
             label-position="left"
             value="{{ cookie.username }}"
-            label="username"
-          ></ix-key-value>
+            label="username"></ix-key-value>
         </ix-key-value-list>
       </fieldset>
 
       <fieldset class="py-2">
         <legend
           style="border-color: var(--theme-color-primary)! important;"
-          class="text-center border-bottom"
-        >
+          class="text-center border-bottom">
           Current project
         </legend>
 
@@ -42,22 +38,19 @@
             class="fw-bold"
             label-position="left"
             value="{{ project.id }}"
-            label="id"
-          ></ix-key-value>
+            label="id"></ix-key-value>
 
           <ix-key-value
             class="fw-bold"
             label-position="left"
             value="{{ project.name }}"
-            label="name"
-          ></ix-key-value>
+            label="name"></ix-key-value>
 
           <ix-key-value
             class="fw-bold"
             label-position="left"
             value="{{ project.center }}"
-            label="center"
-          ></ix-key-value>
+            label="center"></ix-key-value>
           {% set project = null %}
         </ix-key-value-list>
       </fieldset>
@@ -65,12 +58,11 @@
       <fieldset class="py-2">
         <legend
           style="border-color: var(--theme-color-primary)!important;"
-          class="text-center border-bottom"
-        >
+          class="text-center border-bottom">
           Auth
         </legend>
 
-        {% include 'pages/settings/users/partials/auth.html' %}
+        {% include 'pages/settings/user/partials/auth.html' %}
       </fieldset>
     </div>
   </section>

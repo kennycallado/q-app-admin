@@ -2,17 +2,16 @@
   id="settings-user-form"
   hx-push-url="false"
   hx-trigger="submit"
-  hx-post="{{ url_for('settings.user') }}/project/{{ cookie.user_id }}"
+  hx-post="{{ url_for('settings.user', {id: cookie.user_id}) }}/project"
   hx-target="#settings-user-section"
   hx-swap="outerHTML"
   method="POST"
-  action="{{ url_for('settings.user') }}/project/{{ cookie.user_id }}"
+  action="{{ url_for('settings.user', {id: cookie.user_id}) }}/project"
   onsubmit="
     (async () => {
       await sleep(500); back_arrow(window.location.pathname, false, 'transition:false')
     })()
-  "
->
+  ">
   <input type="hidden" name="_METHOD" value="PATCH" />
   <input type="hidden" name="project" value="" />
 </form>
@@ -22,31 +21,24 @@
     <div slot="custom-value">
       {% set current_project = cookie.project|json_decode %}
 
-      <ix-select
-        value="{{ current_project.id }}">
+      <ix-select value="{{ current_project.id }}">
         {% for center in centers %}
           <optgroup label="{{ center.name }}"></optgroup>
           {% for project in center.projects %}
             <ix-select-item
               label="{{ project.name }}"
-              value="{{ project.id }}"
-            ></ix-select-item>
+              value="{{ project.id }}"></ix-select-item>
           {% endfor %}
         {% endfor %}
 
         <script>
-          me().on("valueChange", (evt) => {
-            me('input[name="project"]', me("#settings-user-form")).value =
-              evt.detail;
-          });
+          me().on('valueChange', (evt) => {
+            me('input[name="project"]', me('#settings-user-form')).value = evt.detail
+          })
         </script>
       </ix-select>
 
-      <button
-        class="btn btn-primary mb-1 ms-1"
-        type="submit"
-        form="settings-user-form"
-      >
+      <button class="btn btn-primary mb-1 ms-1" type="submit" form="settings-user-form">
         Submit
       </button>
 

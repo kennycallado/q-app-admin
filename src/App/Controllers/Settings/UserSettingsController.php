@@ -16,32 +16,32 @@ class UserSettingsController
      */
     public static function routes(Group $group): void
     {
-        $group->get('', [self::class, 'index'])->setName('settings.user');
+        // $group->get('', [self::class, 'index'])->setName('settings.user');
         // $group->post('', [self::class, 'store']);
-
         // $group->get('/create', [self::class, 'create']);
         // $group->post('/delete/{id}', [self::class, 'delete']);
+        // $group->patch('/username/{id}', [self::class, 'patch_username']);
 
-        $group->patch('/username/{id}', [self::class, 'patch_username']);
-        $group->patch('/project/{id}', [self::class, 'patch_project']);
-
-        $group->get('/{id}', [self::class, 'show']);
+        $group->get('/{id}', [self::class, 'show'])->setName('settings.user');
+        $group->patch('/{id}/project', [self::class, 'patch_project']);
     }
 
-    public function index(Request $request, Response $response): Response
-    {
-        $view = Twig::fromRequest($request);
-        $auth = $request->getAttribute('auth');
-
-        $i_db = new SurrealDB('global', 'main', $auth->g_auth);
-
-        $prepare = [
-            'title' => 'users',
-            'users' => []
-        ];
-
-        return $view->render($response, 'pages/settings/users/index.html', $prepare);
-    }
+    /**
+     * public function index(Request $request, Response $response): Response
+     * {
+     *     $view = Twig::fromRequest($request);
+     *     $auth = $request->getAttribute('auth');
+     *
+     *     $i_db = new SurrealDB('global', 'main', $auth->g_auth);
+     *
+     *     $prepare = [
+     *         'title' => 'users',
+     *         'users' => []
+     *     ];
+     *
+     *     return $view->render($response, 'pages/settings/user/index.html', $prepare);
+     * }
+     */
 
     /**
      * @param array $args
@@ -65,7 +65,7 @@ class UserSettingsController
             'centers' => $db_res[0]->result
         ];
 
-        return $view->render($response, 'pages/settings/users/details.html', $prepare);
+        return $view->render($response, 'pages/settings/user/details.html', $prepare);
     }
 
     /**
@@ -97,7 +97,7 @@ class UserSettingsController
         if ($db_res[1]->status !== 'OK') {
             $prepare['error'] = 'You are not authorized to access this project';
 
-            return $view->render($response->withStatus(401), 'pages/settings/users/details.html', $prepare);
+            return $view->render($response->withStatus(401), 'pages/settings/user/details.html', $prepare);
         }
 
         try {
@@ -105,7 +105,7 @@ class UserSettingsController
         } catch (\Exception $e) {
             $prepare['error'] = $e->getMessage();
 
-            return $view->render($response->withStatus(500), 'pages/settings/users/details.html', $prepare);
+            return $view->render($response->withStatus(500), 'pages/settings/user/details.html', $prepare);
         }
 
         // $auth->unset_cookies();
@@ -113,7 +113,8 @@ class UserSettingsController
         $_SESSION['auth'] = $auth;
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $show_url = $routeParser->urlFor('settings.user') . '/' . $auth->user_id;
+        // $show_url = $routeParser->urlFor('settings.user') . '/' . $auth->user_id;
+        $show_url = '/settings/user/' . $auth->user_id;
 
         return $response->withHeader('Location', $show_url)->withStatus(302);
     }
