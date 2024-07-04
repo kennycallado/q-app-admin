@@ -19,16 +19,28 @@ const back_arrow = (url, push = true, swap = "transition:true") => {
  * @returns {void}
  */
 const tabs_content = (el) => {
-  const tabs = any("ix-tab-item", el);
+  const tabs = any("ix-tabs", el);
+  const items = any("ix-tab-item", el);
   const contents = any("[data-tab-content]", el);
 
-  tabs.run((tab) => {
+  items.forEach((tab, i) => {
+    // preselect the tab based on the user's language
+    if (tab.dataset.tabId === navigator.language.split('-')[0]) {
+      me(tab).classAdd("tab-active");
+      me(tabs).setAttribute('selected', i)
+    }
+
+    // preselect the content based on the user's language
+    contents.run((el) => {
+      me(el).classToggle('show', el.dataset.tabContent === navigator.language.split('-')[0])
+    })
+
     me(tab).on("click", () => {
       contents.run((content) =>
         me(content).classToggle("show", content.dataset.tabContent === tab.dataset.tabId),
       );
 
-      tabs.run((t) => me(t).classToggle("tab-active", t.dataset.tabId === tab.dataset.tabId));
+      items.run((t) => me(t).classToggle("tab-active", t.dataset.tabId === tab.dataset.tabId));
     });
   });
 };

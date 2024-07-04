@@ -37,16 +37,14 @@
     <ix-col>
       <div class="rounded-3">
         <ix-tabs class="rounded-top rounded-top-3">
-          <ix-tab-item class="tab-active" data-tab-id="en">En</ix-tab-item>
+          <ix-tab-item data-tab-id="en">En</ix-tab-item>
           <ix-tab-item data-tab-id="es">Es</ix-tab-item>
           <ix-tab-item data-tab-id="ca">Vl</ix-tab-item>
         </ix-tabs>
 
         {% for locale in [ "en", "es", "ca"] %}
           {% set number = loop.index0 %}
-          <div
-            class="p-2 rounded-bottom {{ number == 0 ? 'show' : '' }}"
-            data-tab-content="{{ locale }}">
+          <div class="p-2 rounded-bottom" data-tab-content="{{ locale }}">
             <input
               type="hidden"
               name="content[questions][{{ number }}][locale]"
@@ -57,9 +55,8 @@
                 {% if not edit %}readonly{% endif %}
                 name="content[questions][{{ number }}][question]"
                 placeholder="Enter text"
-                slot="custom-value">
-{{ create ? null : locale_filter(content.questions, locale, 'question')|trim }}</textarea
-              >
+                slot="custom-value"
+              >{{ create ? null : locale_filter(content.questions, locale, 'question')|trim }}</textarea>
             </ix-key-value>
 
             {% if not create %}
