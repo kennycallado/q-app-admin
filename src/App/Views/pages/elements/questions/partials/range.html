@@ -11,8 +11,7 @@
             slot="custom-value"
             name="content[range][max]"
             value="{{ content.range.max }}"
-            placeholder="Enter a number"
-          />
+            placeholder="Enter a number" />
         </ix-key-value>
 
         <ix-key-value class="fw-bold" label-position="left" label="min">
@@ -21,8 +20,7 @@
             slot="custom-value"
             name="content[range][min]"
             value="{{ content.range.min }}"
-            placeholder="Enter a number"
-          />
+            placeholder="Enter a number" />
         </ix-key-value>
 
         <ix-key-value class="fw-bold" label-position="left" label="value">
@@ -31,8 +29,7 @@
             slot="custom-value"
             name="content[range][value]"
             value="{{ content.range.value }}"
-            placeholder="Enter a number"
-          />
+            placeholder="Enter a number" />
         </ix-key-value>
       </ix-key-value-list>
     </ix-col>
@@ -49,25 +46,20 @@
           {% set number = loop.index0 %}
           <div
             class="p-2 rounded-bottom {{ number == 0 ? 'show' : '' }}"
-            data-tab-content="{{ locale }}"
-          >
+            data-tab-content="{{ locale }}">
             <input
               type="hidden"
               name="content[questions][{{ number }}][locale]"
-              value="{{ locale }}"
-            />
+              value="{{ locale }}" />
 
-            <ix-key-value
-              class="fw-bold border-0"
-              orientation="vertical"
-              label="Content"
-            >
+            <ix-key-value class="fw-bold border-0" orientation="vertical" label="Content">
               <textarea
                 {% if not edit %}readonly{% endif %}
                 name="content[questions][{{ number }}][question]"
                 placeholder="Enter text"
-                slot="custom-value"
-              >{{ create ? null : locale_filter(content.questions, locale, 'question')|trim }}</textarea>
+                slot="custom-value">
+{{ create ? null : locale_filter(content.questions, locale, 'question')|trim }}</textarea
+              >
             </ix-key-value>
 
             {% if not create %}
@@ -83,15 +75,13 @@
                   <ix-key-value
                     class="mx-1 fw-bold border-0"
                     orientation="vertical"
-                    label="{{ loop.index }}"
-                  >
+                    label="{{ loop.index }}">
                     <input
                       {% if not edit %}readonly{% endif %}
                       slot="custom-value"
                       name="content[questions][{{ number }}][spelled][]"
                       value="{{ spelled[loop.index0] }}"
-                      placeholder="Enter text"
-                    />
+                      placeholder="Enter text" />
                   </ix-key-value>
                 {% endfor %}
               </div>
@@ -102,10 +92,10 @@
 
         <script>
           me().run((el) =>
-            typeof tabs_content === "function"
+            typeof tabs_content === 'function'
               ? tabs_content(el)
               : onloadAdd((_) => tabs_content(el)),
-          );
+          )
         </script>
       </div>
     </ix-col>

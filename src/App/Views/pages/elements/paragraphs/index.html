@@ -6,8 +6,7 @@
       hx-push-url="true"
       hx-get="{{ url_for('paragraphs') }}/create"
       hx-target="#content"
-      hx-swap="transition:true"
-    >
+      hx-swap="transition:true">
       Create
     </ix-button>
   </ix-content-header>
@@ -21,8 +20,7 @@
           class="mb-2 border-bottom align-items-end"
           header-title="{{ paragraph.ref }}"
           header-subtitle="{{ paragraph.content[0].text }}"
-          variant="secondary"
-        >
+          variant="secondary">
           <ix-icon-button
             hx-get="{{ url_for('paragraphs') }}/{{ paragraph.id }}"
             hx-target="#content"
@@ -30,8 +28,7 @@
             class="d-none d-md-inline-block"
             icon="eye"
             variant=""
-            ghost
-          >
+            ghost>
             Show
           </ix-icon-button>
 
@@ -42,8 +39,7 @@
             class="d-none d-md-inline-block"
             icon="pen"
             variant=""
-            ghost
-          >
+            ghost>
             Edit
           </ix-icon-button>
 
@@ -55,8 +51,7 @@
             hx-swap="transition:true"
             class="d-none d-md-inline-block"
             icon="trashcan"
-            ghost
-          >
+            ghost>
             Delete
           </ix-icon-button>
 
@@ -64,8 +59,7 @@
             id="elements-paragraphs-index-options-{{ loop.index }}"
             class="d-inline-block d-md-none"
             icon="context-menu"
-            ghost
-          >
+            ghost>
             Options
           </ix-icon-button>
 
@@ -75,8 +69,7 @@
               hx-target="#content"
               hx-swap="transition:true"
               icon="eye"
-              label="Show"
-            >
+              label="Show">
             </ix-dropdown-item>
 
             <ix-dropdown-item
@@ -84,8 +77,7 @@
               hx-target="#content"
               hx-swap="transition:true"
               icon="pen"
-              label="Edit"
-            >
+              label="Edit">
             </ix-dropdown-item>
 
             <ix-dropdown-item
@@ -95,23 +87,22 @@
               hx-target="#content"
               hx-swap="transition:true"
               icon="trashcan"
-              label="Delete"
-            >
+              label="Delete">
             </ix-dropdown-item>
           </ix-dropdown>
 
           <script>
             me().run((el) => {
               const paragraphs = {{ paragraph.content|json_encode|raw }};
-              const lang = navigator.language.split("-")[0];
+              const lang = navigator.language.split('-')[0]
 
               for (let paragraph of paragraphs) {
                 if (paragraph.locale === lang)
                   if (paragraph.text.length > 60)
-                    el.headerSubtitle = paragraph.text.substring(0, 60) + "...";
-                  else el.headerSubtitle = paragraph.text;
+                    el.headerSubtitle = paragraph.text.substring(0, 60) + '...'
+                  else el.headerSubtitle = paragraph.text
               }
-            });
+            })
           </script>
         </ix-content-header>
       {% endfor %}

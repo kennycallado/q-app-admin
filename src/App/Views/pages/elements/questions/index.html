@@ -1,11 +1,7 @@
 {% extends 'shared/layouts/main.html' %}
 
 {% block main %}
-  <ix-content-header
-    slot="header"
-    has-back-button="false"
-    header-title="Questions"
-  >
+  <ix-content-header slot="header" has-back-button="false" header-title="Questions">
     <ix-button id="questions-index-create">Create</ix-button>
 
     <ix-dropdown trigger="questions-index-create">
@@ -15,8 +11,7 @@
         hx-target="#content"
         hx-swap="transition:true"
         icon="text"
-        label="Text"
-      ></ix-dropdown-item>
+        label="Text"></ix-dropdown-item>
 
       <ix-dropdown-item
         hx-push-url="true"
@@ -24,8 +19,7 @@
         hx-target="#content"
         hx-swap="transition:true"
         icon="document"
-        label="Range"
-      ></ix-dropdown-item>
+        label="Range"></ix-dropdown-item>
     </ix-dropdown>
   </ix-content-header>
 
@@ -38,8 +32,7 @@
           class="mb-2 border-bottom align-items-end"
           header-title="{{ question.ref }}"
           header-subtitle="{{ question.content.questions[0].question }}"
-          variant="secondary"
-        >
+          variant="secondary">
           <ix-icon-button
             hx-get="{{ url_for('questions') }}/{{ question.id }}"
             hx-target="#content"
@@ -47,8 +40,7 @@
             class="d-none d-md-inline-block"
             icon="eye"
             variant=""
-            ghost
-          >
+            ghost>
             Show
           </ix-icon-button>
 
@@ -59,8 +51,7 @@
             class="d-none d-md-inline-block"
             icon="pen"
             variant=""
-            ghost
-          >
+            ghost>
             Edit
           </ix-icon-button>
 
@@ -72,8 +63,7 @@
             hx-swap="transition:true"
             class="d-none d-md-inline-block"
             icon="trashcan"
-            ghost
-          >
+            ghost>
             Delete
           </ix-icon-button>
 
@@ -81,21 +71,17 @@
             id="elements-questions-index-options-{{ loop.index }}"
             class="d-inline-block d-md-none"
             icon="context-menu"
-            ghost
-          >
+            ghost>
             Options
           </ix-icon-button>
 
-          <ix-dropdown
-            trigger="elements-questions-index-options-{{ loop.index }}"
-          >
+          <ix-dropdown trigger="elements-questions-index-options-{{ loop.index }}">
             <ix-dropdown-item
               hx-get="{{ url_for('questions') }}/{{ question.id }}"
               hx-target="#content"
               hx-swap="transition:true"
               icon="eye"
-              label="Show"
-            >
+              label="Show">
             </ix-dropdown-item>
 
             <ix-dropdown-item
@@ -103,8 +89,7 @@
               hx-target="#content"
               hx-swap="transition:true"
               icon="pen"
-              label="Edit"
-            >
+              label="Edit">
             </ix-dropdown-item>
 
             <ix-dropdown-item
@@ -114,23 +99,22 @@
               hx-target="#content"
               hx-swap="transition:true"
               icon="trashcan"
-              label="Delete"
-            >
+              label="Delete">
             </ix-dropdown-item>
           </ix-dropdown>
 
           <script>
             me().run((el) => {
               const questions = {{ question.content.questions|json_encode|raw }};
-              const lang = navigator.language.split("-")[0];
+              const lang = navigator.language.split('-')[0]
 
               for (let content of questions) {
                 if (content.locale === lang)
                   if (content.question.length > 60)
-                    el.headerSubtitle = content.question.substring(0, 60) + "...";
-                  else el.headerSubtitle = content.question;
+                    el.headerSubtitle = content.question.substring(0, 60) + '...'
+                  else el.headerSubtitle = content.question
               }
-            });
+            })
           </script>
         </ix-content-header>
       {% endfor %}

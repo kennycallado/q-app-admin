@@ -3,7 +3,6 @@
 
 <ix-layout-grid gap="8">
   <ix-row>
-
     <ix-col size="12" size-md="3" size-lg="3">
       <ix-key-value-list class="d-block rounded-3 p-2">
         <ix-key-value class="fw-bold" label-position="left" label="max">
@@ -12,8 +11,7 @@
             slot="custom-value"
             name="content[text][max]"
             value="{{ content.text.max }}"
-            placeholder="Enter a number"
-          />
+            placeholder="Enter a number" />
         </ix-key-value>
 
         <ix-key-value class="fw-bold" label-position="left" label="min">
@@ -22,8 +20,7 @@
             slot="custom-value"
             name="content[text][min]"
             value="{{ content.text.min }}"
-            placeholder="Enter a number"
-          />
+            placeholder="Enter a number" />
         </ix-key-value>
       </ix-key-value-list>
     </ix-col>
@@ -40,25 +37,20 @@
           {% set number = loop.index0 %}
           <div
             class="p-2 rounded-bottom {{ number == 0 ? 'show' : '' }}"
-            data-tab-content="{{ locale }}"
-          >
+            data-tab-content="{{ locale }}">
             <input
               type="hidden"
               name="content[questions][{{ number }}][locale]"
-              value="{{ locale }}"
-            />
+              value="{{ locale }}" />
 
-            <ix-key-value
-              class="fw-bold border-0"
-              orientation="vertical"
-              label="Content"
-            >
+            <ix-key-value class="fw-bold border-0" orientation="vertical" label="Content">
               <textarea
                 {% if not edit %}readonly{% endif %}
                 name="content[questions][{{ number }}][question]"
                 placeholder="Enter text"
-                slot="custom-value"
-              >{{ create ? null : locale_filter(content.questions, locale, 'question')|trim }}</textarea>
+                slot="custom-value">
+                {{ create ? null : locale_filter(content.questions, locale, 'question')|trim }}
+              </textarea>
             </ix-key-value>
           </div>
           {% set number = null %}
@@ -66,14 +58,13 @@
 
         <script>
           me().run((el) =>
-            typeof tabs_content === "function"
+            typeof tabs_content === 'function'
               ? tabs_content(el)
               : onloadAdd((_) => tabs_content(el)),
-          );
+          )
         </script>
       </div>
     </ix-col>
-
   </ix-row>
 </ix-layout-grid>
 {% set content = null %}
