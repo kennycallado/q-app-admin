@@ -30,8 +30,8 @@
     <script src="/public/assets/js/surreal.js"></script>
   </head>
 
-  {% block body %}
-    <body>
+  <body>
+    {% block body %}
       <ix-application>
         {% include 'shared/layouts/partials/header.html' %}
         {% include 'shared/layouts/partials/menu.html' %}
@@ -41,6 +41,6 @@
           {% block main %}{% endblock %}
         </ix-content>
       </ix-application>
-    </body>
-  {% endblock %}
+    {% endblock %}
+  </body>
 </html>
