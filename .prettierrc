@@ -1,12 +1,14 @@
 {
-  "printWidth": 96,
-  "bracketSameLine": true,
   "semi": false,
+  "printWidth": 96,
   "singleQuote": true,
+  "bracketSameLine": true,
+  "singleAttributePerLine": true,
   "plugins": ["prettier-plugin-jinja-template"],
   "overrides": [
     {
       "files": ["*.html"],
+      "singleAttributePerLine": true,
       "options": {
         "parser": "jinja-template"
       }

@@ -1,7 +1,0 @@
-POST http://localhost:5000/auth/login
-Accept: application/json
-
-{
-  "username": "thera",
-  "password": "thera"
-}
