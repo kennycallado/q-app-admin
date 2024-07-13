@@ -45,7 +45,7 @@ class MediaController
             'media' => $mediaRepository->all()
         ];
 
-        return $view->render($response, 'pages/elements/media/index.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/media/index.html', $prepare);
     }
 
     /**
@@ -64,7 +64,7 @@ class MediaController
             'no_header' => $this->no_header($request)
         ];
 
-        return $view->render($response, 'pages/elements/media/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/media/details.html', $prepare);
     }
 
     /**
@@ -88,7 +88,7 @@ class MediaController
             'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
-        return $view->render($response, 'pages/elements/media/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/media/details.html', $prepare);
     }
 
     /**

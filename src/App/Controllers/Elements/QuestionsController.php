@@ -45,7 +45,7 @@ class QuestionsController
             'questions' => $questionsRepository->all()
         ];
 
-        return $view->render($response, 'pages/elements/questions/index.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/questions/index.html', $prepare);
     }
 
     /**
@@ -64,7 +64,7 @@ class QuestionsController
             'edit' => true
         ];
 
-        return $view->render($response, 'pages/elements/questions/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/questions/details.html', $prepare);
     }
 
     /**
@@ -88,7 +88,7 @@ class QuestionsController
             'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
-        return $view->render($response, 'pages/elements/questions/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/questions/details.html', $prepare);
     }
 
     /**

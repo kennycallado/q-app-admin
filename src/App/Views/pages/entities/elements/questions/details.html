@@ -47,9 +47,9 @@
 
 {% block content %}
   {% if type == 'text' %}
-    {% include 'pages/elements/questions/partials/text.html' %}
+    {% include 'pages/entities/elements/questions/partials/text.html' %}
     {% elseif type == 'range' %}
-    {% include 'pages/elements/questions/partials/range.html' %}
+    {% include 'pages/entities/elements/questions/partials/range.html' %}
   {% else %}
     <strong>Warning!</strong> This type of question is not supported yet.
   {% endif %}

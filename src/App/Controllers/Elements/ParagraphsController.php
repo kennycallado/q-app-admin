@@ -45,7 +45,7 @@ class ParagraphsController
             'paragraphs' => $paragraphsRepository->all()
         ];
 
-        return $view->render($response, 'pages/elements/paragraphs/index.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/paragraphs/index.html', $prepare);
     }
 
     /**
@@ -63,7 +63,7 @@ class ParagraphsController
             'edit' => true
         ];
 
-        return $view->render($response, 'pages/elements/paragraphs/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/paragraphs/details.html', $prepare);
     }
 
     /**
@@ -87,7 +87,7 @@ class ParagraphsController
             'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
-        return $view->render($response, 'pages/elements/paragraphs/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/paragraphs/details.html', $prepare);
     }
 
     /**
