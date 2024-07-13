@@ -25,7 +25,7 @@
     </script>
     <script defer src="https://unpkg.com/htmx.org@2.0.0"></script>
     <script defer type="module" src="/public/assets/js/main.js"></script>
-
+    <script defer src="/public/assets/htmx.org/dist/htmx.js"></script>
     <script defer src="/public/assets/js/utils.js"></script>
     <script src="/public/assets/js/surreal.js"></script>
   </head>
@@ -37,7 +37,7 @@
         {% include 'shared/layouts/partials/menu.html' %}
         {% include 'shared/layouts/partials/pane.html' %}
 
-        <ix-content hx-ext="response-targets" class="sample-transition" id="content">
+        <ix-content class="sample-transition" id="content">
           {% block main %}{% endblock %}
         </ix-content>
       </ix-application>

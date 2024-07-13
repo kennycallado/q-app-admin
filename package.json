@@ -9,7 +9,7 @@
   "dependencies": {
     "@siemens/ix": "^2.2.1",
     "@siemens/ix-icons": "^2.1.0",
-    "htmx.org": "^1.9.12"
+    "htmx.org": "^2.0.0"
   },
   "devDependencies": {
     "prettier": "^3.3.2",

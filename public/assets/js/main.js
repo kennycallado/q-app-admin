@@ -1,8 +1,6 @@
 // import '/public/assets/bootstrap/dist/js/bootstrap.bundle.min.js'
 // import '/public/assets/@siemens/ix/dist/index.js'
 
-// import '/public/assets/htmx.org/dist/htmx.js'
-import "/public/assets/htmx.org/dist/ext/response-targets.js";
 
 import "./ix_init.js";
 import "./theme_mode.js";
