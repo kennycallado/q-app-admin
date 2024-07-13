@@ -27,34 +27,36 @@
     </ix-key-value>
 
     <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="type">
+      {% set type_uid = gen_uid() %}
       <div slot="custom-value" class="d-flex">
         <input
           {% if paragraph.type == 'text' %}checked{% endif %}
           {% if not edit %}disabled{% endif %}
-          id="form-type-text"
+          id="form-type-text-{{ type_uid }}"
           name="type"
           value="text"
           type="radio" />
-        <label for="form-type-text">text</label>
+        <label for="form-type-text-{{ type_uid }}">text</label>
 
         <input
           {% if paragraph.type == 'h2' %}checked{% endif %}
           {% if not edit %}disabled{% endif %}
-          id="form-type-h2"
+          id="form-type-h2-{{ type_uid }}"
           name="type"
           value="h2"
           type="radio" />
-        <label for="form-type-h2">h2</label>
+        <label for="form-type-h2-{{ type_uid }}">h2</label>
 
         <input
           {% if paragraph.type == 'h3' %}checked{% endif %}
           {% if not edit %}disabled{% endif %}
-          id="form-type-h3"
+          id="form-type-h3-{{ type_uid }}"
           name="type"
           value="h3"
           type="radio" />
-        <label for="form-type-h3">h3</label>
+        <label for="form-type-h3-{{ type_uid }}">h3</label>
       </div>
+      {% set type_uid = null %}
     </ix-key-value>
   </ix-key-value-list>
 {% endblock %}

@@ -41,14 +41,15 @@
 {% endblock %}
 
 {% block section %}
-  <section class="card" id="elements-{{ entity_name }}-details">
+  {% set uid = gen_uid() %}
+  <section class="card" id="details-section-{{ uid }}">
     <div class="card-body">
       {% if edit %}
       <form
         hx-trigger="submit"
         {% if no_header %}
           hx-push-url="false" hx-post="{{ url_action }}?no_header=1"
-          hx-target="#elements-{{ entity_name }}-details" hx-swap="outerHTML"
+          hx-target="#details-section-{{ uid }}" hx-swap="outerHTML"
         {% else %}
           hx-push-url="true" hx-post="{{ url_action }}" hx-target="#content"
           hx-swap="transition:true"
@@ -90,7 +91,7 @@
               {% if no_header %}
                 hx-push-url="false"
                 hx-get="{{ url_action }}?{{ edit ? 'no_header=1' : 'no_header=1&edit=1' }}"
-                hx-target="#elements-{{ entity_name }}-details" hx-swap="outerHTML"
+                hx-target="#details-section-{{ uid }}" hx-swap="outerHTML"
               {% else %}
                 hx-push-url="true" hx-get="{{ url_action }}?{{ edit ? '' : 'edit=1' }}"
                 hx-target="#content" hx-swap="transition:true"
@@ -114,4 +115,5 @@
       {% endif %}
     </div>
   </section>
+  {% set uid = null %}
 {% endblock %}

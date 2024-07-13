@@ -4,8 +4,7 @@ namespace Core;
 
 use Slim\Views\Twig;
 use Twig\TwigFilter;
-
-// use Twig\TwigFunction;
+use Twig\TwigFunction;
 
 class Render
 {
@@ -20,11 +19,9 @@ class Render
             return json_decode($content);
         }));
 
-        /*
-         * $twig->getEnvironment()->addFunction(new TwigFunction('get_cookie', function () {
-         *     return $_COOKIE;
-         * }));
-         */
+        $twig->getEnvironment()->addFunction(new TwigFunction('gen_uid', function ($prefix = 'q-admin') {
+            return uniqid($prefix);
+        }));
 
         return $twig;
     }
