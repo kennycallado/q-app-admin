@@ -1,4 +1,4 @@
-{% extends _hx_request == false ? 'shared/layouts/base.html' : 'shared/layouts/clear.html' %}
+{% extends is_hx_request == false ? 'shared/layouts/base.html' : 'shared/layouts/clear.html' %}
 
 {% block main %}
   {% block header %} {% endblock %}

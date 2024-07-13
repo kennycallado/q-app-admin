@@ -13,7 +13,7 @@ class Render
     {
         $twig = Twig::create(__DIR__ . '/../App/Views/', ['cache' => false]);
 
-        $twig->getEnvironment()->addGlobal('_hx_request', $_SERVER['HTTP_HX_REQUEST'] ?? false);
+        $twig->getEnvironment()->addGlobal('is_hx_request', $_SERVER['HTTP_HX_REQUEST'] ?? false);
         $twig->getEnvironment()->addGlobal('cookie', $_COOKIE ?? false);
 
         $twig->getEnvironment()->addFilter(new TwigFilter('json_decode', function ($content) {
