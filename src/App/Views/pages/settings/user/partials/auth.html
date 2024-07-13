@@ -12,12 +12,21 @@
       await sleep(500); back_arrow(window.location.pathname, false, 'transition:false')
     })()
   ">
-  <input type="hidden" name="_METHOD" value="PATCH" />
-  <input type="hidden" name="project" value="" />
+  <input
+    type="hidden"
+    name="_METHOD"
+    value="PATCH" />
+  <input
+    type="hidden"
+    name="project"
+    value="" />
 </form>
 
 <ix-key-value-list class="d-block p-2 rounded-3">
-  <ix-key-value class="fw-bold" label-position="left" label="projects">
+  <ix-key-value
+    class="fw-bold"
+    label-position="left"
+    label="projects">
     <div slot="custom-value">
       {% set current_project = cookie.project|json_decode %}
 
@@ -38,7 +47,10 @@
         </script>
       </ix-select>
 
-      <button class="btn btn-primary mb-1 ms-1" type="submit" form="settings-user-form">
+      <button
+        class="btn btn-primary mb-1 ms-1"
+        type="submit"
+        form="settings-user-form">
         Submit
       </button>
 

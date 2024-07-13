@@ -23,8 +23,7 @@
   <section
     id="login-select-section"
     class="d-flex justify-content-center align-items-center pt-5"
-    aria-lable="Sign in form"
-  >
+    aria-lable="Sign in form">
     <div class="card my-2 p-4 pb-2 text-center shadow-lg">
       <div class="d-flex">
         <h1 class="text-start ms-3 mb-0 ps-1">iPsitec</h1>
@@ -33,10 +32,17 @@
           class="btn ms-auto text-light"
           onclick="back_arrow('/') "
           variant="secondary"
-          ghost
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16" >
-            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+          ghost>
+          <svg
+            width="24"
+            height="24"
+            class="bi bi-arrow-left"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 16 16">
+            <path
+              fill-rule="evenodd"
+              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
           </svg>
         </ix-button>
       </div>
@@ -55,15 +61,25 @@
         hx-target="body"
         hx-swap="transition:true"
         method="POST"
-        action="{{ url_for('login_select') }}"
-      >
-        <input type="hidden" name="_METHOD" value="PATCH" />
+        action="{{ url_for('login_select') }}">
+        <input
+          type="hidden"
+          name="_METHOD"
+          value="PATCH" />
 
         <div class="mb-3 text-start">
           <label class="w-100 fw-bold">
             Project:
-            <select id="project-select" class="w-100 select" name="project">
-              <option value="" disabled selected>Select an option</option>
+            <select
+              id="project-select"
+              class="w-100 select"
+              name="project">
+              <option
+                value=""
+                disabled
+                selected>
+                Select an option
+              </option>
 
               {% for center in centers %}
                 <optgroup label="{{ center.name }}">
@@ -81,9 +97,18 @@
         </div>
 
         <div class="text-end">
-          <ix-button type="submit" class="me-auto">Submit</ix-button>
+          <ix-button
+            type="submit"
+            class="me-auto">
+            Submit
+          </ix-button>
+
           <noscript>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button
+              type="submit"
+              class="btn btn-primary">
+              Submit
+            </button>
           </noscript>
         </div>
       </form>
@@ -91,9 +116,12 @@
       {% if error %}
         <div
           id="login-select-error"
-          class="position-fixed bottom-0 start-50 translate-middle"
+          class="position-fixed bottom-0 start-50 translate-middle">
+          <ix-message-bar
+            class="timedMessage"
+            type="warning"
+            >{{ error }}</ix-message-bar
           >
-          <ix-message-bar class="timedMessage" type="warning">{{ error }}</ix-message-bar>
         </div>
       {% endif %}
     </div>

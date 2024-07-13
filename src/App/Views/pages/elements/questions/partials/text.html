@@ -3,9 +3,15 @@
 
 <ix-layout-grid gap="8">
   <ix-row>
-    <ix-col size="12" size-md="3" size-lg="3">
+    <ix-col
+      size="12"
+      size-md="3"
+      size-lg="3">
       <ix-key-value-list class="d-block rounded-3 p-2">
-        <ix-key-value class="fw-bold" label-position="left" label="max">
+        <ix-key-value
+          class="fw-bold"
+          label-position="left"
+          label="max">
           <input
             {% if not edit %}readonly{% endif %}
             slot="custom-value"
@@ -14,7 +20,10 @@
             placeholder="Enter a number" />
         </ix-key-value>
 
-        <ix-key-value class="fw-bold" label-position="left" label="min">
+        <ix-key-value
+          class="fw-bold"
+          label-position="left"
+          label="min">
           <input
             {% if not edit %}readonly{% endif %}
             slot="custom-value"
@@ -35,19 +44,25 @@
 
         {% for locale in [ "en", "es", "ca"] %}
           {% set number = loop.index0 %}
-          <div class="p-2 rounded-bottom" data-tab-content="{{ locale }}">
+          <div
+            class="p-2 rounded-bottom"
+            data-tab-content="{{ locale }}">
             <input
               type="hidden"
               name="content[questions][{{ number }}][locale]"
               value="{{ locale }}" />
 
-            <ix-key-value class="fw-bold border-0" orientation="vertical" label="Content">
+            <ix-key-value
+              class="fw-bold border-0"
+              orientation="vertical"
+              label="Content">
               <textarea
                 {% if not edit %}readonly{% endif %}
                 name="content[questions][{{ number }}][question]"
                 placeholder="Enter text"
-                slot="custom-value"
-              >{{ create ? null : locale_filter(content.questions, locale, 'question')|trim }}</textarea>
+                slot="custom-value">
+{{ create ? null : locale_filter(content.questions, locale, 'question')|trim }}</textarea
+              >
             </ix-key-value>
           </div>
           {% set number = null %}

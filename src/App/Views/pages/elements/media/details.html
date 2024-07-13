@@ -9,7 +9,11 @@
 {% block meta %}
   <ix-key-value-list class="d-block rounded-3 p-2">
     {% if media.id %}
-      <ix-key-value class="fw-bold" label-position="left" value="{{ media.id }}" label="id">
+      <ix-key-value
+        class="fw-bold"
+        label-position="left"
+        value="{{ media.id }}"
+        label="id">
       </ix-key-value>
     {% endif %}
 
@@ -26,8 +30,13 @@
         placeholder="Enter slug" />
     </ix-key-value>
 
-    <ix-key-value orientation="vertical" label-position="left" label="type">
-      <div slot="custom-value" class="d-flex">
+    <ix-key-value
+      orientation="vertical"
+      label-position="left"
+      label="type">
+      <div
+        slot="custom-value"
+        class="d-flex">
         <input
           {% if media.type == 'image' %}checked{% endif %}
           {% if not edit %}disabled{% endif %}
@@ -52,7 +61,11 @@
 
 {% block content %}
   <ix-key-value-list class="d-block rounded-3 p-2">
-    <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="alt text">
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="alt text">
       <input
         {% if not edit %}readonly{% endif %}
         name="alt"
@@ -61,7 +74,11 @@
         placeholder="Enter an alternative text" />
     </ix-key-value>
 
-    <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="url">
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="url">
       <input
         {% if not edit %}readonly{% endif %}
         name="url"

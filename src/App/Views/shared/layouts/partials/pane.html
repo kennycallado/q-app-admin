@@ -2,9 +2,11 @@
   class="d-none"
   variant="floating"
   layout="full-vertical"
-  id="preview-pane-phone"
->
-  <ix-pane heading="Preview" slot="right" size="420px">
+  id="preview-pane-phone">
+  <ix-pane
+    heading="Preview"
+    slot="right"
+    size="420px">
     <style>
       #preview-pane-phone-iframe {
         position: relative;
@@ -32,7 +34,7 @@
         width: 100%;
         height: 100%;
 
-        background-image: url("https://wallpapers.hector.me/wavey/Rainbow%20iPhone%20P3.jpg");
+        background-image: url('https://wallpapers.hector.me/wavey/Rainbow%20iPhone%20P3.jpg');
         background-repeat: no-repeat;
         background-size: cover;
 
@@ -114,22 +116,26 @@
     <div class="mobile-phone">
       <div class="brove"><span class="speaker"></span></div>
       <div class="screen">
-        <ix-card class="app-icon" variant="neutral">
+        <ix-card
+          class="app-icon"
+          variant="neutral">
           <ix-icon
             onclick="me('#preview-pane-phone-iframe').trigger('customOpen')"
             style="width: 50px; height: 50px; color: var(--theme-color-4);"
-            name="rocket"
-          >
+            name="rocket">
           </ix-icon>
         </ix-card>
 
-        <iframe class="d-none" id="preview-pane-phone-iframe" src=""></iframe>
+        <iframe
+          class="d-none"
+          id="preview-pane-phone-iframe"
+          src=""></iframe>
         <script>
-          me("-")
-            .on("customClose", (evt) => (me(evt.target).classAdd("d-none").src = ""))
-            .on("customOpen", (evt) => {
-              me(evt.target).classRemove("d-none").src = "https://getbootstrap.com/";
-            });
+          me('-')
+            .on('customClose', (evt) => (me(evt.target).classAdd('d-none').src = ''))
+            .on('customOpen', (evt) => {
+              me(evt.target).classRemove('d-none').src = 'https://getbootstrap.com/'
+            })
         </script>
       </div>
 
@@ -137,8 +143,7 @@
         <ix-icon
           onclick="me('#preview-pane-phone-iframe').trigger('customClose')"
           name="arrow-left"
-          class="back-icon"
-        >
+          class="back-icon">
         </ix-icon>
       </div>
     </div>

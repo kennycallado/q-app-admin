@@ -1,5 +1,4 @@
 {% extends 'shared/layouts/details.html' %}
-
 {% set type = type ? type : question.type %}
 {% set entity_id = question.id %}
 {% set entity_name = question.ref %}
@@ -8,7 +7,11 @@
 {% block meta %}
   <ix-key-value-list class="d-block rounded-3 p-2">
     {% if question.id %}
-      <ix-key-value class="fw-bold" value="{{ question.id }}" label-position="left" label="id">
+      <ix-key-value
+        class="fw-bold"
+        value="{{ question.id }}"
+        label-position="left"
+        label="id">
       </ix-key-value>
     {% endif %}
 
@@ -25,7 +28,11 @@
         placeholder="Enter slug" />
     </ix-key-value>
 
-    <ix-key-value class="fw-bold" orientation="vertical" label-position="left" label="type">
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="type">
       <input
         slot="custom-value"
         readonly

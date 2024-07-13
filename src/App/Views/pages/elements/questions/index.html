@@ -1,7 +1,10 @@
 {% extends 'shared/layouts/main.html' %}
 
 {% block main %}
-  <ix-content-header slot="header" has-back-button="false" header-title="Questions">
+  <ix-content-header
+    slot="header"
+    has-back-button="false"
+    header-title="Questions">
     <ix-button id="questions-index-create">Create</ix-button>
 
     <ix-dropdown trigger="questions-index-create">
@@ -23,7 +26,9 @@
     </ix-dropdown>
   </ix-content-header>
 
-  <section class="card" id="examples-questions-index">
+  <section
+    class="card"
+    id="examples-questions-index">
     <div class="card-body">
       {% for question in questions %}
         <ix-content-header
