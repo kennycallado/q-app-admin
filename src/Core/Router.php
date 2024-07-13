@@ -3,6 +3,7 @@
 namespace Core;
 
 use App\Controllers\Elements\ElementsRouter;
+use App\Controllers\Resources\ResourcesRouter;
 use App\Controllers\Settings\SettingsRouter;
 use App\Controllers\AuthController;
 use App\Controllers\ExamplesController;
@@ -37,6 +38,10 @@ class Router
 
         $app->group('/settings', function (Group $group) {
             SettingsRouter::routes($group);
+        })->add(AuthMiddleware::class);
+
+        $app->group('/resources', function (Group $group) {
+            ResourcesRouter::routes($group);
         })->add(AuthMiddleware::class);
 
         $app->group('/examples', function (Group $group) {
