@@ -19,7 +19,7 @@ class Render
             return json_decode($content);
         }));
 
-        $twig->getEnvironment()->addFunction(new TwigFunction('gen_uid', function ($prefix = 'q-admin') {
+        $twig->getEnvironment()->addFunction(new TwigFunction('gen_uid', function ($prefix = 'q-admin-') {
             return uniqid($prefix);
         }));
 
