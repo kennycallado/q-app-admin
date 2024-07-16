@@ -72,7 +72,7 @@ class SlidesController
         $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
 
         // TODO: implement repository
-        $db_res = $i_db->rawQuery('SELECT * FROM slides;');
+        $db_res = $i_db->rawQuery("SELECT * FROM {$args['id']};");
         if (isset($db_res->code) || $db_res[0]->status !== 'OK') {
             return $view->render($response, 'pages/resources/slides/index.html');
         }
