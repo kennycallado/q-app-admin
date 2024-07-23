@@ -27,7 +27,7 @@
           header-subtitle="{{ slide.title }}"
           variant="secondary">
           <ix-icon-button
-            hx-get="{{ url_for('resources.slides.show', { 'id': slide.id }) }}"
+            hx-get="{{ url_for('resources.slides.details', { 'id': slide.id }) }}"
             hx-target="#content"
             hx-swap="transition:true"
             class="d-none d-md-inline-block"
@@ -38,7 +38,7 @@
           </ix-icon-button>
 
           <ix-icon-button
-            hx-get="{{ url_for('resources.slides.show', { 'id': slide.id }) }}?edit=1"
+            hx-get="{{ url_for('resources.slides.details', { 'id': slide.id }) }}?edit=1"
             hx-target="#content"
             hx-swap="transition:true"
             class="d-none d-md-inline-block"
@@ -70,7 +70,7 @@
 
           <ix-dropdown trigger="elements-media-index-options-{{ loop.index }}">
             <ix-dropdown-item
-              hx-get="{{ url_for('resources.slides.show', { 'id': slide.id }) }}"
+              hx-get="{{ url_for('resources.slides.details', { 'id': slide.id }) }}"
               hx-target="#content"
               hx-swap="transition:true"
               icon="eye"
@@ -78,7 +78,7 @@
             </ix-dropdown-item>
 
             <ix-dropdown-item
-              hx-get="{{ url_for('resources.slides.show', { 'id': slide.id }) }}?edit=1"
+              hx-get="{{ url_for('resources.slides.details', { 'id': slide.id }) }}?edit=1"
               hx-target="#content"
               hx-swap="transition:true"
               icon="pen"

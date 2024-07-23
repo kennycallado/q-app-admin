@@ -23,7 +23,7 @@ class SlidesController
         $group->get('/create', [self::class, 'create'])->setName('resources.slides.create');
         $group->post('/delete/{id}', [self::class, 'delete'])->setName('resources.slides.delete');
 
-        $group->get('/{id}', [self::class, 'show'])->setName('resources.slides.show');
+        $group->get('/{id}', [self::class, 'show'])->setName('resources.slides.details');
         $group->patch('/{id}', [self::class, 'update']);
     }
 
