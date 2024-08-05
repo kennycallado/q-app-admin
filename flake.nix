@@ -23,10 +23,6 @@
             packages = with pkgs; [
               php82
               php82Packages.composer
-              # php82Extensions.xml
-              # php82Extensions.curl
-              # php82Extensions.pcov
-              # php82Extensions.mbstring
 
               nodejs_20
             ];
@@ -51,7 +47,11 @@
               echo `${pkgs.nodejs_20}/bin/npm install`
               echo 
               echo "Done! 📦"
-              echo
+              echo "=================="
+              echo "Compiling templates:"
+              echo `${pkgs.nodejs_20}/bin/npm run build`
+              echo 
+              echo "Done! 🎉"
               echo "=================="
               echo " ready to rock! 🚀"
               echo "=================="

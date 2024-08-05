@@ -1,4 +1,13 @@
 services:
+  eleventy:
+    container_name: 11ty
+    image: node:lts-slim # zx needs bash
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: npm run dev
+    restart: always
+
   nginx:
     image: nginx:alpine
     ports:
