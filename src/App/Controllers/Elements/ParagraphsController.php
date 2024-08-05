@@ -17,13 +17,15 @@ class ParagraphsController
      */
     public static function routes(Group $group): void
     {
-        $group->get('', [self::class, 'index'])->setName('paragraphs');
+        $tag = 'elements.paragraphs';
+
+        $group->get('', [self::class, 'index'])->setName($tag);
         $group->post('', [self::class, 'store']);
 
-        $group->get('/create', [self::class, 'create']);
-        $group->post('/delete/{id}', [self::class, 'delete']);
+        $group->get('/create', [self::class, 'create'])->setName("{$tag}.create");
+        $group->post('/delete/{id}', [self::class, 'delete'])->setName("{$tag}.delete");
 
-        $group->get('/{id}', [self::class, 'show']);
+        $group->get('/{id}', [self::class, 'show'])->setName("{$tag}.details");
         $group->patch('/{id}', [self::class, 'update']);
     }
 
@@ -60,10 +62,11 @@ class ParagraphsController
         $prepare = [
             'title' => 'paragraph',
             'create' => true,
-            'edit' => true
+            'edit' => true,
+            'no_header' => $this->no_header($request) ?? null
         ];
 
-        return $view->render($response, 'pages/entities/elements/paragraphs/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/paragraphs/create.html', $prepare);
     }
 
     /**
@@ -87,7 +90,11 @@ class ParagraphsController
             'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
-        return $view->render($response, 'pages/entities/elements/paragraphs/details.html', $prepare);
+        if ($prepare['edit']) {
+            return $view->render($response, 'pages/entities/elements/paragraphs/edit.html', $prepare);
+        }
+
+        return $view->render($response, 'pages/entities/elements/paragraphs/show.html', $prepare);
     }
 
     /**
@@ -111,7 +118,9 @@ class ParagraphsController
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $paragraphs_url = $routeParser->urlFor('paragraphs') . '/' . $paragraph->id;
+
+        $header = $this->no_header($request) ? '?no_header=1' : '';
+        $paragraphs_url = $routeParser->urlFor('elements.paragraphs.details', ['id' => $paragraph->id]) . $header;
 
         return $response->withHeader('Location', $paragraphs_url);
     }
@@ -122,7 +131,7 @@ class ParagraphsController
      * @param array $args
      * @return Response
      */
-    public function update(Request $request, Response $response): Response
+    public function update(Request $request, Response $response, array $args): Response
     {
         global $app;
 
@@ -133,6 +142,7 @@ class ParagraphsController
 
         // validation...
         $paragraph = array_slice($body, 1);
+        $paragraph['id'] = $args['id'];
         $paragraph = new Paragraph(...$paragraph);
 
         $paragraphsRepository = new ParagraphsRepository($i_db);
@@ -143,7 +153,7 @@ class ParagraphsController
         $routeParser = $app->getRouteCollector()->getRouteParser();
 
         $header = $this->no_header($request) ? '?no_header=1' : '';
-        $paragraphs_url = $routeParser->urlFor('paragraphs') . '/' . $paragraph->id . $header;
+        $paragraphs_url = $routeParser->urlFor('elements.paragraphs.details', ['id' => $paragraph->id]) . $header;
 
         return $response->withHeader('Location', $paragraphs_url);
     }
@@ -166,7 +176,7 @@ class ParagraphsController
         $paragraphsRepository->delete($args['id']);
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $paragraphs_url = $routeParser->urlFor('paragraphs');
+        $paragraphs_url = $routeParser->urlFor('elements.paragraphs');
 
         return $response->withHeader('Location', $paragraphs_url);
     }

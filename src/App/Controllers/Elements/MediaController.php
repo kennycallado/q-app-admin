@@ -17,13 +17,15 @@ class MediaController
      */
     public static function routes(Group $group): void
     {
-        $group->get('', [self::class, 'index'])->setName('media');
+        $tag = 'elements.media';
+
+        $group->get('', [self::class, 'index'])->setName($tag);
         $group->post('', [self::class, 'store']);
 
-        $group->get('/create', [self::class, 'create']);
-        $group->post('/delete/{id}', [self::class, 'delete']);
+        $group->get('/create', [self::class, 'create'])->setName("{$tag}.create");
+        $group->post('/delete/{id}', [self::class, 'delete'])->setName("{$tag}.delete");
 
-        $group->get('/{id}', [self::class, 'show']);
+        $group->get('/{id}', [self::class, 'show'])->setName("{$tag}.details");
         $group->patch('/{id}', [self::class, 'update']);
     }
 
@@ -64,7 +66,7 @@ class MediaController
             'no_header' => $this->no_header($request)
         ];
 
-        return $view->render($response, 'pages/entities/elements/media/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/media/create.html', $prepare);
     }
 
     /**
@@ -88,7 +90,11 @@ class MediaController
             'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
-        return $view->render($response, 'pages/entities/elements/media/details.html', $prepare);
+        if ($prepare['edit']) {
+            return $view->render($response, 'pages/entities/elements/media/edit.html', $prepare);
+        }
+
+        return $view->render($response, 'pages/entities/elements/media/show.html', $prepare);
     }
 
     /**
@@ -112,7 +118,9 @@ class MediaController
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $media_url = $routeParser->urlFor('media') . '/' . $media->id;
+
+        $header = $this->no_header($request) ? '?no_header=1' : '';
+        $media_url = $routeParser->urlFor('elements.media.details', ['id' => $media->id]) . $header;
 
         return $response->withHeader('Location', $media_url);
     }
@@ -123,7 +131,7 @@ class MediaController
      * @param array $args
      * @return Response
      */
-    public function update(Request $request, Response $response): Response
+    public function update(Request $request, Response $response, array $args): Response
     {
         global $app;
 
@@ -133,6 +141,7 @@ class MediaController
         $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
 
         $media = array_slice($body, 1);
+        $media['id'] = $args['id'];
         $media = new Media(...$media);
 
         $mediaRepository = new MediaRepository($i_db);
@@ -143,7 +152,7 @@ class MediaController
         $routeParser = $app->getRouteCollector()->getRouteParser();
 
         $header = $this->no_header($request) ? '?no_header=1' : '';
-        $media_url = $routeParser->urlFor('media') . '/' . $media->id . $header;
+        $media_url = $routeParser->urlFor('elements.media.details', ['id' => $media->id]) . $header;
 
         return $response->withHeader('Location', $media_url);
     }
@@ -166,7 +175,7 @@ class MediaController
         $mediaRepository->delete($args['id']);
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $media_url = $routeParser->urlFor('media');
+        $media_url = $routeParser->urlFor('elements.media');
 
         return $response->withHeader('Location', $media_url);
     }

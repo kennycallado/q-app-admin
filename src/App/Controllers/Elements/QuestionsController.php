@@ -17,13 +17,15 @@ class QuestionsController
      */
     public static function routes(Group $group): void
     {
-        $group->get('', [self::class, 'index'])->setName('questions');
+        $tag = 'elements.questions';
+
+        $group->get('', [self::class, 'index'])->setName($tag);
         $group->post('', [self::class, 'store']);
 
-        $group->get('/create', [self::class, 'create']);
-        $group->post('/delete/{id}', [self::class, 'delete']);
+        $group->get('/create', [self::class, 'create'])->setName("{$tag}.create");
+        $group->post('/delete/{id}', [self::class, 'delete'])->setName("{$tag}.delete");
 
-        $group->get('/{id}', [self::class, 'show']);
+        $group->get('/{id}', [self::class, 'show'])->setName("{$tag}.details");
         $group->patch('/{id}', [self::class, 'update']);
     }
 
@@ -61,10 +63,11 @@ class QuestionsController
             'title' => 'Question',
             'type' => $request->getQueryParams()['type'] ?? null,
             'create' => true,
-            'edit' => true
+            'edit' => true,
+            'no_header' => $this->no_header($request)
         ];
 
-        return $view->render($response, 'pages/entities/elements/questions/details.html', $prepare);
+        return $view->render($response, 'pages/entities/elements/questions/create.html', $prepare);
     }
 
     /**
@@ -88,7 +91,11 @@ class QuestionsController
             'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
-        return $view->render($response, 'pages/entities/elements/questions/details.html', $prepare);
+        if ($prepare['edit']) {
+            return $view->render($response, 'pages/entities/elements/questions/edit.html', $prepare);
+        }
+
+        return $view->render($response, 'pages/entities/elements/questions/show.html', $prepare);
     }
 
     /**
@@ -112,7 +119,9 @@ class QuestionsController
         // TODO: render show to avoid querying the database again
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $questions_url = $routeParser->urlFor('questions') . '/' . $question->id;
+
+        $header = $this->no_header($request) ? '?no_header=1' : '';
+        $questions_url = $routeParser->urlFor('elements.questions.details', ['id' => $question->id]) . $header;
 
         return $response->withHeader('Location', $questions_url);
     }
@@ -123,7 +132,7 @@ class QuestionsController
      * @param array $args
      * @return Response
      */
-    public function update(Request $request, Response $response): Response
+    public function update(Request $request, Response $response, array $args): Response
     {
         global $app;
 
@@ -134,6 +143,7 @@ class QuestionsController
 
         // validation...
         $question = array_slice($body, 1);
+        $question['id'] = $args['id'];
         $question = new Question(...$question);
 
         $questionsRepository = new QuestionsRepository($i_db);
@@ -144,7 +154,7 @@ class QuestionsController
         $routeParser = $app->getRouteCollector()->getRouteParser();
 
         $header = $this->no_header($request) ? '?no_header=1' : '';
-        $questions_url = $routeParser->urlFor('questions') . '/' . $question->id . $header;
+        $questions_url = $routeParser->urlFor('elements.questions.details', ['id' => $question->id]) . $header;
 
         return $response->withHeader('Location', $questions_url);
     }
@@ -167,7 +177,7 @@ class QuestionsController
         $questionsRepository->delete($args['id']);
 
         $routeParser = $app->getRouteCollector()->getRouteParser();
-        $questions_url = $routeParser->urlFor('questions');
+        $questions_url = $routeParser->urlFor('elements.questions');
 
         return $response->withHeader('Location', $questions_url);
     }

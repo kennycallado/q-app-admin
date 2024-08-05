@@ -54,7 +54,7 @@ class SlidesController
             'no_header' => $this->no_header($request)
         ];
 
-        return $view->render($response, 'pages/entities/resources/slides/details.html', $prepare);
+        return $view->render($response, 'pages/entities/resources/slides/create.html', $prepare);
     }
 
     /**
@@ -75,7 +75,11 @@ class SlidesController
             'no_header' => $this->no_header($request) ?? null  // comming from emia
         ];
 
-        return $view->render($response, 'pages/entities/resources/slides/details.html', $prepare);
+        if ($prepare['edit']) {
+            return $view->render($response, 'pages/entities/resources/slides/edit.html', $prepare);
+        }
+
+        return $view->render($response, 'pages/entities/resources/slides/show.html', $prepare);
     }
 
     /**
@@ -85,7 +89,25 @@ class SlidesController
      */
     public function store(Request $request, Response $response): Response
     {
-        return $response;
+        global $app;
+
+        $auth = $request->getAttribute('auth');
+        $body = $request->getParsedBody();
+
+        $i_db = new SurrealDB($auth->project->center, $auth->project->name, $auth->p_auth);
+        $slidesRepository = new SlidesRepository($i_db);
+
+        $slide = new Slide(...$body);
+        $slide = $slidesRepository->create($slide);
+
+        // TODO: render show to avoid querying the database again
+
+        $routeParser = $app->getRouteCollector()->getRouteParser();
+
+        $header = $this->no_header($request) ? '?no_header=1' : '';
+        $slides_url = $routeParser->urlFor('resources.slides.details', ['id' => $slide->id]) . $header;
+
+        return $response->withHeader('Location', $slides_url);
     }
 
     /**

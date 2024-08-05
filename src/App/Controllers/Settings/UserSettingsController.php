@@ -39,7 +39,7 @@ class UserSettingsController
      *         'users' => []
      *     ];
      *
-     *     return $view->render($response, 'pages/settings/user/index.html', $prepare);
+     *     return $view->render($response, 'pages/settings/user.html', $prepare);
      * }
      */
 
@@ -65,7 +65,7 @@ class UserSettingsController
             'centers' => $db_res[0]->result
         ];
 
-        return $view->render($response, 'pages/settings/user/details.html', $prepare);
+        return $view->render($response, 'pages/settings/user.html', $prepare);
     }
 
     /**
@@ -97,7 +97,7 @@ class UserSettingsController
         if ($db_res[1]->status !== 'OK') {
             $prepare['error'] = 'You are not authorized to access this project';
 
-            return $view->render($response->withStatus(401), 'pages/settings/user/details.html', $prepare);
+            return $view->render($response->withStatus(401), 'pages/settings/user.html', $prepare);
         }
 
         try {
@@ -105,7 +105,7 @@ class UserSettingsController
         } catch (\Exception $e) {
             $prepare['error'] = $e->getMessage();
 
-            return $view->render($response->withStatus(500), 'pages/settings/user/details.html', $prepare);
+            return $view->render($response->withStatus(500), 'pages/settings/user.html', $prepare);
         }
 
         // $auth->unset_cookies();
