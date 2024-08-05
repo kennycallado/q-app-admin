@@ -19,11 +19,11 @@ class Slide
      * @param ?string[] $elements
      * @param string|null $id
      */
-    public function __construct(string $ref, string $title, ?array $elements, ?string $id = null)
+    public function __construct(string $ref, string $title, ?array $elements = null, ?string $id = null)
     {
         $this->id = $id;
         $this->ref = $ref;
         $this->title = $title;
-        $this->elements = $elements ?? [];
+        $this->elements = $elements ? array_filter($elements) : [];
     }
 }
