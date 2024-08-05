@@ -1,0 +1,184 @@
+---
+layout: base.webc
+---
+
+<main id="content">
+  <style>
+    #login-index-error {
+      width: 40%;
+      min-width: 349px;
+      max-width: 500px;
+    }
+
+    #login-index-section .card {
+      width: 40%;
+      min-width: 349px;
+      max-width: 500px;
+
+      background-color: var(--theme-color-lightbox);
+    }
+
+    #login-index-section h1 {
+      border-left: var(--theme-size--2) solid var(--theme-color-primary);
+    }
+
+    #login-index-section .spinner-border {
+      color: var(--theme-color-primary--disabled);
+    }
+  </style>
+
+  <section
+    id="login-index-section"
+    class="d-flex justify-content-center align-items-center pt-5"
+    aria-lable="Sign in form">
+    <div class="card my-2 p-4 pb-2 text-center shadow-lg">
+      <div class="d-flex">
+        <h1 class="text-start ms-3 mb-0 ps-1">iPsitec</h1>
+
+        <ix-button
+          id="login-dots"
+          class="d-none btn ms-auto fs-3"
+          variant="secondary"
+          ghost>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 16 16">
+            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+            <path d="M9.5 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+            <path d="M9.5 3a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+          </svg>
+
+          <ix-dropdown
+            trigger="login-dots"
+            placement="left-start">
+            <ix-dropdown-item
+              data-bs-toggle="modal"
+              data-bs-target="#login-index-signup"
+              label="Create account"></ix-dropdown-item>
+            <ix-dropdown-item label="Forgot password"></ix-dropdown-item>
+          </ix-dropdown>
+        </ix-button>
+      </div>
+
+      <div>
+        <h2 class="fs-5 fw-bold text-uppercase">sign in</h2>
+        <p class="mb-2">Enter your credentials to access.</p>
+        <hr class="m-0 mb-2 border-2 border-primary" />
+      </div>
+
+      {% set login_id = gen_uid('login-form-') %}
+      <form
+        hx-push-url="/"
+        hx-trigger="submit"
+        hx-post="{{ url_for('login') }}"
+        hx-target="body"
+        hx-swap="transition:true"
+        id="{{ login_id }}"
+        method="POST"
+        action="{{ url_for('login') }}">
+        <label class="w-100 mb-3 text-start fw-bold">
+          Username:
+          <input
+            onfocusout="me(this).attribute('required', 'true')"
+            type="text"
+            name="username"
+            autocomplete="on" />
+        </label>
+
+        <label class="w-100 mb-3 text-start fw-bold">
+          Password:
+          <input
+            onfocusout="me(this).attribute('required', 'true')"
+            type="password"
+            name="password"
+            autocomplete="on" />
+        </label>
+
+        <div class="d-flex justify-content-between">
+          <div class="text-start align-self-end">
+            <input
+              id="check-remember"
+              type="checkbox"
+              name="check-remember" />
+            <label for="check-remember">Remember me</label>
+
+            <script webc:keep>
+              me('input', me()).indeterminate = true
+            </script>
+          </div>
+
+          <div
+            class="spinner-border"
+            role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+
+          <ix-button
+            type="submit"
+            class="d-none"
+            disabled="true">
+            Submit
+          </ix-button>
+
+          <noscript>
+            <button
+              type="submit"
+              class="btn btn-primary">
+              Submit
+            </button>
+          </noscript>
+        </div>
+
+        <script>
+          const form = me('#{{ login_id }}')
+
+          // Enable submit button when all fields are filled
+          any('input:not([type=checkbox])', form).on('input', (evt) => {
+            let filled = 0
+            let inputs = any('input:not([type=checkbox])', form)
+
+            inputs.run((el) => {
+              if (el.value) filled++
+            })
+
+            if (filled === inputs.length)
+              me('ix-button[type="submit"]', form).removeAttribute('disabled')
+            else me('ix-button[type="submit"]', form).setAttribute('disabled', 'true')
+          })
+        </script>
+      </form>
+
+      {% if error %}
+        <div
+          id="login-index-error"
+          class="position-fixed bottom-0 start-50 translate-middle">
+          <ix-message-bar
+            class="timedMessage"
+            type="warning"
+            >{{ error }}</ix-message-bar
+          >
+        </div>
+      {% endif %}
+    </div>
+
+    <qa-signup></qa-signup>
+
+    {#
+    {% include 'pages/auth/partials/index-signup.html' %}
+    #}
+
+    <script webc:keep>
+      // Remove spinner and show submit button
+      me().run(async (el) => {
+        await customElements.whenDefined('ix-button')
+        await sleep(500)
+
+        any('.d-none', el).class_remove('d-none')
+        me('.spinner-border', el).class_add('d-none')
+      })
+    </script>
+  </section>
+</main>

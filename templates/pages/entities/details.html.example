@@ -1,0 +1,114 @@
+---
+layout: main.webc
+---
+
+{% if not no_header %}
+  <qa-ent-header
+    header-title="{{ create ? 'Create: ' : edit ? 'Edit: ' : 'Show: ' }}{{ media.ref }}"
+    url-back-button="{{ url_for('elements.media') }}"></qa-ent-header>
+{% endif %}
+
+<section class="card">
+  <div class="card-body">
+    <qa-ent-details
+      self-uid="{{ gen_uid() }}"
+      self-contained="{{ no_header }}"
+      entity-id="{{ media.id }}"
+      {# 11ty #}
+      action="{{ create ? url_for('elements.media') : url_for('elements.media.details', {id: media.id}) }}"
+      create="{{ create }}"
+      edit="{{ edit }}">
+
+      <ix-key-value-list
+        slot="meta"
+        class="d-block rounded-3 p-2">
+        {% if media.id %}
+          <ix-key-value
+            class="fw-bold"
+            label-position="left"
+            value="{{ media.id }}"
+            label="id">
+          </ix-key-value>
+        {% endif %}
+
+        <ix-key-value
+          class="fw-bold"
+          label-position="left"
+          label="ref">
+          <input
+            readonly
+            slot="custom-value"
+            name="ref"
+            value="{{ media.ref }}"
+            placeholder="Enter slug" />
+        </ix-key-value>
+
+        <ix-key-value
+          orientation="vertical"
+          label-position="left"
+          label="type">
+          <div
+            slot="custom-value"
+            class="d-flex">
+            <!-- htmlmin:ignore -->
+            <input
+              {% if media.type is same as 'image' %}checked{% endif %}
+              id="form-type-image"
+              name="type"
+              value="image"
+              type="radio" />
+            <label for="form-type-image">Image</label>
+            <!-- htmlmin:ignore -->
+
+            <!-- htmlmin:ignore -->
+            <input
+              {% if media.type is same as 'video' %}checked{% endif %}
+              id="form-type-video"
+              name="type"
+              value="video"
+              type="radio" />
+            <label for="form-type-video">Video</label>
+            <!-- htmlmin:ignore -->
+          </div>
+        </ix-key-value>
+      </ix-key-value-list>
+
+      <ix-key-value-list
+        slot="content"
+        class="d-block rounded-3 p-2">
+        <ix-key-value
+          class="fw-bold"
+          orientation="vertical"
+          label-position="left"
+          label="alt text">
+          <input
+            readonly
+            name="alt"
+            value="{{ media.alt }}"
+            slot="custom-value"
+            placeholder="Enter an alternative text" />
+        </ix-key-value>
+
+        <ix-key-value
+          class="fw-bold"
+          orientation="vertical"
+          label-position="left"
+          label="url">
+          <input
+            readonly
+            name="url"
+            value="{{ media.url }}"
+            slot="custom-value"
+            placeholder="Enter the media url" />
+        </ix-key-value>
+      </ix-key-value-list>
+    </qa-ent-details>
+  </div>
+</section>
+
+<!--
+<script
+  type="module"
+  :src="getBundleFileUrl('js', 'file')"
+  webc:keep></script>
+-->

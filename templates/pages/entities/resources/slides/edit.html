@@ -1,0 +1,180 @@
+---
+layout: main.webc
+---
+
+{% if not no_header %}
+  <qa-ent-header
+    header-title="Edit: {{ slide.ref }}"
+    url-back-button="{{ url_for('resources.slides') }}"></qa-ent-header>
+{% endif %}
+{% set uid = gen_uid() %}
+<qa-ent-details
+  self-uid="{{ uid }}"
+  self-contained="{{ no_header }}"
+  action="{{ url_for('resources.slides.details', {id: slide.id}) }}"
+  edit="true">
+  <ix-key-value-list
+    slot="meta"
+    class="d-block rounded-3 p-2">
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="id"
+      value="{{ slide.id }}">
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="ref">
+      <input
+        slot="custom-value"
+        name="ref"
+        placeholder="Enter slug"
+        value="{{ slide.ref }}" />
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="title">
+      <input
+        slot="custom-value"
+        name="title"
+        placeholder="Enter slug"
+        value="{{ slide.title }}" />
+    </ix-key-value>
+  </ix-key-value-list>
+
+  <ix-key-value-list
+    slot="content"
+    class="d-block rounded-3 p-2">
+    <div id="elements">
+      <section class="card">
+        <ix-empty-state
+          class="card-body"
+          header="No elements"
+          sub-header="Create an element first"
+          icon="add">
+        </ix-empty-state>
+      </section>
+
+      <script webc:keep>
+        me().run((el) => {
+          const observer = new MutationObserver((mutation) => {
+            if (el.querySelectorAll('qa-ent-details').length > 0) {
+              me('section:has(ix-empty-state)', el).attr('hidden', true)
+            } else {
+              me('section:has(ix-empty-state)', el).attr('hidden', null)
+            }
+          })
+
+          observer.observe(me().parentElement, {
+            childList: true,
+            subtree: true,
+          })
+        })
+      </script>
+
+      {% for element in slide.elements %}
+        {% set table = element|split(':').0 %}
+        <qa-slide-element edit="true">
+          <div
+            hx-push-url="false"
+            hx-trigger="load"
+            hx-get="{{ url_for('elements.'~ table ~'.details', {id: element}) }}"
+            hx-target="this"
+            slot="element">
+            {{ table }}
+          </div>
+
+          <input
+            slot="input"
+            type="hidden"
+            name="elements[]" />
+        </qa-slide-element>
+        {% set table = null %}
+      {% endfor %}
+
+      <qa-slide-element edit="true">
+        <div slot="element"></div>
+
+        <input
+          slot="input"
+          type="hidden"
+          name="elements[]" />
+      </qa-slide-element>
+
+      <script webc:keep>
+        me().on('new-element', (evt) => {
+          let slideElement = document.createElement('qa-slide-element')
+          let input = document.createElement('input')
+          let div = document.createElement('div')
+
+          input.setAttribute('slot', 'input')
+          input.setAttribute('type', 'hidden')
+          input.setAttribute('name', 'elements[]')
+
+          div.setAttribute('slot', 'element')
+
+          slideElement.appendChild(div)
+          slideElement.appendChild(input)
+          slideElement.setAttribute('edit', true)
+
+          evt.target.append(slideElement)
+        })
+      </script>
+    </div>
+
+    <!-- buttons -->
+    <div class="position-absolute bottom-0 mb-3">
+      <ix-icon-button
+        id="add-element-question"
+        size="32"
+        icon="question"
+        variant="primary"></ix-icon-button>
+      <ix-dropdown trigger="add-element-question">
+        <ix-dropdown-item
+          hx-push-url="false"
+          hx-get="{{ url_for('elements.questions.create') }}?no_header=1&type=text"
+          hx-target="qa-slide-element:last-of-type [slot='element']"
+          hx-on::after-request="me('#elements').trigger('new-element')"
+          icon="text"
+          label="Text"></ix-dropdown-item>
+
+        <ix-dropdown-item
+          hx-push-url="false"
+          hx-get="{{ url_for('elements.questions.create') }}?no_header=1&type=range"
+          hx-target="qa-slide-element:last-of-type [slot='element']"
+          hx-on::after-request="me('#elements').trigger('new-element')"
+          icon="document"
+          label="Range"></ix-dropdown-item>
+      </ix-dropdown>
+
+      <ix-icon-button
+        hx-push-url="false"
+        hx-get="{{ url_for('elements.paragraphs.create') }}?no_header=1"
+        hx-target="qa-slide-element:last-of-type [slot='element']"
+        hx-on::after-request="me('#elements').trigger('new-element')"
+        size="32"
+        icon="text"
+        variant="primary"></ix-icon-button>
+
+      <ix-icon-button
+        hx-push-url="false"
+        hx-get="{{ url_for('elements.media.create') }}?no_header=1"
+        hx-target="qa-slide-element:last-of-type [slot='element']"
+        hx-on::after-request="me('#elements').trigger('new-element')"
+        size="32"
+        icon="image"
+        variant="primary">
+      </ix-icon-button>
+    </div>
+  </ix-key-value-list>
+</qa-ent-details>
+{% set uid = null %}
+
+<script
+  :src="getBundleFileUrl('js', 'file')"
+  type="module"
+  webc:keep></script>

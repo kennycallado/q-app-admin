@@ -1,0 +1,129 @@
+<style>
+  qa-ent-details section {
+    margin-bottom: 3rem;
+    box-shadow: none;
+  }
+</style>
+
+<script webc:bucket="file">
+  import { LitElement, html, css } from '/public/assets/js/lit-core.js'
+
+  customElements.define(
+    'qa-slide-element',
+    class extends LitElement {
+      static properties = {
+        visible: { state: false },
+        edit: { type: Boolean },
+      }
+
+      static styles = css`
+        :host .foo {
+          min-width: 170px;
+          margin-bottom: -0.5rem;
+          background-color: var(--theme-color-component-1);
+          border-color: var(--theme-color-primary) !important;
+        }
+      `
+
+      connectedCallback() {
+        super.connectedCallback()
+
+        if (!this.edit) {
+          sleep(500).then(() => {
+            this
+              .querySelectorAll('fieldset > ix-button:nth-child(1)')
+              .forEach((el) => (el.disabled = true))
+          })
+        } else this.observe()
+      }
+
+      observe() {
+        new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.addedNodes.length > 0) {
+              if (!this.visible) this.visible = true
+
+              mutation.addedNodes.forEach((node) => {
+                if (
+                  node.nodeType === 1 &&
+                  node.tagName === 'QA-ENT-DETAILS' &&
+                  node.querySelector('[label=id]')
+                ) {
+                  this.querySelector('[slot=input]').value =
+                    node.querySelector('[label=id]').value
+                }
+              })
+            }
+          })
+        }).observe(this.querySelector('[slot]'), { childList: true, subtree: true })
+      }
+
+      clickedNext() {
+        if (
+          this.nextElementSibling &&
+          this.nextElementSibling.tagName === 'QA-SLIDE-ELEMENT' &&
+          this.nextElementSibling.visible
+        ) {
+          this.nextElementSibling.after(this)
+        }
+      }
+
+      clickedPrev() {
+        if (
+          this.previousElementSibling &&
+          this.previousElementSibling.tagName === 'QA-SLIDE-ELEMENT' &&
+          this.previousElementSibling.visible
+        ) {
+          this.previousElementSibling.before(this)
+        }
+      }
+
+      clickedClose() {
+        this.remove()
+      }
+
+      render() {
+        return html`
+          <style>
+            .bar {
+              display: ${this.visible ? 'flex' : 'none'};
+              justify-content: space-between;
+              width: 50%;
+              border-top-left-radius: 0.5rem;
+              border-top-right-radius: 0.5rem;
+              margin-left: auto;
+              margin-right: auto;
+            }
+          </style>
+
+          <div class="foo bar">
+            <div>
+              <ix-icon-button
+                @click="${this.clickedNext}"
+                icon="arrow-down"
+                variant="primary"
+                ghost></ix-icon-button>
+
+              <ix-icon-button
+                @click="${this.clickedPrev}"
+                icon="arrow-up"
+                variant="primary"
+                ghost></ix-icon-button>
+            </div>
+
+            <div>
+              <ix-icon-button
+                @click="${this.clickedClose}"
+                icon="close"
+                variant="danger"
+                ghost></ix-icon-button>
+            </div>
+          </div>
+
+          <slot name="element"></slot>
+          <slot name="input"></slot>
+        `
+      }
+    },
+  )
+</script>

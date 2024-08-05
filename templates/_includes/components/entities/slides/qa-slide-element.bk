@@ -1,0 +1,116 @@
+<style webc:keep>
+  qa-ent-details section {
+    margin-bottom: 3rem;
+    box-shadow: none;
+  }
+</style>
+
+<!--
+<template shadowrootmode="open">
+-->
+
+<template webc:root>
+  <slot name="element"></slot>
+
+  <!--
+  <input
+    type="hidden"
+    name="elements[]" />
+  -->
+</template>
+
+<script webc:bucket="file">
+  class SlideElement extends HTMLElement {
+    static get observedAttributes() {
+      return ['']
+    }
+
+    connectedCallback() {
+      const observer = new MutationObserver((mutation) => {
+        if (
+          !this.querySelector('input').value &&
+          this.querySelector('ix-key-value[label=id]')
+        ) {
+          console.log(this.querySelector('ix-key-value[label=id]'))
+          // this.querySelector('input').value = this.querySelector('ix-key-value[label=id]').value
+        }
+
+
+        for (const element of mutation) {
+          // console.log(this.querySelector('ix-key-value[label=id]'))
+        }
+      })
+
+      observer.observe(this, {
+        childList: true,
+        subtree: true,
+      })
+    }
+  }
+
+  if (!customElements.get('qa-slide-element'))
+    customElements.define('qa-slide-element', SlideElement)
+</script>
+
+
+
+<!--
+<template webc:root>
+  <div
+    class="foo d-flex justify-content-between w-50 mx-auto mt-4 pt-0 text-center border border-bottom-0 rounded-top">
+    <div class="ms-3">
+      <ix-icon-button
+        icon="arrow-down"
+        variant="primary"
+        ghost>
+        <script webc:keep>
+          me().on('click', () => {
+            if (me('#{{ elementUid }}').nextElementSibling)
+              me('#{{ elementUid }}').nextElementSibling.after(me('#{{ elementUid }}'))
+          })
+        </script>
+      </ix-icon-button>
+      <ix-icon-button
+        icon="arrow-up"
+        variant="primary"
+        ghost>
+        <script webc:keep>
+          me().on('click', () => {
+            if (me('#{{ elementUid }}').previousElementSibling)
+              me('#{{ elementUid }}').previousElementSibling.before(me('#{{ elementUid }}'))
+          })
+        </script>
+      </ix-icon-button>
+    </div>
+
+    <div class="me-3">
+      <ix-icon-button
+        onclick="me('#{{ elementUid }}').remove()"
+        icon="close"
+        variant="danger"
+        ghost></ix-icon-button>
+    </div>
+  </div>
+
+  <slot name="element"></slot>
+
+  <input
+    type="hidden"
+    name="elements[]" />
+</template>
+
+<script webc:bucket="file">
+  class SlideElement extends HTMLElement {
+    static get observedAttributes() {
+      return ['element-id']
+    }
+
+    connectedCallback() {
+      console.log(this.querySelector('[slot]'))
+    }
+  }
+
+  if (!customElements.get('qa-slide-element'))
+    customElements.define('qa-slide-element', SlideElement)
+</script>
+-->

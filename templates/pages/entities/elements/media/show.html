@@ -1,0 +1,75 @@
+---
+layout: main.webc
+---
+
+{% if not no_header %}
+  <qa-ent-header
+    header-title="Show: {{ media.ref }}"
+    url-back-button="{{ url_for('elements.media') }}"></qa-ent-header>
+{% endif %}
+
+<qa-ent-details
+  self-uid="{{ gen_uid() }}"
+  self-contained="{{ no_header }}"
+  {# entity-id="{{ media.id }}" #}
+  action="{{ url_for('elements.media.details', {id: media.id}) }}">
+  <ix-key-value-list
+    slot="meta"
+    class="d-block rounded-3 p-2">
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="id"
+      value="{{ media.id }}">
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="ref"
+      value="{{ media.ref }}">
+    </ix-key-value>
+
+    <ix-key-value
+      orientation="vertical"
+      label-position="left"
+      label="type"
+      value="{{ media.type }}">
+    </ix-key-value>
+  </ix-key-value-list>
+
+  <ix-key-value-list
+    slot="content"
+    class="d-block rounded-3 p-2">
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="alt text">
+      <input
+        readonly
+        name="alt"
+        value="{{ media.alt }}"
+        slot="custom-value"
+        placeholder="Enter an alternative text" />
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="url">
+      <input
+        readonly
+        name="url"
+        value="{{ media.url }}"
+        slot="custom-value"
+        placeholder="Enter the media url" />
+    </ix-key-value>
+  </ix-key-value-list>
+</qa-ent-details>
+
+<script
+  :src="getBundleFileUrl('js', 'file')"
+  type="module"
+  webc:keep></script>

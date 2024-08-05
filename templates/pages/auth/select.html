@@ -1,0 +1,131 @@
+---
+layout: base.webc
+---
+
+<main id="content">
+  <style>
+    #login-select-error {
+      width: 40%;
+      min-width: 349px;
+      max-width: 500px;
+    }
+
+    #login-select-section .card {
+      background-color: var(--theme-color-lightbox);
+      width: 40%;
+      min-width: 349px;
+      max-width: 500px;
+    }
+
+    #login-select-section h1 {
+      border-left: var(--theme-size--2) solid var(--theme-color-primary);
+    }
+  </style>
+
+  <section
+    id="login-select-section"
+    class="d-flex justify-content-center align-items-center pt-5"
+    aria-lable="Sign in form">
+    <div class="card my-2 p-4 pb-2 text-center shadow-lg">
+      <div class="d-flex">
+        <h1 class="text-start ms-3 mb-0 ps-1">iPsitec</h1>
+
+        <ix-button
+          class="btn ms-auto text-light"
+          onclick="back_arrow('/') "
+          variant="secondary"
+          ghost>
+          <svg
+            width="24"
+            height="24"
+            class="bi bi-arrow-left"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 16 16">
+            <path
+              fill-rule="evenodd"
+              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+          </svg>
+        </ix-button>
+      </div>
+
+      <div>
+        <h2 class="fs-5 fw-bold text-uppercase">sign in</h2>
+        <p class="mb-2">Select a project to login.</p>
+      </div>
+
+      <hr class="m-0 mb-2 border-2 border-primary" />
+
+      <form
+        hx-push-url="/"
+        hx-trigger="submit"
+        hx-post="{{ url_for('login_select') }}"
+        hx-target="body"
+        hx-swap="transition:true"
+        method="POST"
+        action="{{ url_for('login_select') }}">
+        <input
+          type="hidden"
+          name="_METHOD"
+          value="PATCH" />
+
+        <div class="mb-3 text-start">
+          <label class="w-100 fw-bold">
+            Project:
+            <select
+              id="project-select"
+              class="w-100 select"
+              name="project">
+              <option
+                value=""
+                disabled
+                selected>
+                Select an option
+              </option>
+
+              {% for center in centers %}
+                <optgroup label="{{ center.name }}">
+                  {% for project in center.projects %}
+                    <option
+                      {% if current.project is same as project.name %}selected{% endif %}
+                      value="{{ project.id }}">
+                      {{ project.name }}
+                    </option>
+                  {% endfor %}
+                </optgroup>
+              {% endfor %}
+            </select>
+          </label>
+        </div>
+
+        <div class="text-end">
+          <ix-button
+            type="submit"
+            class="me-auto">
+            Submit
+          </ix-button>
+
+          <noscript>
+            <button
+              type="submit"
+              class="btn btn-primary">
+              Submit
+            </button>
+          </noscript>
+        </div>
+      </form>
+
+      {% if error %}
+        <div
+          id="login-select-error"
+          class="position-fixed bottom-0 start-50 translate-middle">
+          <ix-message-bar
+            class="timedMessage"
+            type="warning"
+            >{{ error }}</ix-message-bar
+          >
+        </div>
+      {% endif %}
+    </div>
+  </section>
+</main>

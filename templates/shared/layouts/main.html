@@ -1,0 +1,9 @@
+{%
+  extends is_hx_request == false
+  ? 'shared/layouts/base.html'
+  : first
+    ? 'shared/layouts/base.html'
+    : 'shared/layouts/clear.html'
+%}
+
+{% block main %} {% endblock %}

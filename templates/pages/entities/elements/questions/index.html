@@ -1,0 +1,132 @@
+---
+layout: main.webc
+---
+
+<style webc:scoped>
+  ix-content-header {
+    border-color: var(--theme-color-primary) !important;
+  }
+</style>
+
+<ix-content-header
+  slot="header"
+  has-back-button="false"
+  header-title="Question">
+  <ix-button id="questions-index-create">Create</ix-button>
+
+  <ix-dropdown trigger="questions-index-create">
+    <ix-dropdown-item
+      hx-push-url="true"
+      hx-get="{{ url_for('elements.questions.create') }}?type=text"
+      hx-target="#content"
+      hx-swap="transition:true"
+      icon="text"
+      label="Text"></ix-dropdown-item>
+
+    <ix-dropdown-item
+      hx-push-url="true"
+      hx-get="{{ url_for('elements.questions.create') }}?type=range"
+      hx-target="#content"
+      hx-swap="transition:true"
+      icon="document"
+      label="Range"></ix-dropdown-item>
+  </ix-dropdown>
+</ix-content-header>
+
+<section class="card">
+  <div class="card-body">
+    {% for question in questions %}
+      <ix-content-header
+        hx-push-url="true"
+        style="border-color: var(--theme-color-primary)! important;"
+        class="mb-2 border-bottom align-items-end"
+        header-title="{{ question.ref }}"
+        header-subtitle="{{ question.content.questions[0].question }}"
+        variant="secondary">
+        <ix-icon-button
+          hx-get="{{ url_for('elements.questions.details', {id: question.id}) }}"
+          hx-target="#content"
+          hx-swap="transition:true"
+          class="d-none d-md-inline-block"
+          icon="eye"
+          variant=""
+          ghost>
+          Show
+        </ix-icon-button>
+
+        <ix-icon-button
+          hx-get="{{ url_for('elements.questions.details', {id: question.id}) }}?edit=1"
+          hx-target="#content"
+          hx-swap="transition:true"
+          class="d-none d-md-inline-block"
+          icon="pen"
+          variant=""
+          ghost>
+          Edit
+        </ix-icon-button>
+
+        <ix-icon-button
+          hx-push-url="false"
+          hx-confirm="Are you sure? This action cannot be undone."
+          hx-post="{{ url_for('elements.questions.delete', {id: question.id}) }}"
+          hx-target="#content"
+          hx-swap="transition:true"
+          class="d-none d-md-inline-block"
+          icon="trashcan"
+          ghost>
+          Delete
+        </ix-icon-button>
+
+        <ix-icon-button
+          id="elements-questions-index-options-{{ loop.index }}"
+          class="d-inline-block d-md-none"
+          icon="context-menu"
+          ghost>
+          Options
+        </ix-icon-button>
+
+        <ix-dropdown trigger="elements-questions-index-options-{{ loop.index }}">
+          <ix-dropdown-item
+            hx-get="{{ url_for('elements.questions.details', {id: question.id}) }}"
+            hx-target="#content"
+            hx-swap="transition:true"
+            icon="eye"
+            label="Show">
+          </ix-dropdown-item>
+
+          <ix-dropdown-item
+            hx-get="{{ url_for('elements.questions.details', {id: question.id}) }}?edit=1"
+            hx-target="#content"
+            hx-swap="transition:true"
+            icon="pen"
+            label="Edit">
+          </ix-dropdown-item>
+
+          <ix-dropdown-item
+            hx-push-url="false"
+            hx-confirm="Are you sure? This action cannot be undone."
+            hx-post="{{ url_for('elements.questions.delete', {id: question.id}) }}"
+            hx-target="#content"
+            hx-swap="transition:true"
+            icon="trashcan"
+            label="Delete">
+          </ix-dropdown-item>
+        </ix-dropdown>
+
+        <script webc:keep>
+          me().run((el) => {
+            const questions = JSON.parse('{{ question.content.questions|json_encode|raw }}')
+            const lang = navigator.language.split('-')[0]
+
+            for (let content of questions) {
+              if (content.locale === lang)
+                if (content.question.length > 60)
+                  el.headerSubtitle = content.question.substring(0, 60) + '...'
+                else el.headerSubtitle = content.question
+            }
+          })
+        </script>
+      </ix-content-header>
+    {% endfor %}
+  </div>
+</section>

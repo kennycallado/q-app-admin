@@ -1,0 +1,9 @@
+<template webc:raw webc:nokeep>
+{% macro locale_filter(list, locale, column) %}
+  {{
+    list
+    |filter(c => c.locale == locale)
+    |column(column)[0]
+  }}
+{% endmacro %}
+</template>

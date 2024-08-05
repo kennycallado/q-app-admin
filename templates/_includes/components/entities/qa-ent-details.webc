@@ -1,0 +1,122 @@
+<style webc:scoped>
+  legend {
+    border-color: var(--theme-color-primary) !important;
+  }
+
+  ix-button {
+    box-shadow: var(--theme-shadow-1);
+  }
+</style>
+
+<template webc:root>
+  <section class="card">
+    <div class="card-body">
+      <form
+        :id="selfUid + '-form'"
+        hx-push-url="true"
+        hx-trigger="submit"
+        :hx-post="action"
+        hx-target="#content"
+        hx-swap="transition:true">
+        <input
+          type="hidden"
+          name="_METHOD"
+          value="PATCH" />
+
+        <fieldset class="py-2">
+          <legend class="text-center border-bottom">Meta</legend>
+
+          <slot name="meta"></slot>
+        </fieldset>
+
+        <fieldset class="py-2">
+          <legend class="text-center border-bottom">Content</legend>
+
+          <slot name="content"></slot>
+        </fieldset>
+
+        <fieldset class="mt-2 me-2 d-flex justify-content-end">
+          <ix-button
+            hx-trigger="click"
+            hx-push-url="true"
+            :hx-get="action"
+            hx-target="#content"
+            hx-swap="transition:true"
+            outline></ix-button>
+
+          <ix-button
+            class="ms-2"
+            type="submit">
+            Submit
+          </ix-button>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+</template>
+
+<script webc:bucket="file">
+  class EntityDetails extends HTMLElement {
+    static get observedAttributes() {
+      return ['action', 'edit', 'create', 'self-contained', 'self-uid']
+    }
+
+    connectedCallback() {
+      // ? if no action error
+
+      if (
+        !this.hasAttribute('edit') &&
+        !this.getAttribute('edit') &&
+        this.hasAttribute('self-contained') &&
+        this.getAttribute('self-contained')
+      ) {
+        me('ix-button[type="submit"]', this).disabled = true
+
+        me('ix-button', this).attr('hx-get', `${this.getAttribute('action')}?edit=1&no_header=1`)
+        me('ix-button', this).attr('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
+        me('ix-button', this).attribute('hx-push-url', 'false')
+        me('ix-button', this).attribute('hx-swap', 'outerHTML')
+        me('ix-button', this).textContent = 'Edit'
+
+        me('form', this).attribute('hx-post', `${this.getAttribute('action')}?no_header=1`)
+        me('form', this).attribute('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
+        me('form', this).attribute('hx-push-url', 'false')
+        me('form', this).attribute('hx-swap', 'outerHTML')
+      } else if (!this.hasAttribute('edit') && !this.getAttribute('edit')) {
+        me('ix-button[type="submit"]', this).disabled = true
+
+        me('ix-button', this).attribute('hx-get', `${this.getAttribute('action')}?edit=1`)
+        me('ix-button', this).textContent = 'Edit'
+      } else if (this.hasAttribute('self-contained') && this.getAttribute('self-contained')) {
+        me('ix-button', this).attribute('hx-get', `${this.getAttribute('action')}?no_header=1`)
+        me('ix-button', this).attr('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
+        me('ix-button', this).attribute('hx-push-url', 'false')
+        me('ix-button', this).attribute('hx-swap', 'outerHTML')
+
+        me('form', this).attribute('hx-post', `${this.getAttribute('action')}?no_header=1`)
+        me('form', this).attribute('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
+        me('form', this).attribute('hx-push-url', 'false')
+        me('form', this).attribute('hx-swap', 'outerHTML')
+      }
+
+      if (this.hasAttribute('edit') && this.getAttribute('edit')) {
+        me('ix-button', this).textContent = 'Cancel'
+      }
+
+      if (
+        !this.hasAttribute('edit') && !this.getAttribute('edit') ||
+        this.hasAttribute('create') && this.getAttribute('create')
+      ) {
+        if (this.querySelector('input[type="hidden"][name="_METHOD"]'))
+          me('input[type="hidden"][name="_METHOD"]', this).remove()
+      }
+
+      if (this.hasAttribute('create') && this.getAttribute('create')) {
+        me('ix-button', this).remove()
+      }
+    }
+  }
+
+  if (!customElements.get('qa-ent-details'))
+  customElements.define('qa-ent-details', EntityDetails)
+</script>

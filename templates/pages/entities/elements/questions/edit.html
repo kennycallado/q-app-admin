@@ -1,0 +1,72 @@
+---
+layout: main.webc
+---
+
+{% if not no_header %}
+  <qa-ent-header
+    header-title="Edit: {{ question.ref }}"
+    url-back-button="{{ url_for('elements.questions') }}"></qa-ent-header>
+{% endif %}
+
+{% set uid = gen_uid() %}
+<qa-ent-details
+  self-uid="{{ uid }}"
+  self-contained="{{ no_header }}"
+  action="{{ url_for('elements.questions.details', {id: question.id}) }}"
+  edit="true">
+  <ix-key-value-list
+    slot="meta"
+    class="d-block rounded-3 p-2">
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="id"
+      value="{{ question.id }}">
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="reference">
+      <input
+        slot="custom-value"
+        name="ref"
+        placeholder="Enter slug"
+        value="{{ question.ref }}" />
+    </ix-key-value>
+
+    <ix-key-value
+      id="question-type-{{ uid }}"
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="type">
+      <input
+        slot="custom-value"
+        readonly
+        name="type"
+        value="{{ question.type }}"
+        placeholder="Select a type" />
+    </ix-key-value>
+
+    <ix-tooltip for="#question-type-{{ uid }}">Not possible to change</ix-tooltip>
+  </ix-key-value-list>
+
+  <ix-key-value-list
+    slot="content"
+    class="d-block rounded-3 p-2">
+    {% if question.type == 'text' %}
+      <qa-question-text></qa-question-text>
+      {% elseif question.type == 'range' %}
+      <qa-question-range></qa-question-range>
+    {% else %}
+      <strong>Warning!</strong> This type of question is not supported yet.
+    {% endif %}
+  </ix-key-value-list>
+</qa-ent-details>
+
+<script
+  :src="getBundleFileUrl('js', 'file')"
+  type="module"
+  webc:keep></script>

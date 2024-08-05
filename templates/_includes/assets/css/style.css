@@ -1,0 +1,129 @@
+@import "/public/assets/@siemens/ix/dist/siemens-ix/siemens-ix.css";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins:wght@200&display=swap");
+
+* {
+  font-family: "Montserrat", sans-serif;
+  font-style: normal;
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    background: linear-gradient(69.66deg, #00c1fe 19.39%, #faffc1 96.69%);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(
+      69.66deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(9, 9, 121, 1) 18%,
+      rgba(0, 212, 255, 1) 96.69%
+    );
+  }
+}
+
+.custom-light {
+  background: linear-gradient(69.66deg, #00c1fe 19.39%, #faffc1 96.69%);
+}
+
+.custom-dark {
+  background: linear-gradient(
+    69.66deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 18%,
+    rgba(0, 212, 255, 1) 96.69%
+  );
+}
+
+body {
+  height: 100svh;
+}
+
+ix-content section,
+#settings-user-section {
+  /* background-color: var(--theme-color-1)!important; */
+  background-color: var(--theme-color-lightbox) !important;
+  box-shadow: var(--theme-shadow-4);
+  margin: 0.5rem;
+}
+
+ix-content-header ix-button {
+  box-shadow: var(--theme-shadow-1);
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.timedMessage {
+  animation: fadeInOut 10s forwards;
+}
+
+/** ?? auth select */
+.select {
+  cursor: pointer;
+
+  min-height: 2rem;
+  border-radius: var(--theme-input--border-radius);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--theme-input--background);
+  border: var(--theme-input--border-thickness) solid var(--theme-input--border-color);
+  border-radius: var(--theme-input--border-radius);
+  padding: 0px 0px 0px 0.5rem;
+  box-shadow: var(--theme-inset-shadow-1) !important;
+  color: var(--theme-color-contrast);
+}
+
+.select option[disabled] {
+  display: none;
+}
+
+ix-key-value-list {
+  background-color: var(--theme-color-component-1);
+  box-shadow: var(--theme-shadow-1);
+}
+
+/** tabs */
+.tab-active {
+  border-left: 2px solid none;
+  border-right: 2px solid none;
+  border-top: 2px solid none;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  background-color: var(--theme-color-component-2);
+}
+
+div:has(> ix-tabs) {
+  box-shadow: var(--theme-shadow-1);
+}
+
+ix-tabs {
+  background-color: var(--theme-color-component-2);
+}
+ix-tabs ~ div {
+  background-color: var(--theme-color-component-1);
+}
+
+div[data-tab-content] {
+  display: none;
+}
+
+div[data-tab-content].show {
+  display: block;
+}
+/** tabs */

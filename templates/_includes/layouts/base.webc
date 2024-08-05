@@ -1,0 +1,23 @@
+{% extends 'shared/layouts/base.html' %}
+
+{% block body %}
+  <style
+    @raw="getBundle('css')"
+    webc:keep></style>
+
+  <template
+    @raw="content"
+    webc:nokeep></template>
+
+  <script
+    type="module"
+    @raw="getBundle('js')"
+    webc:keep></script>
+
+  <!--
+  <script
+    type="module"
+    :src="getBundleFileUrl('js', 'defer')"
+    webc:keep></script>
+  -->
+{% endblock %}

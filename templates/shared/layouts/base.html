@@ -1,0 +1,100 @@
+---
+webc:
+  components: ../../_includes/components/layouts/*.webc
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{{ title }}</title>
+
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1" />
+
+    <link
+      href="/public/assets/img/favicon.ico"
+      rel="icon"
+      webc:keep />
+    <link
+      href="/public/assets/css/style.css"
+      rel="stylesheet"
+      webc:keep />
+
+    <!-- NOTE: problably not needed
+    <link
+      href="/public/assets/css/transition.css"
+      onload="this.onload=null;this.rel='stylesheet'"
+      rel="preload"
+      as="style"
+      webc:keep />
+    -->
+
+    <!-- TODO: test if is ok
+    <script
+      src="/public/assets/@11ty/is-land/is-land.js"
+      type="module"
+      webc:keep></script>
+    -->
+
+    <!-- TODO: find a way to avoid it -->
+    <script
+      src="/public/assets/bootstrap/dist/js/bootstrap.bundle.min.js"
+      type="module"
+      defer
+      webc:keep></script>
+    <script
+      src="/public/assets/@siemens/ix/dist/index.js"
+      type="module"
+      defer
+      webc:keep></script>
+    <script
+      src="/public/assets/js/main.js"
+      type="module"
+      defer
+      webc:keep></script>
+    <script
+      src="/public/assets/htmx.org/dist/htmx.js"
+      defer
+      webc:keep></script>
+    <script
+      src="/public/assets/js/utils.js"
+      defer
+      webc:keep></script>
+    <script
+      src="/public/assets/js/surreal.js"
+      webc:keep></script>
+  </head>
+
+  <body>
+    {% block body %}
+      <!-- NOTE: alternative option
+      <link
+        :href="getBundleFileUrl('css')"
+        rel="stylesheet"
+        webc:keep />
+      -->
+      <style
+        @raw="getBundle('css')"
+        webc:keep></style>
+
+      <ix-application>
+        <qa-header></qa-header>
+        <qa-menu></qa-menu>
+        <qa-pane></qa-pane>
+
+        <ix-content
+          id="content"
+          class="sample-transition">
+          {% block main %}{% endblock %}
+        </ix-content>
+      </ix-application>
+
+      <script
+        type="module"
+        @raw="getBundle('js')"
+        webc:keep></script>
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,132 @@
+<ix-menu
+  hx-boost="true"
+  hx-push-url="true">
+  <a
+    hx-trigger="click"
+    hx-target="#content"
+    hx-swap="transition:true"
+    href="/">
+    <ix-menu-item icon="home">Home</ix-menu-item>
+  </a>
+
+  <ix-menu-category
+    label="examples"
+    icon="rocket">
+    <a
+      hx-target="#content"
+      hx-swap="transition:true"
+      href="/examples/dashboard">
+      <ix-menu-item icon="table">Dashboard</ix-menu-item>
+    </a>
+
+    <a
+      hx-target="#content"
+      hx-swap="transition:true"
+      href="/examples/parti">
+      <ix-menu-item icon="user">Parti</ix-menu-item>
+    </a>
+
+    <ix-menu-item icon="globe">Nested Tab</ix-menu-item>
+  </ix-menu-category>
+
+  <ix-menu-category
+    label="Elements"
+    icon="attach">
+    <a
+      hx-target="#content"
+      hx-swap="transition:true"
+      href="/elements/questions">
+      <ix-menu-item icon="question">Questions</ix-menu-item>
+    </a>
+
+    <a
+      hx-target="#content"
+      hx-swap="transition:true"
+      href="/elements/paragraphs">
+      <ix-menu-item icon="text">Paragraphs</ix-menu-item>
+    </a>
+
+    <a
+      hx-target="#content"
+      hx-swap="transition:true"
+      href="{{ url_for('elements.media') }}">
+      <ix-menu-item icon="image">Media</ix-menu-item>
+    </a>
+  </ix-menu-category>
+
+  <ix-menu-category
+    label="Resources"
+    icon="folder-open-outline">
+    <!--
+      <a hx-target="#content" hx-swap="transition:true" href="/resources/emias">
+    -->
+
+    <a
+      hx-target="#content"
+      hx-swap="transition:true"
+      href="/resources/emias">
+      <ix-menu-item icon="document-bulk">Emias</ix-menu-item>
+    </a>
+
+    <a
+      hx-target="#content"
+      hx-swap="transition:true"
+      href="/resources/slides">
+      <ix-menu-item icon="document">Slides</ix-menu-item>
+    </a>
+
+    <a
+      hx-target="#content"
+      hx-swap="transition:true"
+      href="/resources/scripts">
+      <ix-menu-item icon="swap-left-right">Scripts</ix-menu-item>
+    </a>
+  </ix-menu-category>
+
+  <ix-menu-settings>
+    <ix-menu-settings-item
+      hx-push-url="false"
+      hx-trigger="intersect"
+      hx-get="{{ url_for('settings.user', {id: cookie.user_id}) }}"
+      hx-swap="this"
+      label="User settings">
+    </ix-menu-settings-item>
+
+    <ix-menu-settings-item label="Center settings"></ix-menu-settings-item>
+    <ix-menu-settings-item label="Project settings"></ix-menu-settings-item>
+  </ix-menu-settings>
+
+  <ix-menu-item
+    onclick="me('#preview-pane-phone').classToggle('d-none')"
+    id="btn-info"
+    tab-icon="info"
+    slot="bottom">
+    Bottom tab
+  </ix-menu-item>
+
+  <!-- news only on about -->
+  <!--
+  <ix-menu-about-news label="Test" show about-item-label="Example">Test</ix-menu-about-news>
+  -->
+  <ix-menu-about>
+    <ix-menu-about-item label="Example"> </ix-menu-about-item>
+  </ix-menu-about>
+
+
+  <script>
+    any('a', me('ix-menu')).run((el) => {
+      if (el.pathname === '/') return
+      if (location.pathname.includes(el.pathname)) me(el).children[0].active = true
+
+      navigation.addEventListener('navigate', (evt) => {
+        if (evt.navigationType === 'push') {
+          // toggleAttribute doesn't work for the already active
+          // el.children[0].toggleAttribute('active', evt.destination.url.includes(el.pathname))
+
+          if (evt.destination.url.includes(el.pathname)) el.children[0].active = true
+          else el.children[0].active = false
+        }
+      })
+    })
+  </script>
+</ix-menu>

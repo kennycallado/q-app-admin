@@ -1,0 +1,105 @@
+---
+layout: main.webc
+---
+
+<style webc:scoped>
+  ix-content-header {
+    border-color: var(--theme-color-primary) !important;
+  }
+</style>
+
+<ix-content-header
+  slot="header"
+  has-back-button="false"
+  header-title="Slides">
+  <ix-button
+    hx-push-url="true"
+    hx-get="{{ url_for('resources.slides.create') }}"
+    hx-target="#content"
+    hx-swap="transition:true">
+    Create
+  </ix-button>
+</ix-content-header>
+
+<section class="card">
+  <div class="card-body">
+    {% for slide in slides %}
+      <ix-content-header
+        hx-push-url="true"
+        class="mb-2 border-bottom align-items-end"
+        header-title="{{ slide.ref }}"
+        header-subtitle="{{ slide.title }}"
+        variant="secondary">
+        <ix-icon-button
+          hx-get="{{ url_for('resources.slides.details', {id: slide.id}) }}"
+          hx-target="#content"
+          hx-swap="transition:true"
+          class="d-none d-md-inline-block"
+          icon="eye"
+          variant=""
+          ghost>
+          Show
+        </ix-icon-button>
+
+        <ix-icon-button
+          hx-get="{{ url_for('resources.slides.details', {id: slide.id}) }}?edit=1"
+          hx-target="#content"
+          hx-swap="transition:true"
+          class="d-none d-md-inline-block"
+          icon="pen"
+          variant=""
+          ghost>
+          Edit
+        </ix-icon-button>
+
+        <ix-icon-button
+          hx-push-url="false"
+          hx-confirm="Are you sure? This action cannot be undone."
+          hx-post="{{ url_for('resources.slides.delete', {id: slide.id}) }}"
+          hx-target="#content"
+          hx-swap="transition:true"
+          class="d-none d-md-inline-block"
+          icon="trashcan"
+          ghost>
+          Delete
+        </ix-icon-button>
+
+        <ix-icon-button
+          id="resources-slides-index-options-{{ loop.index }}"
+          class="d-inline-block d-md-none"
+          icon="context-menu"
+          ghost>
+          Options
+        </ix-icon-button>
+
+        <ix-dropdown trigger="resources-slides-index-options-{{ loop.index }}">
+          <ix-dropdown-item
+            hx-get="{{ url_for('resources.slides.details', {id: slide.id}) }}"
+            hx-target="#content"
+            hx-swap="transition:true"
+            icon="eye"
+            label="Show">
+          </ix-dropdown-item>
+
+          <ix-dropdown-item
+            hx-get="{{ url_for('resources.slides.details', {id: slide.id}) }}?edit=1"
+            hx-target="#content"
+            hx-swap="transition:true"
+            icon="pen"
+            label="Edit">
+          </ix-dropdown-item>
+
+          <ix-dropdown-item
+            hx-push-url="false"
+            hx-confirm="Are you sure? This action cannot be undone."
+            hx-post="{{ url_for('resources.slides.delete', {id: slide.id}) }}"
+            hx-target="#content"
+            hx-swap="transition:true"
+            icon="trashcan"
+            label="Delete">
+          </ix-dropdown-item>
+        </ix-dropdown>
+      </ix-content-header>
+    {% endfor %}
+  </div>
+</section>

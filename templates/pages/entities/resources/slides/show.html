@@ -1,0 +1,65 @@
+---
+layout: main.webc
+---
+
+{% if not no_header %}
+  <qa-ent-header
+    header-title="Show: {{ slide.ref }}"
+    url-back-button="{{ url_for('resources.slides') }}"></qa-ent-header>
+{% endif %}
+
+{% set uid = gen_uid() %}
+<qa-ent-details
+  self-uid="{{ uid }}"
+  self-contained="{{ no_header }}"
+  action="{{ url_for('resources.slides.details', {id: slide.id}) }}">
+  <ix-key-value-list
+    slot="meta"
+    class="d-block rounded-3 p-2">
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="id"
+      value="{{ slide.id }}">
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="ref"
+      value="{{ slide.ref }}">
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="title"
+      value="{{ slide.title }}">
+    </ix-key-value>
+  </ix-key-value-list>
+
+  <ix-key-value-list
+    slot="content"
+    class="d-block rounded-3 p-2">
+    {% for element in slide.elements %}
+      {% set table = element|split(':').0 %}
+      <qa-slide-element>
+        <div
+          hx-push-url="false"
+          hx-trigger="load"
+          hx-get="{{ url_for('elements.'~ table ~'.details', {id: element}) }}"
+          hx-target="this"
+          hx-swap="transition:true"
+          slot="element">
+          {{ table }}
+        </div>
+      </qa-slide-element>
+      {% set table = null %}
+    {% endfor %}
+  </ix-key-value-list>
+</qa-ent-details>
+
+<script
+  :src="getBundleFileUrl('js', 'file')"
+  type="module"
+  webc:keep></script>

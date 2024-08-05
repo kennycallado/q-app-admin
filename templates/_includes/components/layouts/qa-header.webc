@@ -1,0 +1,114 @@
+<ix-application-header>
+  <placeholder-logo slot="logo">
+    <a
+      hx-push-url="true"
+      hx-trigger="click"
+      hx-get="/"
+      hx-target="#content"
+      href="/">
+      <h3>I-Psi-Tec</h3>
+    </a>
+  </placeholder-logo>
+
+  <ix-avatar
+    username="{{ cookie.username }}"
+    extra="{{ cookie.role }}">
+    <ix-dropdown-item
+      onclick="
+        me('ix-menu').toggleSettings(true)
+
+        import('/public/assets/js/modal.js')
+          .then(({create, show}) => {
+            if (!customElements.get('modal-example'))
+              create('modal-example', me('#header-avatar-settings-modal'))
+
+            customElements.whenDefined('modal-example').then(() => show('modal-example'))
+          })
+      "
+      id="header-avatar-settings"
+      label="Settings">
+      <template id="header-avatar-settings-modal">
+        <ix-modal-header>Message headline</ix-modal-header>
+
+        <ix-modal-content>Message text lorem ipsum</ix-modal-content>
+
+        <ix-modal-footer>
+          <ix-button
+            data-cancel
+            outline>
+            Cancel
+          </ix-button>
+
+          <ix-button data-accept>OK</ix-button>
+        </ix-modal-footer>
+      </template>
+    </ix-dropdown-item>
+
+    <ix-dropdown-item
+      hx-push-url="/"
+      hx-trigger="click"
+      hx-get="/auth/logout"
+      hx-target="body"
+      hx-swap="transition:true"
+      label="Logout"></ix-dropdown-item>
+  </ix-avatar>
+
+  <ix-dropdown-button
+    variant="secondary"
+    label="theme"
+    ghost>
+    <ix-dropdown-item
+      onclick="
+        import('/public/assets/@siemens/ix/dist/index.js')
+          .then(({ themeSwitcher }) => {
+            themeSwitcher.setTheme('theme-classic-dark')
+            localStorage.setItem('theme', 'dark')
+
+            me('body').removeClass('custom-dark', 'custom-light').addClass('custom-dark')
+          })
+      "
+      icon="moon"
+      label="Dark"
+      class="me-2">
+    </ix-dropdown-item>
+
+    <ix-dropdown-item
+      onclick="
+        import('/public/assets/@siemens/ix/dist/index.js')
+          .then(({ themeSwitcher }) => {
+            themeSwitcher.setTheme('theme-classic-light')
+            localStorage.setItem('theme', 'light')
+
+            me('body').removeClass('custom-dark', 'custom-light').addClass('custom-light')
+          })
+      "
+      icon="sun"
+      label="Light"
+      class="me-2">
+    </ix-dropdown-item>
+
+    <ix-dropdown-item
+      onclick="
+        (async () => {
+          const { themeSwitcher } = await import('/public/assets/@siemens/ix/dist/index.js')
+          const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light'
+
+          themeSwitcher.setTheme(
+            preferredTheme === 'dark' ? 'theme-classic-dark' : 'theme-classic-light',
+          )
+
+          localStorage.setItem('theme', 'auto')
+
+          me('body')
+            .removeClass('custom-dark', 'custom-light')
+            .addClass(preferredTheme === 'dark' ? 'custom-dark' : 'custom-light')
+        })()
+      "
+      icon="code"
+      label="System"
+      class="me-2">
+    </ix-dropdown-item>
+  </ix-dropdown-button>
+</ix-application-header>

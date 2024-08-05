@@ -1,0 +1,139 @@
+<style>
+  #login-index-signup .modal {
+    min-width: 349px;
+  }
+
+  #login-index-signup .modal-content {
+    background-color: var(--theme-color-1);
+  }
+
+  #login-index-signup .btn-close {
+    filter: invert(0.5);
+  }
+</style>
+
+<section
+  class="modal fade w-100"
+  id="login-index-signup"
+  tabindex="-1"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-label="Sign up form"
+  aria-labelledby="signupModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <button
+          id="signup-close"
+          class="btn-close"
+          type="button"
+          data-bs-dismiss="modal"
+          aria-label="Close">
+          <script type="module" webc:keep>
+            any('form', me('#login-index-signup')).on('submit', (_) =>
+              me('#signup-close', me('#login-index-signup')).click(),
+            )
+          </script>
+        </button>
+      </div>
+
+      <div>
+        <h2
+          class="w-100 text-center fs-5 fw-bold text-uppercase"
+          id="signupModalLabel">
+          sign up
+        </h2>
+        <p class="mb-0 text-center">Please fill out the form below.</p>
+        <hr class="m-0 mb-2 border-2 border-primary" />
+      </div>
+
+      <form
+        hx-push-url="false"
+        hx-trigger="submit"
+        hx-post="{{ url_for('signup') }}"
+        hx-target="#content"
+        method="POST"
+        action="{{ url_for('signup') }}">
+        <label class="w-100 mb-3 text-start">
+          Username:
+          <input
+            type="text"
+            name="username"
+            autocomplete="off" />
+
+          <script webc:keep>
+            me('-').on('focusout', (evt) => {
+              me(evt.target)
+                .attribute('required', 'true')
+                .attribute('pattern', '^[a-zA-Z0-9]{3,}$')
+            })
+          </script>
+        </label>
+
+        <label class="w-100 mb-3 text-start">
+          Password:
+          <input
+            type="password"
+            name="password"
+            autocomplete="off" />
+
+          <script webc:keep>
+            me('-').on('focusout', (evt) => {
+              me(evt.target)
+                .attribute('required', 'true')
+                .attribute('pattern', '^[a-zA-Z0-9]{6,}$')
+            })
+          </script>
+        </label>
+
+        <label class="w-100 mb-3 text-start">
+          Confirm Password:
+          <input
+            type="password"
+            name="conPassword"
+            autocomplete="off" />
+
+          <script webc:keep>
+            me('-').on('focusout', (evt) => {
+              me(evt.target)
+                .attribute('required', 'true')
+                .run((el) => {
+                  if (
+                    el.value !== me('input[name="password"]', me('#login-index-signup')).value
+                  ) {
+                    el.setCustomValidity('Passwords do not match')
+                  } else el.setCustomValidity('')
+                })
+            })
+          </script>
+        </label>
+
+        <div class="d-flex justify-content-end">
+          <ix-button
+            type="submit"
+            class="d-none"
+            disabled="true">
+            Submit
+          </ix-button>
+        </div>
+
+        <script webc:keep>
+          // Enable submit button when all fields are filled
+          any('input', me('#login-index-signup form')).on('input', (evt) => {
+            const form = me('#login-index-signup form')
+            const inputs = any('input', form)
+            let filled = 0
+
+            inputs.run((el) => {
+              if (el.value) filled++
+            })
+
+            if (filled === inputs.length)
+              me('ix-button[type="submit"]', form).removeAttribute('disabled')
+            else me('ix-button[type="submit"]', form).setAttribute('disabled', 'true')
+          })
+        </script>
+      </form>
+    </div>
+  </div>
+</section>

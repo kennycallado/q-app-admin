@@ -1,0 +1,16 @@
+<ix-content-header
+  :header-title="headerTitle"
+  :url-back-button="urlBackButton"
+  has-back-button="false"
+  slot="header">
+  <script webc:keep>
+    me().run((el) => {
+      let urlBack = el.attr('url-back-button')
+
+      if (!urlBack) return
+
+      el.attr('has-back-button', true)
+      el.on('backButtonClick', () => back_arrow(urlBack))
+    })
+  </script>
+</ix-content-header>

@@ -1,0 +1,100 @@
+---
+layout: main.webc
+---
+
+{% if not no_header %}
+  <qa-ent-header
+    header-title="Edit: {{ media.ref }}"
+    url-back-button="{{ url_for('elements.media') }}"></qa-ent-header>
+{% endif %}
+
+<qa-ent-details
+  self-uid="{{ gen_uid() }}"
+  self-contained="{{ no_header }}"
+  {# entity-id="{{ media.id }}" #}
+  action="{{ url_for('elements.media.details', {id: media.id}) }}"
+  edit="true">
+  <ix-key-value-list
+    slot="meta"
+    class="d-block rounded-3 p-2">
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      value="{{ media.id }}"
+      label="id">
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      label-position="left"
+      label="ref">
+      <input
+        slot="custom-value"
+        name="ref"
+        value="{{ media.ref }}"
+        placeholder="Enter slug" />
+    </ix-key-value>
+
+    <ix-key-value
+      orientation="vertical"
+      label-position="left"
+      label="type">
+      <div
+        slot="custom-value"
+        class="d-flex">
+        <!-- htmlmin:ignore -->
+        <input
+          {% if media.type is same as 'image' %}checked{% endif %}
+          id="type-image"
+          name="type"
+          value="image"
+          type="radio" />
+        <label for="type-image">Image</label>
+        <!-- htmlmin:ignore -->
+
+        <!-- htmlmin:ignore -->
+        <input
+          {% if media.type is same as 'video' %}checked{% endif %}
+          id="type-video"
+          name="type"
+          value="video"
+          type="radio" />
+        <label for="type-video">Video</label>
+        <!-- htmlmin:ignore -->
+      </div>
+    </ix-key-value>
+  </ix-key-value-list>
+
+  <ix-key-value-list
+    slot="content"
+    class="d-block rounded-3 p-2">
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="alt text">
+      <input
+        name="alt"
+        value="{{ media.alt }}"
+        slot="custom-value"
+        placeholder="Enter an alternative text" />
+    </ix-key-value>
+
+    <ix-key-value
+      class="fw-bold"
+      orientation="vertical"
+      label-position="left"
+      label="url">
+      <input
+        name="url"
+        value="{{ media.url }}"
+        slot="custom-value"
+        placeholder="Enter the media url" />
+    </ix-key-value>
+  </ix-key-value-list>
+</qa-ent-details>
+
+<script
+  :src="getBundleFileUrl('js', 'file')"
+  type="module"
+  webc:keep></script>
