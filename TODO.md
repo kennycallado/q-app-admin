@@ -1,6 +1,11 @@
 
 ## TODO:
 
+- [X] htmx: view transition without extra css
+- [X] eleventy: ? permalinks to keep the same url
+- [~] eleventy: config take a look at zx rm and mv
+- [X] eleventy: test passThroughCopy (works with xz)
+
 - [ ] title: when using htmx, the title is not updated
 - [?] layout: review layout with rows and columns
 - [ ] locales: add supported locales
