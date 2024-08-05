@@ -12,6 +12,7 @@ class ResourcesRouter
     public static function routes(Group $group): void
     {
         $group->group('/emias', function (Group $group) {
+            EmiasController::routes($group);
         });
 
         $group->group('/slides', function (Group $group) {
