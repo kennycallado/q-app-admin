@@ -25,8 +25,23 @@ $app->addRoutingMiddleware();
 $methodOverrideMiddleware = new MethodOverrideMiddleware();
 $app->add($methodOverrideMiddleware);
 
-// should be modified in production
-$errorMiddleware = $app->addErrorMiddleware(true, true, true);
+// TODO: better error handling
+if (!isset($_ENV['AUTH_URL']) || !isset($_ENV['DATABASE_URL'])) {
+    echo '<div style="background-color: #c1c1c1; padding: 2rem; margin: 2rem;border-radius: 1rem;">';
+    echo '<h1 style="margin-bottom: 2rem;text-align: center;color: red;"> Environment variables not set</h1>';
+
+    echo '<pre>';
+    print_r($_ENV);
+    echo '</pre></div>';
+
+    return;
+}
+
+if (!isset($_ENV['ENVIRONMENT']) || $_ENV['ENVIRONMENT'] !== 'production') {
+    $errorMiddleware = $app->addErrorMiddleware(true, true, true);
+} else {
+    $errorMiddleware = $app->addErrorMiddleware(false, false, false);
+}
 
 // Run
 $app->run();

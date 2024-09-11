@@ -31,8 +31,7 @@ class AuthMiddleware implements Middleware
             isset($cookie['p_auth']) && !empty($cookie['p_auth']) ||
             isset($cookie['role']) && !empty($cookie['role'])
         ) {
-            // TODO: $auth = new Auth($_ENV['AUTH_URL']);
-            $auth = new Auth('http://auth:9000/auth');
+            $auth = new Auth($_ENV['AUTH_URL']);
 
             $auth->project = json_decode($cookie['project']);
             $auth->username = $cookie['username'];

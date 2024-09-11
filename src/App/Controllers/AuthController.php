@@ -38,8 +38,7 @@ class AuthController
     {
         global $app;
 
-        // TODO: $auth = new Auth($_ENV['AUTH_URL']);
-        $auth = new Auth('http://auth:9000/auth');
+        $auth = new Auth($_ENV['AUTH_URL']);
 
         $view = Twig::fromRequest($request);
         $body = (object) $request->getParsedBody();
@@ -140,8 +139,7 @@ class AuthController
     {
         global $app;
 
-        // TODO: $auth = new Auth($_ENV['AUTH_URL']);
-        $auth = new Auth('http://auth:9000/auth');
+        $auth = new Auth($_ENV['AUTH_URL']);
 
         $view = Twig::fromRequest($request);
         $body = (object) $request->getParsedBody();
