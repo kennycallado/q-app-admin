@@ -31,8 +31,7 @@ class SurrealDB
      */
     public function __construct($ns, $db, $token, $user = NULL, $pass = NULL)
     {
-        // TODO: $this->url = $_ENV['DATABASE_URL'];
-        $this->url = 'http://surrealdb:8000/sql';
+        $this->url = $_ENV['DATABASE_URL'];
         $this->ns = $ns;
         $this->db = $db;
 
