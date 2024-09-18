@@ -69,34 +69,29 @@
                 {% if not edit %}readonly{% endif %}
                 name="content[questions][{{ number }}][question]"
                 placeholder="Enter text"
-                slot="custom-value">
-{{ create ? null : locale_filter(question.content.questions, locale, 'question')|trim }}</textarea
-              >
+                slot="custom-value">{{ create ? null : locale_filter(question.content.questions, locale, 'question')|trim }}</textarea>
             </ix-key-value>
 
             {% if not create %}
-              <template webc:raw webc:nokeep>
-              {%
-                set spelled = question.content.questions
-                  |filter(c => c.locale == locale)
-                  |column('spelled')[0]
-              %}
-              </template>
-              <div class="d-flex justify-content-center">
-                {% for i in question.content.range.min..question.content.range.max %}
-                  <ix-key-value
-                    class="mx-1 fw-bold border-0"
-                    orientation="vertical"
-                    label="{{ loop.index }}">
-                    <input
-                      {% if not edit %}readonly{% endif %}
-                      slot="custom-value"
-                      name="content[questions][{{ number }}][spelled][]"
-                      value="{{ spelled[loop.index0] }}"
-                      placeholder="Enter text" />
-                  </ix-key-value>
-                {% endfor %}
-              </div>
+            <template webc:raw webc:nokeep>
+              {% set spelled = question.content.questions |filter(c => c.locale == locale) |column('spelled')[0] %}
+            </template>
+
+            <div class="d-flex justify-content-center">
+              {% for i in question.content.range.min..question.content.range.max %}
+              <ix-key-value
+                class="mx-1 fw-bold border-0"
+                orientation="vertical"
+                label="{{ loop.index }}">
+                <input
+                  {% if not edit %}readonly{% endif %}
+                  slot="custom-value"
+                  name="content[questions][{{ number }}][spelled][]"
+                  value="{{ spelled[loop.index0] }}"
+                  placeholder="Enter text" />
+              </ix-key-value>
+              {% endfor %}
+            </div>
             {% endif %}
           </div>
           {% set number = null %}

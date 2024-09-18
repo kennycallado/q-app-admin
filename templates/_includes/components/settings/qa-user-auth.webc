@@ -32,13 +32,12 @@
 
       <ix-select value="{{ current_project.id }}">
         {% for center in centers %}
-          <optgroup label="{{ center.name }}"></optgroup>
-          {% for project in center.projects %}
-            <ix-select-item
-              label="{{ project.name }}"
-              value="{{ project.id }}"></ix-select-item>
-          {% endfor %}
-        {% endfor %}
+        <optgroup label="{{ center.name }}"></optgroup>
+        {% for project in center.projects %}
+        <ix-select-item
+          label="{{ project.name }}"
+          value="{{ project.id }}"></ix-select-item>
+        {% endfor %} {% endfor %}
 
         <script webc:keep>
           me().on('valueChange', (evt) => {

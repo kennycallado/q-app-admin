@@ -112,7 +112,6 @@
     <ix-menu-about-item label="Example"> </ix-menu-about-item>
   </ix-menu-about>
 
-
   <script>
     any('a', me('ix-menu')).run((el) => {
       if (el.pathname === '/') return

@@ -29,7 +29,9 @@
           type="button"
           data-bs-dismiss="modal"
           aria-label="Close">
-          <script type="module" webc:keep>
+          <script
+            type="module"
+            webc:keep>
             any('form', me('#login-index-signup')).on('submit', (_) =>
               me('#signup-close', me('#login-index-signup')).click(),
             )

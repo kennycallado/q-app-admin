@@ -30,9 +30,9 @@
 
         if (!this.edit) {
           sleep(500).then(() => {
-            this
-              .querySelectorAll('fieldset > ix-button:nth-child(1)')
-              .forEach((el) => (el.disabled = true))
+            this.querySelectorAll('fieldset > ix-button:nth-child(1)').forEach(
+              (el) => (el.disabled = true),
+            )
           })
         } else this.observe()
       }

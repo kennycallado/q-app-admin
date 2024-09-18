@@ -7,7 +7,7 @@
   "plugins": ["prettier-plugin-jinja-template"],
   "overrides": [
     {
-      "files": ["*.html"],
+      "files": ["*.html", "*.webc"],
       "singleAttributePerLine": true,
       "options": {
         "parser": "jinja-template"

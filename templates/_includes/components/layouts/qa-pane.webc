@@ -121,7 +121,7 @@
           variant="neutral">
           <ix-icon
             onclick="me('#preview-pane-phone-iframe').trigger('customOpen')"
-            style="width: 50px; height: 50px; color: var(--theme-color-4);"
+            style="width: 50px; height: 50px; color: var(--theme-color-4)"
             name="rocket">
           </ix-icon>
         </ix-card>
