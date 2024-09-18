@@ -85,59 +85,55 @@
     connectedCallback() {
       // ? if no action error
 
-      if (
-        !this.hasAttribute('edit') &&
-        !this.getAttribute('edit') &&
-        this.hasAttribute('self-contained') &&
-        this.getAttribute('self-contained')
-      ) {
-        me('ix-button[type="submit"]', this).disabled = true
+      const edit = this.hasAttribute('edit') && this.getAttribute('edit')
+      const create = this.hasAttribute('create') && this.getAttribute('create')
+      const contained =
+        this.hasAttribute('self-contained') && this.getAttribute('self-contained')
 
-        me('ix-button', this).attr('hx-get', `${this.getAttribute('action')}?edit=1&no_header=1`)
-        me('ix-button', this).attr('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
-        me('ix-button', this).attribute('hx-push-url', 'false')
-        me('ix-button', this).attribute('hx-swap', 'outerHTML')
-        me('ix-button', this).textContent = 'Edit'
-
-        me('form', this).attribute('hx-post', `${this.getAttribute('action')}?no_header=1`)
-        me('form', this).attribute('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
-        me('form', this).attribute('hx-push-url', 'false')
-        me('form', this).attribute('hx-swap', 'outerHTML')
-      } else if (!this.hasAttribute('edit') && !this.getAttribute('edit')) {
-        me('ix-button[type="submit"]', this).disabled = true
-
-        me('ix-button', this).attribute('hx-get', `${this.getAttribute('action')}?edit=1`)
-        me('ix-button', this).textContent = 'Edit'
-      } else if (this.hasAttribute('self-contained') && this.getAttribute('self-contained')) {
-        me('ix-button', this).attribute('hx-get', `${this.getAttribute('action')}?no_header=1`)
-        me('ix-button', this).attr('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
-        me('ix-button', this).attribute('hx-push-url', 'false')
-        me('ix-button', this).attribute('hx-swap', 'outerHTML')
-
-        me('form', this).attribute('hx-post', `${this.getAttribute('action')}?no_header=1`)
-        me('form', this).attribute('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
-        me('form', this).attribute('hx-push-url', 'false')
-        me('form', this).attribute('hx-swap', 'outerHTML')
+      // edit action url
+      if (!edit && contained) {
+        me('ix-button', this).attr(
+          'hx-get',
+          `${this.getAttribute('action')}?edit=1&no_header=1`,
+        )
+      } else if (!edit) {
+        me('ix-button', this).attr('hx-get', `${this.getAttribute('action')}?edit=1`)
+      } else if (contained) {
+        me('ix-button', this).attr('hx-get', `${this.getAttribute('action')}?no_header=1`)
       }
 
-      if (this.hasAttribute('edit') && this.getAttribute('edit')) {
+      // edit buttons and form
+      if (edit) {
         me('ix-button', this).textContent = 'Cancel'
+      } else {
+        me('ix-button[type="submit"]', this).disabled = true
+
+        me('ix-button', this).textContent = 'Edit'
       }
 
-      if (
-        !this.hasAttribute('edit') && !this.getAttribute('edit') ||
-        this.hasAttribute('create') && this.getAttribute('create')
-      ) {
+      if (contained) {
+        me('ix-button', this).attr('hx-push-url', 'false')
+        me('ix-button', this).attr('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
+        me('ix-button', this).attr('hx-swap', 'outerHTML')
+
+        me('form', this).attr('hx-push-url', 'false')
+        me('form', this).attr('hx-post', `${this.getAttribute('action')}?no_header=1`)
+        me('form', this).attr('hx-target', `[self-uid="${this.getAttribute('self-uid')}"]`)
+        // me('form', this).attr('hx-swap', 'outerHTML')
+      }
+
+      if (create) {
+        me('ix-button', this).remove()
+      }
+
+      // remove patch method
+      if (!edit || create) {
         if (this.querySelector('input[type="hidden"][name="_METHOD"]'))
           me('input[type="hidden"][name="_METHOD"]', this).remove()
-      }
-
-      if (this.hasAttribute('create') && this.getAttribute('create')) {
-        me('ix-button', this).remove()
       }
     }
   }
 
   if (!customElements.get('qa-ent-details'))
-  customElements.define('qa-ent-details', EntityDetails)
+    customElements.define('qa-ent-details', EntityDetails)
 </script>
