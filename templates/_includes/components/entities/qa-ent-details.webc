@@ -27,6 +27,25 @@
           <legend class="text-center border-bottom">Meta</legend>
 
           <slot name="meta"></slot>
+
+          <!-- maybe for alternative buttons position -->
+          <fieldset
+            webc:if="buttonsUp"
+            class="mt-2 me-2 d-flex justify-content-end">
+            <ix-button
+              hx-trigger="click"
+              hx-push-url="true"
+              :hx-get="action"
+              hx-target="#content"
+              hx-swap="transition:true"
+              outline></ix-button>
+
+            <ix-button
+              class="ms-2"
+              type="submit">
+              Submit
+            </ix-button>
+          </fieldset>
         </fieldset>
 
         <fieldset class="py-2">
@@ -35,7 +54,9 @@
           <slot name="content"></slot>
         </fieldset>
 
-        <fieldset class="mt-2 me-2 d-flex justify-content-end">
+        <fieldset
+          webc:if="!buttonsUp"
+          class="mt-2 me-2 d-flex justify-content-end">
           <ix-button
             hx-trigger="click"
             hx-push-url="true"
