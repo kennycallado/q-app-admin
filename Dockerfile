@@ -14,8 +14,11 @@ FROM node:lts-alpine AS node
 COPY ./package.json /app/package.json
 
 WORKDIR /app
-RUN npm install --omit=dev
+RUN npm install
 RUN npm run build
+
+RUN rm -rf node_modules
+RUN npm install --omit=dev
 
 ##
 FROM php:fpm-alpine
