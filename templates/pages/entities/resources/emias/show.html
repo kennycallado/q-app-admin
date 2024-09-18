@@ -11,6 +11,7 @@ layout: main.webc
 <ix-layout-grid gap="8">
   <ix-row>
     <ix-col size="9">
+      <!--
       <qa-ent-details
         self-uid=""
         self-contained="{{ no_header }}"
@@ -43,40 +44,78 @@ layout: main.webc
         <ix-key-value-list
           slot="content"
           class="d-block rounded-3 p-2">
-          <div
-            id="emia-slide"
-            hx-push-url="false"
-            hx-trigger="load"
-            hx-get="{{ url_for('resources.slides.details', {id: emia.slides[0]}) }}?no_header=1"
-            hx-target="this"
-            hx-swap="transition:true">
-            {{ emia.slides[0] }}
-          </div>
         </ix-key-value-list>
       </qa-ent-details>
+-->
+
+      <div
+        id="emia-slide"
+        hx-push-url="false"
+        hx-trigger="load"
+        hx-get="{{ url_for('resources.slides.details', {id: emia.slides[0]}) }}?no_header=1"
+        hx-target="this"
+        hx-swap="transition:true">
+        {{ emia.slides[0] }}
+      </div>
     </ix-col>
 
     <ix-col>
-      <ul
+      <div
         style="
           margin-top: 0.5rem;
           padding: 1rem;
           list-style-type: none;
           background-color: var(--theme-color-lightbox);
           border-radius: 0.5rem;
-          ">
-        {% for slide in emia.slides %}
-          <li
+        ">
+        <ix-key-value-list class="d-block rounded-3 p-2">
+          <ix-key-value
             class="fw-bold"
-            hx-push-url="false"
-            hx-trigger="click"
-            hx-get="{{ url_for('resources.slides.details', {id: slide}) }}?no_header=1"
-            hx-target="#emia-slide"
-            hx-swap="transition:true">
-            Pantalla: {{ loop.index }}
-          </li>
-        {% endfor %}
-      </ul>
+            label-position="left"
+            label="id"
+            value="{{ emia.id }}">
+          </ix-key-value>
+
+          <ix-key-value
+            class="fw-bold"
+            label-position="left"
+            label="ref"
+            value="{{ emia.ref }}">
+          </ix-key-value>
+
+          <ix-key-value
+            class="fw-bold text-end pe-2"
+            label="description"
+            value="{{ emia.description }}">
+          </ix-key-value>
+        </ix-key-value-list>
+
+        <ul class="list-unstyled mt-4 mb-0">
+          {% for slide in emia.slides %}
+            <li class="fw-bold">
+              <ix-blind
+                icon="bulb"
+                collapsed="true"
+                label="Pantalla: {{ loop.index }}">
+                <span
+                  class="text-danger"
+                  hx-push-url="false"
+                  hx-trigger="click"
+                  hx-get="{{ url_for('resources.slides.details', {id: slide}) }}?no_header=1"
+                  hx-target="#emia-slide"
+                  hx-swap="transition:true"
+                  >{{ slide }}</span
+                >
+              </ix-blind>
+              <!--
+              <span
+                >Pantalla: {{ loop.index }} -- <span class="text-danger">{{ slide }}</span>
+              </span>
+            -->
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </ix-col>
   </ix-row>
 </ix-layout-grid>

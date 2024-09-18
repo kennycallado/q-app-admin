@@ -1,0 +1,222 @@
+---
+layout: main.webc
+---
+
+{% if not no_header %}
+  <qa-ent-header
+    header-title="Show: {{ emia.ref }}"
+    url-back-button="{{ url_for('resources.emias') }}"></qa-ent-header>
+{% endif %}
+
+<ix-layout-grid gap="8">
+  <ix-row>
+    <ix-col size="8">
+      <!--
+      <qa-ent-details
+        self-uid=""
+        self-contained="{{ no_header }}"
+        action="">
+        <ix-key-value-list
+          slot="meta"
+          class="d-block rounded-3 p-2">
+          <ix-key-value
+            class="fw-bold"
+            label-position="left"
+            label="id"
+            value="{{ emia.id }}">
+          </ix-key-value>
+
+          <ix-key-value
+            class="fw-bold"
+            label-position="left"
+            label="ref"
+            value="{{ emia.ref }}">
+          </ix-key-value>
+
+          <ix-key-value
+            class="fw-bold"
+            label-position="left"
+            label="description"
+            value="{{ emia.description }}">
+          </ix-key-value>
+        </ix-key-value-list>
+
+        <ix-key-value-list
+          slot="content"
+          class="d-block rounded-3 p-2">
+        </ix-key-value-list>
+      </qa-ent-details>
+-->
+
+      <h1 class="text-center">Pantalla</h1>
+      <div
+        id="emia-slide"
+        hx-push-url="false"
+        hx-trigger="load"
+        hx-get="{{ url_for('resources.slides.details', {id: emia.slides[0]}) }}?no_header=1"
+        hx-target="this">
+        {{ emia.slides[0] }}
+      </div>
+    </ix-col>
+
+    <ix-col>
+      <h1 class="text-center">Emia</h1>
+
+      {% set uid = gen_uid() %}
+      <qa-ent-details
+        self-uid="{{ uid }}"
+        self-contained="{{ no_header }}">
+        <ix-key-value-list
+          slot="meta"
+          class="d-block rounded-3 p-2">
+          <ix-key-value
+            class="fw-bold"
+            label-position="left"
+            label="id"
+            value="{{ emia.id }}">
+          </ix-key-value>
+
+          <ix-key-value
+            class="fw-bold"
+            label-position="left"
+            label="ref"
+            value="{{ emia.ref }}">
+          </ix-key-value>
+
+          <ix-key-value
+            class="fw-bold text-end pe-2"
+            label="description"
+            value="{{ emia.description }}">
+          </ix-key-value>
+        </ix-key-value-list>
+
+        <div slot="content">
+          <ul
+            id="slides-list"
+            class="list-unstyled mt-4 mb-0">
+            {#
+            <script webc:keep>
+              me().run((el) => {
+                const observer = new MutationObserver((mutation) => {
+                  if (el.querySelectorAll('li').length > 0) {
+                    me('li:has(ix-empty-state)', el).attr('hidden', true)
+                  } else {
+                    me('li:has(ix-empty-state)', el).attr('hidden', null)
+                  }
+                })
+
+                observer.observe(me(), {
+                  childList: true,
+                  subtree: true,
+                })
+              })
+            </script>
+
+            <li>
+              <ix-empty-state
+                layout="compact"
+                header="No slides"
+                sub-header="Add a slide first"
+                icon="add">
+              </ix-empty-state>
+            </li>
+            #}
+
+            {% for slide in emia.slides %}
+              <li class="mb-1">
+              <!--
+                <ix-icon
+                  name="screen"
+                  size="16"></ix-icon>
+
+                <ix-link-button
+                  hx-push-url="false"
+                  hx-trigger="click"
+                  hx-get="{{ url_for('resources.slides.details', {id: slide}) }}?no_header=1"
+                  hx-target="#emia-slide">
+                  Pantalla: {{ loop.index }} ({{ slide }})
+                </ix-link-button>
+              -->
+
+                <ix-blind
+                  icon="bulb"
+                  collapsed="true"
+                  label="Pantalla: {{ loop.index }}">
+                  <span
+                    class="text-danger"
+                    hx-push-url="false"
+                    hx-trigger="click"
+                    hx-get="{{ url_for('resources.slides.details', {id: slide}) }}?no_header=1"
+                    hx-target="#emia-slide">
+                    <h2>Lógica</h2>
+                    {{ slide }}
+                  </span>
+                </ix-blind>
+              </li>
+            {% endfor %}
+          </ul>
+
+          <!--
+          <ix-icon-button
+            hx-push-url="false"
+            hx-get="{{ url_for('resources.slides.create') }}?no_header=1"
+            hx-target="#emia-slide"
+            class="position-absolute bottom-0 mb-3"
+            size="32"
+            icon="add"
+            variant="primary"></ix-icon-button>
+          -->
+
+          <ix-icon-button
+            id="add-slide"
+            class="position-absolute bottom-0 mb-3"
+            size="32"
+            icon="add"
+            variant="primary"></ix-icon-button>
+          <ix-dropdown trigger="add-slide">
+            <ix-dropdown-item
+              onclick="
+                import('/public/assets/js/modal.js')
+                  .then(({create, show}) => {
+                    if (!customElements.get('modal-add-slide'))
+                      create('modal-add-slide', me('#add-slide-modal'))
+
+                    customElements.whenDefined('modal-add-slide').then(() => show('modal-add-slide'))
+                  })
+              "
+              icon="search"
+              label="Find">
+              <template id="add-slide-modal">
+                <ix-modal-header>Find a slide</ix-modal-header>
+                <ix-modal-content>List with all slides</ix-modal-content>
+                <ix-modal-footer>
+                  <ix-button
+                    data-cancel
+                    outline>
+                    Cancel
+                  </ix-button>
+
+                  <ix-button data-accept>OK</ix-button>
+                </ix-modal-footer>
+              </template>
+            </ix-dropdown-item>
+
+            <ix-dropdown-item
+              hx-push-url="false"
+              hx-get="{{ url_for('resources.slides.create') }}?no_header=1"
+              hx-target="#emia-slide"
+              icon="screen"
+              label="New"></ix-dropdown-item>
+          </ix-dropdown>
+        </div>
+      </qa-ent-details>
+      {% set uid = null %}
+
+    </ix-col>
+  </ix-row>
+</ix-layout-grid>
+
+<script
+  :src="getBundleFileUrl('js', 'file')"
+  type="module"
+  webc:keep></script>

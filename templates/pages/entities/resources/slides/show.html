@@ -10,6 +10,7 @@ layout: main.webc
 
 {% set uid = gen_uid() %}
 <qa-ent-details
+  buttons-up="true"
   self-uid="{{ uid }}"
   self-contained="{{ no_header }}"
   action="{{ url_for('resources.slides.details', {id: slide.id}) }}">

@@ -1,0 +1,81 @@
+---
+layout: main.webc
+---
+
+<style webc:scoped>
+  ix-content-header {
+    border-color: var(--theme-color-primary) !important;
+  }
+</style>
+
+<ix-content-header
+  slot="header"
+  has-back-button="false"
+  header-title="Emias">
+  <ix-button
+    disabled
+    hx-push-url="true"
+    hx-get="{{ url_for('resources.slides.create') }}"
+    hx-target="#content"
+    hx-swap="transition:true">
+    Create
+  </ix-button>
+</ix-content-header>
+
+<section class="card">
+  <div class="card-body">
+    <ix-content-header
+      hx-push-url="true"
+      class="mb-2 border-bottom align-items-end"
+      header-title="test-1"
+      header-subtitle="Lateral 1"
+      variant="secondary">
+      <ix-icon-button
+        hx-get="{{ url_for('resources.emias.details', {id: 'lateral'}) }}"
+        hx-target="#content"
+        hx-swap="transition:true"
+        class="d-none d-md-inline-block"
+        icon="eye"
+        variant=""
+        ghost>
+        Show
+      </ix-icon-button>
+    </ix-content-header>
+
+    <ix-content-header
+      hx-push-url="true"
+      class="mb-2 border-bottom align-items-end"
+      header-title="Lateral 2"
+      header-subtitle="Panel lateral - 2"
+      variant="secondary">
+      <ix-icon-button
+        hx-get="{{ url_for('resources.emias.details', {id: 'lateral2'}) }}"
+        hx-target="#content"
+        hx-swap="transition:true"
+        class="d-none d-md-inline-block"
+        icon="eye"
+        variant=""
+        ghost>
+        Show
+      </ix-icon-button>
+    </ix-content-header>
+
+    <ix-content-header
+      hx-push-url="true"
+      class="mb-2 border-bottom align-items-end"
+      header-title="Superior"
+      header-subtitle="Panel superior"
+      variant="secondary">
+      <ix-icon-button
+        hx-get="{{ url_for('resources.emias.details', {id: 'superior'}) }}"
+        hx-target="#content"
+        hx-swap="transition:true"
+        class="d-none d-md-inline-block"
+        icon="eye"
+        variant=""
+        ghost>
+        Show
+      </ix-icon-button>
+    </ix-content-header>
+  </div>
+</section>

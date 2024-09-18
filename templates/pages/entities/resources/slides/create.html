@@ -7,13 +7,15 @@ layout: main.webc
     header-title="Create Slide"
     url-back-button="{{ url_for('resources.slides') }}"></qa-ent-header>
 {% endif %}
+
 {% set uid = gen_uid() %}
 <qa-ent-details
+  edit="true"
+  create="true"
+  buttons-up="true"
   self-uid="{{ uid }}"
   self-contained="{{ no_header }}"
-  action="{{ url_for('resources.slides') }}"
-  create="true"
-  edit="true">
+  action="{{ url_for('resources.slides') }}">
   <ix-key-value-list
     slot="meta"
     class="d-block rounded-3 p-2">
